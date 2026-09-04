@@ -8,3 +8,4 @@ C:\Users\opilane\Documents\GitHub\programmerimine-2-kurs\WindowsFormsAppErik\Win
 C:\Users\opilane\Documents\GitHub\programmerimine-2-kurs\WindowsFormsAppErik\WindowsFormsAppErik\obj\Debug\WindowsFormsAppErik.csproj.CoreCompileInputs.cache
 C:\Users\opilane\Documents\GitHub\programmerimine-2-kurs\WindowsFormsAppErik\WindowsFormsAppErik\obj\Debug\WindowsFormsAppErik.exe
 C:\Users\opilane\Documents\GitHub\programmerimine-2-kurs\WindowsFormsAppErik\WindowsFormsAppErik\obj\Debug\WindowsFormsAppErik.pdb
+C:\Users\opilane\Documents\GitHub\programmerimine-2-kurs\WindowsFormsAppErik\WindowsFormsAppErik\obj\Debug\Naidis_IKTpv25_Windows_Forms.Form1.resources
