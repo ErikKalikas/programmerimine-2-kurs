@@ -1,0 +1,91 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\opilane\\source\\repos\\programmerimine-2-kurs\\Iseseisevt\u00F6\u00F6 Kolm rakendust\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{78B9CDE3-242F-43C9-89AC-7F6F2808C7C8}|Iseseisevt\u00F6\u00F6 Kolm rakendust\\Iseseisevt\u00F6\u00F6 Kolm rakendust.csproj|c:\\users\\opilane\\source\\repos\\programmerimine-2-kurs\\iseseisevt\u00F6\u00F6 kolm rakendust\\iseseisevt\u00F6\u00F6 kolm rakendust\\pictureviewerform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{78B9CDE3-242F-43C9-89AC-7F6F2808C7C8}|Iseseisevt\u00F6\u00F6 Kolm rakendust\\Iseseisevt\u00F6\u00F6 Kolm rakendust.csproj|solutionrelative:iseseisevt\u00F6\u00F6 kolm rakendust\\pictureviewerform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{78B9CDE3-242F-43C9-89AC-7F6F2808C7C8}|Iseseisevt\u00F6\u00F6 Kolm rakendust\\Iseseisevt\u00F6\u00F6 Kolm rakendust.csproj|c:\\users\\opilane\\source\\repos\\programmerimine-2-kurs\\iseseisevt\u00F6\u00F6 kolm rakendust\\iseseisevt\u00F6\u00F6 kolm rakendust\\mathquizform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{78B9CDE3-242F-43C9-89AC-7F6F2808C7C8}|Iseseisevt\u00F6\u00F6 Kolm rakendust\\Iseseisevt\u00F6\u00F6 Kolm rakendust.csproj|solutionrelative:iseseisevt\u00F6\u00F6 kolm rakendust\\mathquizform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{78B9CDE3-242F-43C9-89AC-7F6F2808C7C8}|Iseseisevt\u00F6\u00F6 Kolm rakendust\\Iseseisevt\u00F6\u00F6 Kolm rakendust.csproj|c:\\users\\opilane\\source\\repos\\programmerimine-2-kurs\\iseseisevt\u00F6\u00F6 kolm rakendust\\iseseisevt\u00F6\u00F6 kolm rakendust\\avavorm.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{78B9CDE3-242F-43C9-89AC-7F6F2808C7C8}|Iseseisevt\u00F6\u00F6 Kolm rakendust\\Iseseisevt\u00F6\u00F6 Kolm rakendust.csproj|solutionrelative:iseseisevt\u00F6\u00F6 kolm rakendust\\avavorm.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{78B9CDE3-242F-43C9-89AC-7F6F2808C7C8}|Iseseisevt\u00F6\u00F6 Kolm rakendust\\Iseseisevt\u00F6\u00F6 Kolm rakendust.csproj|c:\\users\\opilane\\source\\repos\\programmerimine-2-kurs\\iseseisevt\u00F6\u00F6 kolm rakendust\\iseseisevt\u00F6\u00F6 kolm rakendust\\avavorm.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{78B9CDE3-242F-43C9-89AC-7F6F2808C7C8}|Iseseisevt\u00F6\u00F6 Kolm rakendust\\Iseseisevt\u00F6\u00F6 Kolm rakendust.csproj|solutionrelative:iseseisevt\u00F6\u00F6 kolm rakendust\\avavorm.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 2,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{34e76e81-ee4a-11d0-ae2e-00a0c90fffc3}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "MathQuizForm.cs",
+              "DocumentMoniker": "C:\\Users\\opilane\\source\\repos\\programmerimine-2-kurs\\Iseseisevt\u00F6\u00F6 Kolm rakendust\\Iseseisevt\u00F6\u00F6 Kolm rakendust\\MathQuizForm.cs",
+              "RelativeDocumentMoniker": "Iseseisevt\u00F6\u00F6 Kolm rakendust\\MathQuizForm.cs",
+              "ToolTip": "C:\\Users\\opilane\\source\\repos\\programmerimine-2-kurs\\Iseseisevt\u00F6\u00F6 Kolm rakendust\\Iseseisevt\u00F6\u00F6 Kolm rakendust\\MathQuizForm.cs",
+              "RelativeToolTip": "Iseseisevt\u00F6\u00F6 Kolm rakendust\\MathQuizForm.cs",
+              "ViewState": "AgIAAMgAAAAAAAAAAAAgwPQAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-09-18T08:01:28.327Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "PictureViewerForm.cs",
+              "DocumentMoniker": "C:\\Users\\opilane\\source\\repos\\programmerimine-2-kurs\\Iseseisevt\u00F6\u00F6 Kolm rakendust\\Iseseisevt\u00F6\u00F6 Kolm rakendust\\PictureViewerForm.cs",
+              "RelativeDocumentMoniker": "Iseseisevt\u00F6\u00F6 Kolm rakendust\\PictureViewerForm.cs",
+              "ToolTip": "C:\\Users\\opilane\\source\\repos\\programmerimine-2-kurs\\Iseseisevt\u00F6\u00F6 Kolm rakendust\\Iseseisevt\u00F6\u00F6 Kolm rakendust\\PictureViewerForm.cs*",
+              "RelativeToolTip": "Iseseisevt\u00F6\u00F6 Kolm rakendust\\PictureViewerForm.cs*",
+              "ViewState": "AgIAAEAAAAAAAAAAAAAAAGQAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-09-18T08:00:23.682Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Avavorm.cs",
+              "DocumentMoniker": "C:\\Users\\opilane\\source\\repos\\programmerimine-2-kurs\\Iseseisevt\u00F6\u00F6 Kolm rakendust\\Iseseisevt\u00F6\u00F6 Kolm rakendust\\Avavorm.cs",
+              "RelativeDocumentMoniker": "Iseseisevt\u00F6\u00F6 Kolm rakendust\\Avavorm.cs",
+              "ToolTip": "C:\\Users\\opilane\\source\\repos\\programmerimine-2-kurs\\Iseseisevt\u00F6\u00F6 Kolm rakendust\\Iseseisevt\u00F6\u00F6 Kolm rakendust\\Avavorm.cs",
+              "RelativeToolTip": "Iseseisevt\u00F6\u00F6 Kolm rakendust\\Avavorm.cs",
+              "ViewState": "AgIAAFEAAAAAAAAAAAAAAFsAAAANAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-09-18T05:50:25.491Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Avavorm.cs [Design]",
+              "DocumentMoniker": "C:\\Users\\opilane\\source\\repos\\programmerimine-2-kurs\\Iseseisevt\u00F6\u00F6 Kolm rakendust\\Iseseisevt\u00F6\u00F6 Kolm rakendust\\Avavorm.cs",
+              "RelativeDocumentMoniker": "Iseseisevt\u00F6\u00F6 Kolm rakendust\\Avavorm.cs",
+              "ToolTip": "C:\\Users\\opilane\\source\\repos\\programmerimine-2-kurs\\Iseseisevt\u00F6\u00F6 Kolm rakendust\\Iseseisevt\u00F6\u00F6 Kolm rakendust\\Avavorm.cs [Design]",
+              "RelativeToolTip": "Iseseisevt\u00F6\u00F6 Kolm rakendust\\Avavorm.cs [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-09-18T05:49:40.304Z",
+              "EditorCaption": " [Design]"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

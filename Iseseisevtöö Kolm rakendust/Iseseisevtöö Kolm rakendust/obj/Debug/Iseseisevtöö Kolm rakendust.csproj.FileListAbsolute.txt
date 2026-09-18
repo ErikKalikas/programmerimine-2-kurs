@@ -1,0 +1,10 @@
+C:\Users\opilane\source\repos\programmerimine-2-kurs\Iseseisevtöö Kolm rakendust\Iseseisevtöö Kolm rakendust\obj\Debug\Iseseisevtöö Kolm rakendust.csproj.AssemblyReference.cache
+C:\Users\opilane\source\repos\programmerimine-2-kurs\Iseseisevtöö Kolm rakendust\Iseseisevtöö Kolm rakendust\obj\Debug\Iseseisevtöö_Kolm_rakendust.Properties.Resources.resources
+C:\Users\opilane\source\repos\programmerimine-2-kurs\Iseseisevtöö Kolm rakendust\Iseseisevtöö Kolm rakendust\obj\Debug\Iseseisevtöö Kolm rakendust.csproj.GenerateResource.cache
+C:\Users\opilane\source\repos\programmerimine-2-kurs\Iseseisevtöö Kolm rakendust\Iseseisevtöö Kolm rakendust\obj\Debug\Iseseisevtöö Kolm rakendust.csproj.CoreCompileInputs.cache
+C:\Users\opilane\source\repos\programmerimine-2-kurs\Iseseisevtöö Kolm rakendust\Iseseisevtöö Kolm rakendust\bin\Debug\Iseseisevtöö Kolm rakendust.exe.config
+C:\Users\opilane\source\repos\programmerimine-2-kurs\Iseseisevtöö Kolm rakendust\Iseseisevtöö Kolm rakendust\bin\Debug\Iseseisevtöö Kolm rakendust.exe
+C:\Users\opilane\source\repos\programmerimine-2-kurs\Iseseisevtöö Kolm rakendust\Iseseisevtöö Kolm rakendust\bin\Debug\Iseseisevtöö Kolm rakendust.pdb
+C:\Users\opilane\source\repos\programmerimine-2-kurs\Iseseisevtöö Kolm rakendust\Iseseisevtöö Kolm rakendust\obj\Debug\Iseseisevtöö Kolm rakendust.exe
+C:\Users\opilane\source\repos\programmerimine-2-kurs\Iseseisevtöö Kolm rakendust\Iseseisevtöö Kolm rakendust\obj\Debug\Iseseisevtöö Kolm rakendust.pdb
+C:\Users\opilane\source\repos\programmerimine-2-kurs\Iseseisevtöö Kolm rakendust\Iseseisevtöö Kolm rakendust\obj\Debug\Iseseisevtöö_Kolm_rakendust.Avavorm.resources
