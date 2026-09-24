@@ -8,3 +8,16 @@ C:\Users\opilane\source\repos\programmerimine-2-kurs\Iseseisevtöö Kolm rakendu
 C:\Users\opilane\source\repos\programmerimine-2-kurs\Iseseisevtöö Kolm rakendust\Iseseisevtöö Kolm rakendust\obj\Debug\Iseseisevtöö Kolm rakendust.exe
 C:\Users\opilane\source\repos\programmerimine-2-kurs\Iseseisevtöö Kolm rakendust\Iseseisevtöö Kolm rakendust\obj\Debug\Iseseisevtöö Kolm rakendust.pdb
 C:\Users\opilane\source\repos\programmerimine-2-kurs\Iseseisevtöö Kolm rakendust\Iseseisevtöö Kolm rakendust\obj\Debug\Iseseisevtöö_Kolm_rakendust.Avavorm.resources
+C:\Users\Kased\Documents\GitHub\programmerimine-2-kurs\Iseseisevtöö Kolm rakendust\Iseseisevtöö Kolm rakendust\bin\Debug\Iseseisevtöö Kolm rakendust.exe.config
+C:\Users\Kased\Documents\GitHub\programmerimine-2-kurs\Iseseisevtöö Kolm rakendust\Iseseisevtöö Kolm rakendust\bin\Debug\Iseseisevtöö Kolm rakendust.exe
+C:\Users\Kased\Documents\GitHub\programmerimine-2-kurs\Iseseisevtöö Kolm rakendust\Iseseisevtöö Kolm rakendust\bin\Debug\Iseseisevtöö Kolm rakendust.pdb
+C:\Users\Kased\Documents\GitHub\programmerimine-2-kurs\Iseseisevtöö Kolm rakendust\Iseseisevtöö Kolm rakendust\obj\Debug\Iseseisevtöö Kolm rakendust.csproj.AssemblyReference.cache
+C:\Users\Kased\Documents\GitHub\programmerimine-2-kurs\Iseseisevtöö Kolm rakendust\Iseseisevtöö Kolm rakendust\obj\Debug\Iseseisevtöö_Kolm_rakendust.Avavorm.resources
+C:\Users\Kased\Documents\GitHub\programmerimine-2-kurs\Iseseisevtöö Kolm rakendust\Iseseisevtöö Kolm rakendust\obj\Debug\Iseseisevtöö_Kolm_rakendust.Properties.Resources.resources
+C:\Users\Kased\Documents\GitHub\programmerimine-2-kurs\Iseseisevtöö Kolm rakendust\Iseseisevtöö Kolm rakendust\obj\Debug\Iseseisevtöö Kolm rakendust.csproj.GenerateResource.cache
+C:\Users\Kased\Documents\GitHub\programmerimine-2-kurs\Iseseisevtöö Kolm rakendust\Iseseisevtöö Kolm rakendust\obj\Debug\Iseseisevtöö Kolm rakendust.csproj.CoreCompileInputs.cache
+C:\Users\Kased\Documents\GitHub\programmerimine-2-kurs\Iseseisevtöö Kolm rakendust\Iseseisevtöö Kolm rakendust\obj\Debug\Iseseisevtöö Kolm rakendust.exe
+C:\Users\Kased\Documents\GitHub\programmerimine-2-kurs\Iseseisevtöö Kolm rakendust\Iseseisevtöö Kolm rakendust\obj\Debug\Iseseisevtöö Kolm rakendust.pdb
+C:\Users\Kased\AppData\Local\Temp\claude\C--Users-Kased-Documents-GitHub-programmerimine-2-kurs-Naidis-IKTpv25-Windows-Forms---koopia-Naidis-IKTpv25-Windows-Forms\5444ceb1-5fba-4b6d-a9db-034315a5b2f6\scratchpad\build\Iseseisevtöö Kolm rakendust.exe.config
+C:\Users\Kased\AppData\Local\Temp\claude\C--Users-Kased-Documents-GitHub-programmerimine-2-kurs-Naidis-IKTpv25-Windows-Forms---koopia-Naidis-IKTpv25-Windows-Forms\5444ceb1-5fba-4b6d-a9db-034315a5b2f6\scratchpad\build\Iseseisevtöö Kolm rakendust.exe
+C:\Users\Kased\AppData\Local\Temp\claude\C--Users-Kased-Documents-GitHub-programmerimine-2-kurs-Naidis-IKTpv25-Windows-Forms---koopia-Naidis-IKTpv25-Windows-Forms\5444ceb1-5fba-4b6d-a9db-034315a5b2f6\scratchpad\build\Iseseisevtöö Kolm rakendust.pdb

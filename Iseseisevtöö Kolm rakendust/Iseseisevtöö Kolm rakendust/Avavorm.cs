@@ -49,7 +49,7 @@ namespace Iseseisevtöö_Kolm_rakendust
             silt.ForeColor = Color.Black;
 
 
-            BackgroundImage = Image.FromFile(@"C:\Users\opilane\source\repos\programmerimine-2-kurs\Naidis_IKTpv25_Windows_Forms – koopia\Naidis_IKTpv25_Windows_Forms\Pildid\Kot.png");
+            BackgroundImage = Image.FromFile(@"..\..\Pildid\Kot.png");
             BackgroundImageLayout = ImageLayout.Stretch;
 
             Controls.Add(btnPictureViewer);
@@ -88,7 +88,12 @@ namespace Iseseisevtöö_Kolm_rakendust
             }
             else if (vajutatudNupp.Text == "matching game")
             {
+                MatchingGameForm gameForm = new MatchingGameForm();
 
+                gameForm.FormClosed += (s, args) => this.Show();
+
+                gameForm.Show();
+                this.Hide();
             }
         }
 

@@ -168,6 +168,15 @@ namespace Iseseisevtöö_Kolm_rakendust
 
             Controls.Add(startButton);
 
+            // Nupp, millega saab mängu varem lõpetada
+            Button endButton = new Button();
+            endButton.Text = "Lõpeta";
+            endButton.Location = new Point(330, 290);
+            endButton.Size = new Size(100, 40);
+            endButton.Click += EndQuiz;
+
+            Controls.Add(endButton);
+
             timer.Interval = 1000;
             timer.Tick += Timer_Tick;
         }
@@ -227,39 +236,53 @@ namespace Iseseisevtöö_Kolm_rakendust
 
             if (timeLeft == 0)
             {
-                timer.Stop();
-
-                int score = 0;
-
-                if (answer1.Value == correct1)
-                {
-                    score++;
-                }
-
-
-                if (answer2.Value == correct2)
-                {
-                    score++;
-                }
-
-
-                if (answer3.Value == correct3)
-                {
-                    score++;
-                }
-
-
-                if (answer4.Value == correct4)
-                {
-                    score++;
-                }
-
-
-                MessageBox.Show(
-                    "Õigeid vastuseid: " + score + " / 4",
-                    "Tulemus"
-                );
+                ShowResult();
             }
+        }
+
+        // Kui vajutatakse "Lõpeta"
+        void EndQuiz(object sender, EventArgs e)
+        {
+            // Kui mäng ei käi, siis ei tee midagi
+            if (timer.Enabled == false)
+            {
+                return;
+            }
+
+            ShowResult();
+        }
+
+        // Peatab taimeri ja näitab, mitu vastust on õiged
+        void ShowResult()
+        {
+            timer.Stop();
+
+            int score = 0;
+
+            if (answer1.Value == correct1)
+            {
+                score++;
+            }
+
+            if (answer2.Value == correct2)
+            {
+                score++;
+            }
+
+            if (answer3.Value == correct3)
+            {
+                score++;
+            }
+
+            if (answer4.Value == correct4)
+            {
+                score++;
+            }
+
+            MessageBox.Show(
+                "Õigeid vastuseid: " + score + " / 4",
+                "Tulemus"
+            );
         }
     }
 }

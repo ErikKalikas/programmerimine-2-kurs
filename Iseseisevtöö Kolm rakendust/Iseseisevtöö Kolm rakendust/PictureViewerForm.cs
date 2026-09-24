@@ -48,7 +48,7 @@ namespace Iseseisevtöö_Kolm_rakendust
             pictureBox.SizeMode = PictureBoxSizeMode.Zoom;
             pictureBox.BackColor = Color.LightGray;
 
-            string pilddd = @"C:\Users\opilane\source\repos\programmerimine-2-kurs\Naidis_IKTpv25_Windows_Forms – koopia\Naidis_IKTpv25_Windows_Forms\Pildid\pilt.jpg";
+            string pilddd = @"..\..\Pildid\pilt.jpg";
 
             if (System.IO.File.Exists(pilddd))
             {
