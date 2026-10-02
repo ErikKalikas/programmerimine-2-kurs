@@ -17,7 +17,7 @@ namespace Iseseisevtöö_Kolm_rakendust
         private Button btnSlideshow;
         private Panel topPanel;
 
-        // Слайд-шоу
+        // Slaidiseanss
         private Timer slideTimer;
         private List<string> slideFiles = new List<string>();
         private int slideIndex = 0;
@@ -49,14 +49,14 @@ namespace Iseseisevtöö_Kolm_rakendust
             btnBgColor.Size = new Size(100, 25);
             btnBgColor.Click += BtnBgColor_Click;
 
-            // Кнопка "Растянуть"
+            // Nupp "Venita"
             btnStretch = new Button();
             btnStretch.Text = "Venita";
             btnStretch.Location = new Point(340, 8);
             btnStretch.Size = new Size(100, 25);
             btnStretch.Click += BtnStretch_Click;
 
-            // Кнопка "Слайд-шоу"
+            // Nupp "Slaidiseanss"
             btnSlideshow = new Button();
             btnSlideshow.Text = "Slaidiseanss";
             btnSlideshow.Location = new Point(450, 8);
@@ -81,7 +81,7 @@ namespace Iseseisevtöö_Kolm_rakendust
                 pictureBox.Image = Image.FromFile(pilddd);
             }
 
-            // Таймер слайд-шоу: смена картинки каждые 2 секунды
+            // Slaidiseansi taimer: pilt vahetub iga 2 sekundi järel
             slideTimer = new Timer();
             slideTimer.Interval = 2000;
             slideTimer.Tick += SlideTimer_Tick;
@@ -90,7 +90,7 @@ namespace Iseseisevtöö_Kolm_rakendust
             this.Controls.Add(topPanel);
         }
 
-        // Загружает картинку и освобождает предыдущую
+        // Laadib pildi ja vabastab eelmise
         private void LoadImage(string path)
         {
             if (pictureBox.Image != null)
@@ -134,7 +134,7 @@ namespace Iseseisevtöö_Kolm_rakendust
             }
         }
 
-        // Переключение: растянуть на всё окно <-> вписать с сохранением пропорций
+        // Vahetab: venita üle terve akna <-> mahuta proportsioone säilitades
         private void BtnStretch_Click(object sender, EventArgs e)
         {
             if (pictureBox.SizeMode == PictureBoxSizeMode.Zoom)
@@ -149,7 +149,7 @@ namespace Iseseisevtöö_Kolm_rakendust
             }
         }
 
-        // Запуск / остановка слайд-шоу
+        // Slaidiseansi käivitamine / peatamine
         private void BtnSlideshow_Click(object sender, EventArgs e)
         {
             if (slideTimer.Enabled)
@@ -159,7 +159,7 @@ namespace Iseseisevtöö_Kolm_rakendust
                 return;
             }
 
-            // Папка Pildid в проекте: из bin\Debug поднимаемся на два уровня вверх
+            // Kaust Pildid projektis: bin\Debug kaustast kaks taset üles
             string folder = Path.GetFullPath(@"..\..\Pildid");
 
             if (!Directory.Exists(folder))
@@ -188,7 +188,7 @@ namespace Iseseisevtöö_Kolm_rakendust
 
         private void SlideTimer_Tick(object sender, EventArgs e)
         {
-            slideIndex = (slideIndex + 1) % slideFiles.Count; // по кругу
+            slideIndex = (slideIndex + 1) % slideFiles.Count; // ringiga
             LoadImage(slideFiles[slideIndex]);
         }
     }
