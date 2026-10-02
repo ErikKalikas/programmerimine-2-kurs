@@ -200,7 +200,7 @@ namespace Iseseisevtöö_Kolm_rakendust
             }
 
             // Kõik pildid on leitud
-            MessageBox.Show("You matched all the icons!", "Congratulations");
+            MessageBox.Show("Sa leidsid kõik ikoonid üles!", "Õnnitlused");
             Close();
         }
     }

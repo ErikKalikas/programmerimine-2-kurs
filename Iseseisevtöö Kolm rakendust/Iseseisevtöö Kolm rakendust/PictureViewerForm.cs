@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace Iseseisevtöö_Kolm_rakendust
@@ -10,7 +13,14 @@ namespace Iseseisevtöö_Kolm_rakendust
         private Button btnBrowse;
         private Button btnRotate;
         private Button btnBgColor;
+        private Button btnStretch;
+        private Button btnSlideshow;
         private Panel topPanel;
+
+        // Слайд-шоу
+        private Timer slideTimer;
+        private List<string> slideFiles = new List<string>();
+        private int slideIndex = 0;
 
         public PictureViewerForm()
         {
@@ -39,9 +49,25 @@ namespace Iseseisevtöö_Kolm_rakendust
             btnBgColor.Size = new Size(100, 25);
             btnBgColor.Click += BtnBgColor_Click;
 
+            // Кнопка "Растянуть"
+            btnStretch = new Button();
+            btnStretch.Text = "Venita";
+            btnStretch.Location = new Point(340, 8);
+            btnStretch.Size = new Size(100, 25);
+            btnStretch.Click += BtnStretch_Click;
+
+            // Кнопка "Слайд-шоу"
+            btnSlideshow = new Button();
+            btnSlideshow.Text = "Slaidiseanss";
+            btnSlideshow.Location = new Point(450, 8);
+            btnSlideshow.Size = new Size(100, 25);
+            btnSlideshow.Click += BtnSlideshow_Click;
+
             topPanel.Controls.Add(btnBrowse);
             topPanel.Controls.Add(btnRotate);
             topPanel.Controls.Add(btnBgColor);
+            topPanel.Controls.Add(btnStretch);
+            topPanel.Controls.Add(btnSlideshow);
 
             pictureBox = new PictureBox();
             pictureBox.Dock = DockStyle.Fill;
@@ -50,13 +76,28 @@ namespace Iseseisevtöö_Kolm_rakendust
 
             string pilddd = @"..\..\Pildid\pilt.jpg";
 
-            if (System.IO.File.Exists(pilddd))
+            if (File.Exists(pilddd))
             {
                 pictureBox.Image = Image.FromFile(pilddd);
             }
 
+            // Таймер слайд-шоу: смена картинки каждые 2 секунды
+            slideTimer = new Timer();
+            slideTimer.Interval = 2000;
+            slideTimer.Tick += SlideTimer_Tick;
+
             this.Controls.Add(pictureBox);
             this.Controls.Add(topPanel);
+        }
+
+        // Загружает картинку и освобождает предыдущую
+        private void LoadImage(string path)
+        {
+            if (pictureBox.Image != null)
+            {
+                pictureBox.Image.Dispose();
+            }
+            pictureBox.Image = Image.FromFile(path);
         }
 
         private void BtnBrowse_Click(object sender, EventArgs e)
@@ -68,12 +109,7 @@ namespace Iseseisevtöö_Kolm_rakendust
 
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
                 {
-                    if (pictureBox.Image != null)
-                    {
-                        pictureBox.Image.Dispose();
-                    }
-
-                    pictureBox.Image = Image.FromFile(openFileDialog.FileName);
+                    LoadImage(openFileDialog.FileName);
                 }
             }
         }
@@ -96,6 +132,64 @@ namespace Iseseisevtöö_Kolm_rakendust
                     pictureBox.BackColor = colorDialog.Color;
                 }
             }
+        }
+
+        // Переключение: растянуть на всё окно <-> вписать с сохранением пропорций
+        private void BtnStretch_Click(object sender, EventArgs e)
+        {
+            if (pictureBox.SizeMode == PictureBoxSizeMode.Zoom)
+            {
+                pictureBox.SizeMode = PictureBoxSizeMode.StretchImage;
+                btnStretch.Text = "Mahuta";
+            }
+            else
+            {
+                pictureBox.SizeMode = PictureBoxSizeMode.Zoom;
+                btnStretch.Text = "Venita";
+            }
+        }
+
+        // Запуск / остановка слайд-шоу
+        private void BtnSlideshow_Click(object sender, EventArgs e)
+        {
+            if (slideTimer.Enabled)
+            {
+                slideTimer.Stop();
+                btnSlideshow.Text = "Slaidiseanss";
+                return;
+            }
+
+            // Папка Pildid в проекте: из bin\Debug поднимаемся на два уровня вверх
+            string folder = Path.GetFullPath(@"..\..\Pildid");
+
+            if (!Directory.Exists(folder))
+            {
+                MessageBox.Show("Kausta ei leitud: " + folder);
+                return;
+            }
+
+            string[] extensions = { ".jpg", ".jpeg", ".png", ".bmp", ".gif" };
+
+            slideFiles = Directory.GetFiles(folder)
+                .Where(f => extensions.Contains(Path.GetExtension(f).ToLower()))
+                .ToList();
+
+            if (slideFiles.Count == 0)
+            {
+                MessageBox.Show("Kaustas pole pilte.");
+                return;
+            }
+
+            slideIndex = 0;
+            LoadImage(slideFiles[slideIndex]);
+            slideTimer.Start();
+            btnSlideshow.Text = "Peata";
+        }
+
+        private void SlideTimer_Tick(object sender, EventArgs e)
+        {
+            slideIndex = (slideIndex + 1) % slideFiles.Count; // по кругу
+            LoadImage(slideFiles[slideIndex]);
         }
     }
 }
