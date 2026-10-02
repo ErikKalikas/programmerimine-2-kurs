@@ -2,7 +2,7 @@
 
 Kursuse „Programmeerimine 2“ iseseisev töö. Projektis on üks avavorm ja sealt saab avada kolm väikest rakendust:
 
-1. **Pildivaataja** – vali pilt arvutist, pööra seda ja muuda tausta värvi.
+1. **Pildivaataja** – vali pilt arvutist, pööra seda, muuda tausta värvi, venita pilt üle akna või vaata slaidiseanssi.
 2. **Matemaatiline äraarvamismäng** – neli tehet (+, –, ×, ÷), 30 sekundit aega, lõpus näed, mitu vastust oli õige.
 3. **Sarnaste piltide leidmise mäng** – 4 × 4 väli, 8 pildipaari, leia kõik paarid.
 
@@ -41,7 +41,7 @@ NB! Pildid loetakse suhtelise teega `..\..\Pildid\`, nii et käivita programm Vi
 
 **Avavorm.** Vajuta „picture viewer“, „math quiz“ või „matching game“. Avavorm kaob ära ja tuleb tagasi, kui rakenduse kinni paned.
 
-**Pildivaataja.** „Vali pilt“ avab failiakna. „Pööra“ keerab pilti 90°. „Taustavärv“ laseb valida pildi ümbruse värvi.
+**Pildivaataja.** „Vali pilt“ avab failiakna. „Pööra“ keerab pilti 90°. „Taustavärv“ laseb valida pildi ümbruse värvi. „Venita“ venitab pildi üle terve akna, „Mahuta“ toob proportsioonid tagasi. „Slaidiseanss“ näitab kausta `Pildid` pilte järjest (iga 2 s), „Peata“ peatab selle.
 
 **Matemaatikamäng.** Vajuta „Start the quiz“, kirjuta vastused kastidesse ja vajuta „Lõpeta“ (või oota, kuni aeg otsa saab). Tuleb aken, kus on õigete vastuste arv.
 
@@ -49,15 +49,15 @@ NB! Pildid loetakse suhtelise teega `..\..\Pildid\`, nii et käivita programm Vi
 
 ## Mis on juhenditega võrreldes juba lisatud
 
-- Pildivaataja: pildi pööramine ja taustavärvi valik (`ColorDialog`).
+- Pildivaataja: pildi pööramine, taustavärvi valik (`ColorDialog`), venitamine ja slaidiseanss.
 - Matemaatikamäng: neli tehet, punktid 0–4 ja nupp „Lõpeta“.
 - Paaride mäng: päris pildid sümbolite asemel.
 
 ## Arendusideed
 
 ### Pildivaataja
-1. Slaidiseanss – vali kaust ja pildid vahetuvad ise (`Timer`), lisaks nupud „Eelmine“ / „Järgmine“.
-2. Salvestamine teise formaati (`SaveFileDialog`, PNG / JPEG / BMP).
+1. Salvestamine teise formaati (`SaveFileDialog`, PNG / JPEG / BMP).
+2. Slaidiseansi täiendus: kausta ja kiiruse valik, nupud „Eelmine“ / „Järgmine“.
 3. Suumimine hiire rattaga.
 4. Filtrid: must-valge, heledus, kontrast.
 
@@ -72,6 +72,22 @@ NB! Pildid loetakse suhtelise teega `..\..\Pildid\`, nii et käivita programm Vi
 2. Taimer ja käikude loendur, nendest arvutatakse punktid.
 3. Nupp „Uus mäng“.
 4. Eri pilditeemad ja helid.
+
+## Versioonid
+
+### 1.0 (02.10.2026)
+- Avavorm kolme nupuga.
+- Pildivaataja: valimine, pööramine, taustavärv, venitamine, slaidiseanss.
+- Matemaatikamäng: neli tehet, 30 s, punktid, „Lõpeta“.
+- Paaride mäng: 4 × 4, päris pildid, eestikeelne võiduteade.
+
+### 2.0 (plaanis)
+- Pildid ressurssidesse ja `.gitignore` (`bin`, `obj`, `.vs` repost välja).
+- Ühtne eesti keel nuppudes.
+- Pildivaataja: salvestamine teise formaati.
+- Matemaatikamäng: raskusastmed, „Start“ keelatud mängu ajal.
+- Paaride mäng: taimer, käikude loendur, „Uus mäng“ ja lisada mängurežiim 5×5 või 6×6.
+- lisada disain programmi.
 
 ## Edasine areng
 
