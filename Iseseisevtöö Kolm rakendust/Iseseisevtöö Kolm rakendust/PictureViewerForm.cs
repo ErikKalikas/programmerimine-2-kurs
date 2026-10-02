@@ -17,7 +17,7 @@ namespace Iseseisevtöö_Kolm_rakendust
         private Button btnSlideshow;
         private Panel topPanel;
 
-        // Slaidiseanss
+        // Slaidiseanss 
         private Timer slideTimer;
         private List<string> slideFiles = new List<string>();
         private int slideIndex = 0;
