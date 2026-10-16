@@ -32,6 +32,7 @@ namespace Automaatne_andmebaasi_loomine
             btnLisaKorvi = new Button();
             btnGenPDF = new Button();
             btnSaadaEmail = new Button();
+            lblKokku = new Label();
             SuspendLayout();
             // 
             // listOstukorv
@@ -61,6 +62,13 @@ namespace Automaatne_andmebaasi_loomine
             btnSaadaEmail.Text = "Saada emailiga";
             btnSaadaEmail.Click += btnSaadaEmail_Click;
             // 
+            // lblKokku
+            // 
+            lblKokku.AutoSize = true;
+            lblKokku.Location = new Point(20, 325);
+            lblKokku.Name = "lblKokku";
+            lblKokku.Text = "Kokku: 0 €";
+            // 
             // ArveForm
             // 
             ClientSize = new Size(550, 350);
@@ -68,9 +76,11 @@ namespace Automaatne_andmebaasi_loomine
             Controls.Add(btnLisaKorvi);
             Controls.Add(btnGenPDF);
             Controls.Add(btnSaadaEmail);
+            Controls.Add(lblKokku);
             Name = "ArveForm";
             Text = "Arve";
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
@@ -79,5 +89,6 @@ namespace Automaatne_andmebaasi_loomine
         private System.Windows.Forms.Button btnLisaKorvi;
         private System.Windows.Forms.Button btnGenPDF;
         private System.Windows.Forms.Button btnSaadaEmail;
+        private System.Windows.Forms.Label lblKokku;
     }
 }

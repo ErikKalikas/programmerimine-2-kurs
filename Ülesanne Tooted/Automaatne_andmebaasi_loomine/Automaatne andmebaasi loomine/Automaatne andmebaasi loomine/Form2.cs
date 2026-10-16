@@ -37,6 +37,16 @@ namespace Automaatne_andmebaasi_loomine
             LaeTooted();
         }
 
+        private void Form2_Load(object? sender, EventArgs e)
+        {
+            if (AktiivneKasutaja.Roll != "admin")
+            {
+                btnLisa.Enabled = false;
+                btnUuenda.Enabled = false;
+                btnKustuta.Enabled = false;
+            }
+        }
+
         private void LaeKategooriad()
         {
             comboKategooria.DataSource = _db.Kategooriatabel.ToList();

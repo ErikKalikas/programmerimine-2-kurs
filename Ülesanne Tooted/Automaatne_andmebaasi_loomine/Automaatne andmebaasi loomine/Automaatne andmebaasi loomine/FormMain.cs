@@ -8,6 +8,7 @@ namespace Automaatne_andmebaasi_loomine
         public FormMain()
         {
             InitializeComponent();
+            btnTooted.Enabled = AktiivneKasutaja.Roll == "admin";
         }
 
         private void btnTooted_Click(object? sender, EventArgs e)

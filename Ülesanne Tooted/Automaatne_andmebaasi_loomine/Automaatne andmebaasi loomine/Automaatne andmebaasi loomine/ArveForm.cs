@@ -12,7 +12,7 @@ namespace Automaatne_andmebaasi_loomine
 {
     public partial class ArveForm : Form
     {
-        List<string> ostukorv = new List<string>();
+        List<OstukorviRida> ostukorv = new List<OstukorviRida>();
 
         public Toode? SelectedToode { get; set; }
 
@@ -29,9 +29,32 @@ namespace Automaatne_andmebaasi_loomine
                 return;
             }
 
-            string rida = $"{SelectedToode.Toodenimetus} - {SelectedToode.Hind} € - {SelectedToode.Kogus} tk";
+            string kogusStr = Microsoft.VisualBasic.Interaction.InputBox(
+                "Sisesta kogus", "Kogus", "1");
+
+            if (!int.TryParse(kogusStr, out int kogus) || kogus <= 0)
+            {
+                MessageBox.Show("Vale kogus.");
+                return;
+            }
+
+            var rida = new OstukorviRida
+            {
+                Toode = SelectedToode,
+                Kogus = kogus
+            };
+
             ostukorv.Add(rida);
             listOstukorv.Items.Add(rida);
+
+            ArvutaKoguSumma();
+        }
+
+        private void ArvutaKoguSumma()
+        {
+            float kokku = ostukorv.Sum(r => r.Summa);
+
+            lblKokku.Text = $"Kokku: {kokku} €";
         }
 
         private void btnGenPDF_Click(object? sender, EventArgs e)
@@ -52,10 +75,14 @@ namespace Automaatne_andmebaasi_loomine
             int y = 80;
             foreach (var item in ostukorv)
             {
-                gfx.DrawString(item, font, XBrushes.Black,
+                gfx.DrawString(item.ToString(), font, XBrushes.Black,
                     new XRect(20, y, page.Width - 40, 20), XStringFormats.TopLeft);
                 y += 30;
             }
+
+            gfx.DrawString($"Kokku: {ostukorv.Sum(r => r.Summa)} €",
+                new XFont("Verdana", 14), XBrushes.Black,
+                new XRect(20, y + 20, page.Width, 20), XStringFormats.TopLeft);
 
             document.Save(failinimi);
 
