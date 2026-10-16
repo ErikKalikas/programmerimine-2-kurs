@@ -75,6 +75,7 @@ namespace Automaatne_andmebaasi_loomine
             Controls.Add(btnLogin);
             Controls.Add(lblVeateade);
             Name = "LoginForm";
+            BackColor = Color.LightBlue;
             Text = "Login";
             ResumeLayout(false);
             PerformLayout();

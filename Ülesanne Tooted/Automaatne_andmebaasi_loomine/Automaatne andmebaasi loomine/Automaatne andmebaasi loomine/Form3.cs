@@ -29,6 +29,7 @@ namespace Automaatne_andmebaasi_loomine
                 // Loo uus tab selle kategooria jaoks
                 var page = new TabPage(kat.Kategooria_nimetus);
                 page.AutoScroll = true;
+                page.BackColor = Color.LightBlue;
 
                 // Too kategooria tooted andmebaasist
                 var tooted = _db.Toodetabel

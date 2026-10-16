@@ -159,6 +159,7 @@ namespace Automaatne_andmebaasi_loomine
             Controls.Add(btnKustuta);
             Controls.Add(btnArve);
             Name = "Form2";
+            BackColor = Color.LightBlue;
             Text = "Toodete haldus";
             Load += Form2_Load;
             ((System.ComponentModel.ISupportInitialize)dataGridViewTooted).EndInit();

@@ -31,6 +31,7 @@
             components = new System.ComponentModel.Container();
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            BackColor = Color.LightBlue;
             Text = "Form1";
         }
 

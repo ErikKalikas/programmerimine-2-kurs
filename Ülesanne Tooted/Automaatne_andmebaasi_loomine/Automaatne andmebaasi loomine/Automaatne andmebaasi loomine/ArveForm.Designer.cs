@@ -78,6 +78,7 @@ namespace Automaatne_andmebaasi_loomine
             Controls.Add(btnSaadaEmail);
             Controls.Add(lblKokku);
             Name = "ArveForm";
+            BackColor = Color.LightBlue;
             Text = "Arve";
             ResumeLayout(false);
             PerformLayout();

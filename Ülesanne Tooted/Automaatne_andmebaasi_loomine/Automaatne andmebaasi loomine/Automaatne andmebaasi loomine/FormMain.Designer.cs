@@ -64,6 +64,7 @@ namespace Automaatne_andmebaasi_loomine
             Controls.Add(btnPood);
             Controls.Add(btnArve);
             Name = "FormMain";
+            BackColor = Color.LightBlue;
             Text = "Peamenüü";
             ResumeLayout(false);
         }

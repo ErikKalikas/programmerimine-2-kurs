@@ -44,6 +44,7 @@ namespace Automaatne_andmebaasi_loomine
             ClientSize = new Size(930, 630);
             Controls.Add(tabPood);
             Name = "Form3";
+            BackColor = Color.LightBlue;
             Text = "Pood";
             ResumeLayout(false);
         }
