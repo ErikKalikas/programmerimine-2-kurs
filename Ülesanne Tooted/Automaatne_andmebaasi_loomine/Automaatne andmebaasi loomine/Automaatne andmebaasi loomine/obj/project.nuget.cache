@@ -1,11 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "kHqY7Z2xfJk=",
+  "dgSpecHash": "ueCOTdxp+V0=",
   "success": true,
   "projectFilePath": "C:\\Users\\opilane\\source\\repos\\programmerimine-2-kurs\\Ülesanne Tooted\\Automaatne_andmebaasi_loomine\\Automaatne andmebaasi loomine\\Automaatne andmebaasi loomine\\Automaatne andmebaasi loomine.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\opilane\\.nuget\\packages\\azure.core\\1.44.1\\azure.core.1.44.1.nupkg.sha512",
     "C:\\Users\\opilane\\.nuget\\packages\\azure.identity\\1.13.2\\azure.identity.1.13.2.nupkg.sha512",
+    "C:\\Users\\opilane\\.nuget\\packages\\bcrypt.net-next\\4.2.1\\bcrypt.net-next.4.2.1.nupkg.sha512",
     "C:\\Users\\opilane\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\opilane\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\6.0.0\\microsoft.bcl.asyncinterfaces.6.0.0.nupkg.sha512",
     "C:\\Users\\opilane\\.nuget\\packages\\microsoft.codeanalysis.analyzers\\3.3.3\\microsoft.codeanalysis.analyzers.3.3.3.nupkg.sha512",

@@ -3,12 +3,12 @@
   "WorkspaceRootPath": "C:\\Users\\opilane\\source\\repos\\programmerimine-2-kurs\\\u00DClesanne Tooted\\Automaatne_andmebaasi_loomine\\Automaatne andmebaasi loomine\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{2390AD28-642A-7F5F-AE08-23F8250B27F2}|Automaatne andmebaasi loomine\\Automaatne andmebaasi loomine.csproj|C:\\Users\\opilane\\source\\repos\\programmerimine-2-kurs\\\u00DClesanne Tooted\\Automaatne_andmebaasi_loomine\\Automaatne andmebaasi loomine\\automaatne andmebaasi loomine\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
-      "RelativeMoniker": "D:0:0:{2390AD28-642A-7F5F-AE08-23F8250B27F2}|Automaatne andmebaasi loomine\\Automaatne andmebaasi loomine.csproj|solutionrelative:automaatne andmebaasi loomine\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+      "AbsoluteMoniker": "D:0:0:{2390AD28-642A-7F5F-AE08-23F8250B27F2}|Automaatne andmebaasi loomine\\Automaatne andmebaasi loomine.csproj|C:\\Users\\opilane\\source\\repos\\programmerimine-2-kurs\\\u00DClesanne Tooted\\Automaatne_andmebaasi_loomine\\Automaatne andmebaasi loomine\\automaatne andmebaasi loomine\\form2.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{2390AD28-642A-7F5F-AE08-23F8250B27F2}|Automaatne andmebaasi loomine\\Automaatne andmebaasi loomine.csproj|solutionrelative:automaatne andmebaasi loomine\\form2.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{2390AD28-642A-7F5F-AE08-23F8250B27F2}|Automaatne andmebaasi loomine\\Automaatne andmebaasi loomine.csproj|c:\\users\\opilane\\source\\repos\\programmerimine-2-kurs\\\u00FClesanne tooted\\automaatne_andmebaasi_loomine\\automaatne andmebaasi loomine\\automaatne andmebaasi loomine\\form2.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
-      "RelativeMoniker": "D:0:0:{2390AD28-642A-7F5F-AE08-23F8250B27F2}|Automaatne andmebaasi loomine\\Automaatne andmebaasi loomine.csproj|solutionrelative:automaatne andmebaasi loomine\\form2.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+      "AbsoluteMoniker": "D:0:0:{2390AD28-642A-7F5F-AE08-23F8250B27F2}|Automaatne andmebaasi loomine\\Automaatne andmebaasi loomine.csproj|c:\\users\\opilane\\source\\repos\\programmerimine-2-kurs\\\u00FClesanne tooted\\automaatne_andmebaasi_loomine\\automaatne andmebaasi loomine\\automaatne andmebaasi loomine\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{2390AD28-642A-7F5F-AE08-23F8250B27F2}|Automaatne andmebaasi loomine\\Automaatne andmebaasi loomine.csproj|solutionrelative:automaatne andmebaasi loomine\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     },
     {
       "AbsoluteMoniker": "D:0:0:{2390AD28-642A-7F5F-AE08-23F8250B27F2}|Automaatne andmebaasi loomine\\Automaatne andmebaasi loomine.csproj|c:\\users\\opilane\\source\\repos\\programmerimine-2-kurs\\\u00FClesanne tooted\\automaatne_andmebaasi_loomine\\automaatne andmebaasi loomine\\automaatne andmebaasi loomine\\form2.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -22,7 +22,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 4,
           "Children": [
             {
               "$type": "Bookmark",
@@ -34,7 +34,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "Form1.cs [Design]",
               "DocumentMoniker": "C:\\Users\\opilane\\source\\repos\\programmerimine-2-kurs\\\u00DClesanne Tooted\\Automaatne_andmebaasi_loomine\\Automaatne andmebaasi loomine\\Automaatne andmebaasi loomine\\Form1.cs",
               "RelativeDocumentMoniker": "Automaatne andmebaasi loomine\\Form1.cs",
@@ -59,7 +59,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 0,
               "Title": "Form2.cs [Design]",
               "DocumentMoniker": "C:\\Users\\opilane\\source\\repos\\programmerimine-2-kurs\\\u00DClesanne Tooted\\Automaatne_andmebaasi_loomine\\Automaatne andmebaasi loomine\\Automaatne andmebaasi loomine\\Form2.cs",
               "RelativeDocumentMoniker": "Automaatne andmebaasi loomine\\Form2.cs",
