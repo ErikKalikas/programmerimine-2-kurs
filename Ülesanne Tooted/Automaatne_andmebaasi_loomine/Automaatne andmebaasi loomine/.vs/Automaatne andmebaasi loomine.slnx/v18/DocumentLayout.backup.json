@@ -3,11 +3,11 @@
   "WorkspaceRootPath": "C:\\Users\\opilane\\source\\repos\\programmerimine-2-kurs\\\u00DClesanne Tooted\\Automaatne_andmebaasi_loomine\\Automaatne andmebaasi loomine\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{2390AD28-642A-7F5F-AE08-23F8250B27F2}|Automaatne andmebaasi loomine\\Automaatne andmebaasi loomine.csproj|C:\\Users\\opilane\\source\\repos\\programmerimine-2-kurs\\\u00DClesanne Tooted\\Automaatne_andmebaasi_loomine\\Automaatne andmebaasi loomine\\automaatne andmebaasi loomine\\form2.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "AbsoluteMoniker": "D:0:0:{2390AD28-642A-7F5F-AE08-23F8250B27F2}|Automaatne andmebaasi loomine\\Automaatne andmebaasi loomine.csproj|c:\\users\\opilane\\source\\repos\\programmerimine-2-kurs\\\u00FClesanne tooted\\automaatne_andmebaasi_loomine\\automaatne andmebaasi loomine\\automaatne andmebaasi loomine\\form2.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
       "RelativeMoniker": "D:0:0:{2390AD28-642A-7F5F-AE08-23F8250B27F2}|Automaatne andmebaasi loomine\\Automaatne andmebaasi loomine.csproj|solutionrelative:automaatne andmebaasi loomine\\form2.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{2390AD28-642A-7F5F-AE08-23F8250B27F2}|Automaatne andmebaasi loomine\\Automaatne andmebaasi loomine.csproj|c:\\users\\opilane\\source\\repos\\programmerimine-2-kurs\\\u00FClesanne tooted\\automaatne_andmebaasi_loomine\\automaatne andmebaasi loomine\\automaatne andmebaasi loomine\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "AbsoluteMoniker": "D:0:0:{2390AD28-642A-7F5F-AE08-23F8250B27F2}|Automaatne andmebaasi loomine\\Automaatne andmebaasi loomine.csproj|C:\\Users\\opilane\\source\\repos\\programmerimine-2-kurs\\\u00DClesanne Tooted\\Automaatne_andmebaasi_loomine\\Automaatne andmebaasi loomine\\automaatne andmebaasi loomine\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
       "RelativeMoniker": "D:0:0:{2390AD28-642A-7F5F-AE08-23F8250B27F2}|Automaatne andmebaasi loomine\\Automaatne andmebaasi loomine.csproj|solutionrelative:automaatne andmebaasi loomine\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     },
     {
@@ -41,8 +41,7 @@
               "ToolTip": "C:\\Users\\opilane\\source\\repos\\programmerimine-2-kurs\\\u00DClesanne Tooted\\Automaatne_andmebaasi_loomine\\Automaatne andmebaasi loomine\\Automaatne andmebaasi loomine\\Form1.cs [Design]",
               "RelativeToolTip": "Automaatne andmebaasi loomine\\Form1.cs [Design]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-10-09T08:33:01.903Z",
-              "EditorCaption": " [Design]"
+              "WhenOpened": "2026-10-09T08:33:01.903Z"
             },
             {
               "$type": "Document",
