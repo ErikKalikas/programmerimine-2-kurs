@@ -38,6 +38,7 @@ namespace Automaatne_andmebaasi_loomine
             btnUuenda = new Button();
             btnKustuta = new Button();
             btnValiPilt = new Button();
+            btnArve = new Button();
             ((System.ComponentModel.ISupportInitialize)dataGridViewTooted).BeginInit();
             ((System.ComponentModel.ISupportInitialize)picturePilt).BeginInit();
             SuspendLayout();
@@ -132,11 +133,20 @@ namespace Automaatne_andmebaasi_loomine
             btnValiPilt.Text = "Vali pilt";
             btnValiPilt.Click += btnValiPilt_Click;
             // 
+            // btnArve
+            // 
+            btnArve.Location = new Point(630, 510);
+            btnArve.Name = "btnArve";
+            btnArve.Size = new Size(75, 23);
+            btnArve.TabIndex = 10;
+            btnArve.Text = "Lisa arvele";
+            btnArve.Click += btnArve_Click;
+            // 
             // Form2
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(860, 520);
+            ClientSize = new Size(860, 560);
             Controls.Add(dataGridViewTooted);
             Controls.Add(txtNimetus);
             Controls.Add(txtKogus);
@@ -147,6 +157,7 @@ namespace Automaatne_andmebaasi_loomine
             Controls.Add(btnLisa);
             Controls.Add(btnUuenda);
             Controls.Add(btnKustuta);
+            Controls.Add(btnArve);
             Name = "Form2";
             Text = "Toodete haldus";
             ((System.ComponentModel.ISupportInitialize)dataGridViewTooted).EndInit();
@@ -167,5 +178,6 @@ namespace Automaatne_andmebaasi_loomine
         private System.Windows.Forms.Button btnUuenda;
         private System.Windows.Forms.Button btnKustuta;
         private System.Windows.Forms.Button btnValiPilt;
+        private System.Windows.Forms.Button btnArve;
     }
 }

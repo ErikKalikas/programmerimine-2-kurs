@@ -191,5 +191,17 @@ namespace Automaatne_andmebaasi_loomine
             LaeTooted();
             picturePilt.Image = null;
         }
+
+        private void btnArve_Click(object? sender, EventArgs e)
+        {
+            if (dataGridViewTooted.SelectedRows.Count == 0) return;
+
+            int id = (int)dataGridViewTooted.SelectedRows[0].Cells["Id"].Value;
+            var toode = _db.Toodetabel.Find(id);
+
+            ArveForm arve = new ArveForm();
+            arve.SelectedToode = toode;
+            arve.ShowDialog();
+        }
     }
 }
