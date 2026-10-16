@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Automaatne andmebaasi loomine")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+6a5efb0b916eac99652c5b4afe6675b4639789d3")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+354faaadc26c6f67ae49db58d073b90a6c67a868")]
 [assembly: System.Reflection.AssemblyProductAttribute("Automaatne andmebaasi loomine")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Automaatne andmebaasi loomine")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
