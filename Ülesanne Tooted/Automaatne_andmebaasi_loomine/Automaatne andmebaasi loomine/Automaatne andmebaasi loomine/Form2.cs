@@ -23,16 +23,6 @@ namespace Automaatne_andmebaasi_loomine
             // Kaust piltide jaoks peab olemas olema, muidu File.Copy annab vea
             Directory.CreateDirectory("Images");
 
-            // Kui kategooriaid pole, lisame mõned, et ComboBox poleks tühi
-            if (!_db.Kategooriatabel.Any())
-            {
-                _db.Kategooriatabel.AddRange(
-                    new Kategooria { Kategooria_nimetus = "Joogid", Kirjeldus = "Erinevad joogid" },
-                    new Kategooria { Kategooria_nimetus = "Toit", Kirjeldus = "Toiduained" },
-                    new Kategooria { Kategooria_nimetus = "Muu", Kirjeldus = "Muud tooted" });
-                _db.SaveChanges();
-            }
-
             LaeKategooriad();
             LaeTooted();
         }

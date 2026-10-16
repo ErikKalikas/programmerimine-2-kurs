@@ -23,4 +23,10 @@
     <PackageReference Include="BCrypt.Net-Next" Version="4.2.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Images\**\*">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
