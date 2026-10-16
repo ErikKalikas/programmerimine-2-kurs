@@ -160,6 +160,7 @@ namespace Automaatne_andmebaasi_loomine
             Controls.Add(btnArve);
             Name = "Form2";
             Text = "Toodete haldus";
+            Load += Form2_Load;
             ((System.ComponentModel.ISupportInitialize)dataGridViewTooted).EndInit();
             ((System.ComponentModel.ISupportInitialize)picturePilt).EndInit();
             ResumeLayout(false);
