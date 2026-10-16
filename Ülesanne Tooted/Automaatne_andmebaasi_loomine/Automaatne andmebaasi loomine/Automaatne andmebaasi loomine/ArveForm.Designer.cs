@@ -29,7 +29,9 @@ namespace Automaatne_andmebaasi_loomine
         private void InitializeComponent()
         {
             listOstukorv = new ListBox();
+            comboTooted = new ComboBox();
             btnLisaKorvi = new Button();
+            btnEemalda = new Button();
             btnGenPDF = new Button();
             btnSaadaEmail = new Button();
             lblKokku = new Label();
@@ -41,24 +43,42 @@ namespace Automaatne_andmebaasi_loomine
             listOstukorv.Name = "listOstukorv";
             listOstukorv.Size = new Size(300, 300);
             // 
+            // comboTooted
+            // 
+            comboTooted.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboTooted.Location = new Point(350, 20);
+            comboTooted.Name = "comboTooted";
+            comboTooted.Size = new Size(180, 23);
+            // 
             // btnLisaKorvi
             // 
-            btnLisaKorvi.Location = new Point(350, 20);
+            btnLisaKorvi.Location = new Point(350, 55);
             btnLisaKorvi.Name = "btnLisaKorvi";
+            btnLisaKorvi.Size = new Size(180, 30);
             btnLisaKorvi.Text = "Lisa toode korvi";
             btnLisaKorvi.Click += btnLisaKorvi_Click;
             // 
+            // btnEemalda
+            // 
+            btnEemalda.Location = new Point(350, 95);
+            btnEemalda.Name = "btnEemalda";
+            btnEemalda.Size = new Size(180, 30);
+            btnEemalda.Text = "Eemalda korvist";
+            btnEemalda.Click += btnEemalda_Click;
+            // 
             // btnGenPDF
             // 
-            btnGenPDF.Location = new Point(350, 70);
+            btnGenPDF.Location = new Point(350, 145);
             btnGenPDF.Name = "btnGenPDF";
+            btnGenPDF.Size = new Size(180, 30);
             btnGenPDF.Text = "Genereeri PDF";
             btnGenPDF.Click += btnGenPDF_Click;
             // 
             // btnSaadaEmail
             // 
-            btnSaadaEmail.Location = new Point(350, 120);
+            btnSaadaEmail.Location = new Point(350, 185);
             btnSaadaEmail.Name = "btnSaadaEmail";
+            btnSaadaEmail.Size = new Size(180, 30);
             btnSaadaEmail.Text = "Saada emailiga";
             btnSaadaEmail.Click += btnSaadaEmail_Click;
             // 
@@ -71,15 +91,18 @@ namespace Automaatne_andmebaasi_loomine
             // 
             // ArveForm
             // 
-            ClientSize = new Size(550, 350);
+            ClientSize = new Size(560, 350);
             Controls.Add(listOstukorv);
+            Controls.Add(comboTooted);
             Controls.Add(btnLisaKorvi);
+            Controls.Add(btnEemalda);
             Controls.Add(btnGenPDF);
             Controls.Add(btnSaadaEmail);
             Controls.Add(lblKokku);
             Name = "ArveForm";
             BackColor = Color.LightBlue;
             Text = "Arve";
+            Load += ArveForm_Load;
             ResumeLayout(false);
             PerformLayout();
         }
@@ -87,7 +110,9 @@ namespace Automaatne_andmebaasi_loomine
         #endregion
 
         private System.Windows.Forms.ListBox listOstukorv;
+        private System.Windows.Forms.ComboBox comboTooted;
         private System.Windows.Forms.Button btnLisaKorvi;
+        private System.Windows.Forms.Button btnEemalda;
         private System.Windows.Forms.Button btnGenPDF;
         private System.Windows.Forms.Button btnSaadaEmail;
         private System.Windows.Forms.Label lblKokku;

@@ -19,11 +19,24 @@ namespace Automaatne_andmebaasi_loomine
         public ArveForm()
         {
             InitializeComponent();
+
+            // Kõik tooted ComboBoxi, et korvi saaks lisada mitu erinevat toodet
+            using var db = new ToodedContext();
+            comboTooted.DataSource = db.Toodetabel.OrderBy(t => t.Toodenimetus).ToList();
+            comboTooted.DisplayMember = "Toodenimetus";
+            comboTooted.ValueMember = "Id";
+        }
+
+        private void ArveForm_Load(object? sender, EventArgs e)
+        {
+            // Kui vorm avati Form2-st, on see toode kohe valitud
+            if (SelectedToode != null)
+                comboTooted.SelectedValue = SelectedToode.Id;
         }
 
         private void btnLisaKorvi_Click(object? sender, EventArgs e)
         {
-            if (SelectedToode == null)
+            if (comboTooted.SelectedItem is not Toode toode)
             {
                 MessageBox.Show("Vali toode enne ostukorvi lisamist.");
                 return;
@@ -38,14 +51,39 @@ namespace Automaatne_andmebaasi_loomine
                 return;
             }
 
-            var rida = new OstukorviRida
+            // Kui toode on juba korvis, suurendame kogust
+            var olemas = ostukorv.FirstOrDefault(r => r.Toode.Id == toode.Id);
+            if (olemas != null)
             {
-                Toode = SelectedToode,
-                Kogus = kogus
-            };
+                olemas.Kogus += kogus;
+                listOstukorv.Items[ostukorv.IndexOf(olemas)] = olemas;
+            }
+            else
+            {
+                var rida = new OstukorviRida
+                {
+                    Toode = toode,
+                    Kogus = kogus
+                };
 
-            ostukorv.Add(rida);
-            listOstukorv.Items.Add(rida);
+                ostukorv.Add(rida);
+                listOstukorv.Items.Add(rida);
+            }
+
+            ArvutaKoguSumma();
+        }
+
+        private void btnEemalda_Click(object? sender, EventArgs e)
+        {
+            int i = listOstukorv.SelectedIndex;
+            if (i < 0)
+            {
+                MessageBox.Show("Vali ostukorvist rida, mida eemaldada.");
+                return;
+            }
+
+            ostukorv.RemoveAt(i);
+            listOstukorv.Items.RemoveAt(i);
 
             ArvutaKoguSumma();
         }
@@ -59,6 +97,12 @@ namespace Automaatne_andmebaasi_loomine
 
         private void btnGenPDF_Click(object? sender, EventArgs e)
         {
+            if (ostukorv.Count == 0)
+            {
+                MessageBox.Show("Ostukorv on tühi.");
+                return;
+            }
+
             Directory.CreateDirectory("Arved");
 
             string failinimi = $"Arved/Arve_{DateTime.Now:yyyyMMdd_HHmmss}.pdf";
