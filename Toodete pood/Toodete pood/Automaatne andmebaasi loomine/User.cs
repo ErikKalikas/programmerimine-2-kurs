@@ -9,5 +9,6 @@ namespace Automaatne_andmebaasi_loomine
         public string Roll { get; set; } = string.Empty; // "admin" või "kasutaja"
         public string Telefon { get; set; } = string.Empty;
         public string Aadress { get; set; } = string.Empty;
+        public bool Blokeeritud { get; set; }   // blokeeritud konto ei saa sisse logida
     }
 }

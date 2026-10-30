@@ -14,13 +14,15 @@ namespace Automaatne_andmebaasi_loomine
 
         public string? Kirjeldus { get; set; }      // tootekaardil näidatav tekst
         public float? SoodusHind { get; set; }      // kui on väiksem kui Hind, on toode soodushinnaga
+        public DateTime? SoodusKuni { get; set; }   // soodushinna viimane päev (null = tähtajatu)
 
         // Hind, millega toodet praegu müüakse (soodushind, kui see kehtib)
         [NotMapped]
         public float HetkeHind => OnSoodus ? SoodusHind!.Value : Hind;
 
         [NotMapped]
-        public bool OnSoodus => SoodusHind.HasValue && SoodusHind.Value > 0 && SoodusHind.Value < Hind;
+        public bool OnSoodus => SoodusHind.HasValue && SoodusHind.Value > 0 && SoodusHind.Value < Hind
+                                && (SoodusKuni == null || SoodusKuni.Value.Date >= DateTime.Today);
 
         [NotMapped]
         public int SoodusProtsent => OnSoodus ? (int)Math.Round((1 - SoodusHind!.Value / Hind) * 100) : 0;
