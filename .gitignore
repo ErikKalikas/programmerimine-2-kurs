@@ -1,0 +1,7 @@
+# Visual Studio ja ehitamise failid: tekivad ise, gitis neid hoida ei tohi
+.vs/
+bin/
+obj/
+
+# Google OAuth võti: ainult enda arvutis, mitte GitHubi
+client_secret*.json
