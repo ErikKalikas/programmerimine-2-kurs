@@ -52,6 +52,7 @@ namespace Automaatne_andmebaasi_loomine
                 btnLisa.Enabled = false;
                 btnUuenda.Enabled = false;
                 btnKustuta.Enabled = false;
+                btnLisaLattu.Enabled = false;
             }
         }
 
@@ -242,6 +243,35 @@ namespace Automaatne_andmebaasi_loomine
             _db.SaveChanges();
             LaeTooted();
             picturePilt.Image = null;
+        }
+
+        // Kauba saabumine: valitud toote laoseisu suurendamine
+        private void btnLisaLattu_Click(object? sender, EventArgs e)
+        {
+            if (dataGridViewTooted.SelectedRows.Count == 0)
+            {
+                MessageBox.Show("Vali tabelist toode!");
+                return;
+            }
+
+            int id = (int)dataGridViewTooted.SelectedRows[0].Cells["Id"].Value;
+            var toode = _db.Toodetabel.Find(id);
+            if (toode == null) return;
+
+            string vastus = Microsoft.VisualBasic.Interaction.InputBox(
+                $"{toode.Toodenimetus}\nPraegu laos: {toode.Kogus} tk\n\nMitu tükki lisada?", "Lisa lattu", "10");
+            if (string.IsNullOrEmpty(vastus)) return;   // Cancel
+
+            if (!int.TryParse(vastus, out int lisa) || lisa <= 0)
+            {
+                MessageBox.Show("Sisesta positiivne täisarv.");
+                return;
+            }
+
+            toode.Kogus += lisa;
+            _db.SaveChanges();
+            LaeTooted();
+            MessageBox.Show($"{toode.Toodenimetus}: laos nüüd {toode.Kogus} tk.");
         }
 
         private void btnArve_Click(object? sender, EventArgs e)
