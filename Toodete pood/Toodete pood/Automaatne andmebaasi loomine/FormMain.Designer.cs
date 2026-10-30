@@ -38,6 +38,7 @@ namespace Automaatne_andmebaasi_loomine
             btnKategooriad = new Button();
             btnLogiValja = new Button();
             btnKoikTellimused = new Button();
+            btnAruanded = new Button();
             SuspendLayout();
             // 
             // lblTere
@@ -110,6 +111,13 @@ namespace Automaatne_andmebaasi_loomine
             btnKoikTellimused.Text = "Kõik tellimused";
             btnKoikTellimused.Click += btnKoikTellimused_Click;
             // 
+            // btnAruanded
+            // 
+            btnAruanded.Name = "btnAruanded";
+            btnAruanded.Size = new Size(220, 38);
+            btnAruanded.Text = "Müügiaruanne";
+            btnAruanded.Click += btnAruanded_Click;
+            // 
             // FormMain
             // 
             ClientSize = new Size(280, 300);
@@ -123,6 +131,7 @@ namespace Automaatne_andmebaasi_loomine
             Controls.Add(btnKategooriad);
             Controls.Add(btnLogiValja);
             Controls.Add(btnKoikTellimused);
+            Controls.Add(btnAruanded);
             Name = "FormMain";
             BackColor = Color.LightBlue;
             Text = "Peamenüü";
@@ -142,5 +151,6 @@ namespace Automaatne_andmebaasi_loomine
         private System.Windows.Forms.Button btnKategooriad;
         private System.Windows.Forms.Button btnLogiValja;
         private System.Windows.Forms.Button btnKoikTellimused;
+        private System.Windows.Forms.Button btnAruanded;
     }
 }
