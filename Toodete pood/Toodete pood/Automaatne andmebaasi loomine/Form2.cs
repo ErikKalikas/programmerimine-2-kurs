@@ -75,7 +75,10 @@ namespace Automaatne_andmebaasi_loomine
                     t.Hind,
                     Kategooria = t.Kategooria.Kategooria_nimetus,
                     t.KategooriaId,
-                    t.Pilt
+                    t.Pilt,
+                    t.SoodusHind,
+                    t.SoodusKuni,
+                    t.Kirjeldus
                 })
                 .ToList();
 
@@ -100,8 +103,17 @@ namespace Automaatne_andmebaasi_loomine
             var hindVeerg = dataGridViewTooted.Columns["Hind"];
             if (hindVeerg != null) hindVeerg.DefaultCellStyle.Format = "0.00";
 
-            var kategooriaIdVeerg = dataGridViewTooted.Columns["KategooriaId"];
-            if (kategooriaIdVeerg != null) kategooriaIdVeerg.Visible = false;
+            var soodusVeerg = dataGridViewTooted.Columns["SoodusHind"];
+            if (soodusVeerg != null) soodusVeerg.DefaultCellStyle.Format = "0.00";
+
+            var kuniVeerg = dataGridViewTooted.Columns["SoodusKuni"];
+            if (kuniVeerg != null) kuniVeerg.DefaultCellStyle.Format = "dd.MM.yyyy";
+
+            foreach (var peidetud in new[] { "KategooriaId", "Kirjeldus" })
+            {
+                var veerg = dataGridViewTooted.Columns[peidetud];
+                if (veerg != null) veerg.Visible = false;
+            }
         }
 
         // Otsakorral read punaseks (otsas tooted tumedamalt)
@@ -131,6 +143,32 @@ namespace Automaatne_andmebaasi_loomine
             return true;
         }
 
+        // Soodushind on vabatahtlik: tühi = soodustust pole. Peab olema väiksem kui tavahind.
+        private bool LoeSoodus(out float? soodus)
+        {
+            soodus = null;
+            if (string.IsNullOrWhiteSpace(txtSoodusHind.Text)) return true;
+
+            if (!float.TryParse(txtSoodusHind.Text, out float s) || s <= 0)
+            {
+                MessageBox.Show("Soodushind peab olema positiivne number (või jäta tühjaks).");
+                return false;
+            }
+            if (s >= float.Parse(txtHind.Text))
+            {
+                MessageBox.Show("Soodushind peab olema väiksem kui tavahind.");
+                return false;
+            }
+
+            soodus = (float)Math.Round(s, 2);
+            return true;
+        }
+
+        private void chkSoodusKuni_CheckedChanged(object? sender, EventArgs e)
+        {
+            dtpSoodusKuni.Enabled = chkSoodusKuni.Checked;
+        }
+
         // Laeb pildi nii, et fail ei jää lukku (Image.FromFile lukustab faili)
         private static Image LaePilt(string tee)
         {
@@ -152,6 +190,7 @@ namespace Automaatne_andmebaasi_loomine
         private void btnLisa_Click(object? sender, EventArgs e)
         {
             if (!VormOnKorras()) return;
+            if (!LoeSoodus(out float? soodus)) return;
 
             var uus = new Toode
             {
@@ -159,7 +198,10 @@ namespace Automaatne_andmebaasi_loomine
                 Kogus = int.Parse(txtKogus.Text),
                 Hind = (float)Math.Round(float.Parse(txtHind.Text), 2),
                 KategooriaId = Convert.ToInt32(comboKategooria.SelectedValue),
-                Pilt = string.IsNullOrEmpty(valitudPilt) ? string.Empty : Path.GetFileName(valitudPilt)
+                Pilt = string.IsNullOrEmpty(valitudPilt) ? string.Empty : Path.GetFileName(valitudPilt),
+                Kirjeldus = string.IsNullOrWhiteSpace(txtKirjeldus.Text) ? null : txtKirjeldus.Text.Trim(),
+                SoodusHind = soodus,
+                SoodusKuni = soodus != null && chkSoodusKuni.Checked ? dtpSoodusKuni.Value.Date : null
             };
 
             // kopeerime pildi projekti kausta
@@ -185,6 +227,13 @@ namespace Automaatne_andmebaasi_loomine
             txtHind.Text = Convert.ToSingle(rida.Cells["Hind"].Value).ToString("0.00");
             comboKategooria.SelectedValue = rida.Cells["KategooriaId"].Value;
 
+            txtKirjeldus.Text = rida.Cells["Kirjeldus"].Value?.ToString() ?? "";
+            var soodus = rida.Cells["SoodusHind"].Value;
+            txtSoodusHind.Text = soodus == null ? "" : Convert.ToSingle(soodus).ToString("0.00");
+            var kuni = rida.Cells["SoodusKuni"].Value;
+            chkSoodusKuni.Checked = kuni != null;
+            if (kuni != null) dtpSoodusKuni.Value = (DateTime)kuni;
+
             // uus pilt pole veel valitud
             valitudPilt = null;
 
@@ -204,6 +253,7 @@ namespace Automaatne_andmebaasi_loomine
                 return;
             }
             if (!VormOnKorras()) return;
+            if (!LoeSoodus(out float? soodus)) return;
 
             int id = (int)dataGridViewTooted.SelectedRows[0].Cells["Id"].Value;
 
@@ -214,6 +264,9 @@ namespace Automaatne_andmebaasi_loomine
             toode.Kogus = int.Parse(txtKogus.Text);
             toode.Hind = (float)Math.Round(float.Parse(txtHind.Text), 2);
             toode.KategooriaId = Convert.ToInt32(comboKategooria.SelectedValue);
+            toode.Kirjeldus = string.IsNullOrWhiteSpace(txtKirjeldus.Text) ? null : txtKirjeldus.Text.Trim();
+            toode.SoodusHind = soodus;
+            toode.SoodusKuni = soodus != null && chkSoodusKuni.Checked ? dtpSoodusKuni.Value.Date : null;
 
             if (valitudPilt != null)
             {

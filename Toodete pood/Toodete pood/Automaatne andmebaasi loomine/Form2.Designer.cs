@@ -44,6 +44,10 @@ namespace Automaatne_andmebaasi_loomine
             btnValiPilt = new Button();
             btnArve = new Button();
             btnLisaLattu = new Button();
+            txtKirjeldus = new TextBox();
+            txtSoodusHind = new TextBox();
+            chkSoodusKuni = new CheckBox();
+            dtpSoodusKuni = new DateTimePicker();
             ((System.ComponentModel.ISupportInitialize)dataGridViewTooted).BeginInit();
             ((System.ComponentModel.ISupportInitialize)picturePilt).BeginInit();
             SuspendLayout();
@@ -189,6 +193,42 @@ namespace Automaatne_andmebaasi_loomine
             btnLisaLattu.Text = "Lisa lattu +";
             btnLisaLattu.Click += btnLisaLattu_Click;
             // 
+            // txtKirjeldus
+            // 
+            txtKirjeldus.Location = new Point(12, 380);
+            txtKirjeldus.Multiline = true;
+            txtKirjeldus.Name = "txtKirjeldus";
+            txtKirjeldus.PlaceholderText = "Kirjeldus (näidatakse tootekaardil)";
+            txtKirjeldus.ScrollBars = ScrollBars.Vertical;
+            txtKirjeldus.Size = new Size(600, 60);
+            txtKirjeldus.TabIndex = 12;
+            // 
+            // txtSoodusHind
+            // 
+            txtSoodusHind.Location = new Point(12, 452);
+            txtSoodusHind.Name = "txtSoodusHind";
+            txtSoodusHind.PlaceholderText = "Soodushind € (tühi = soodustust pole)";
+            txtSoodusHind.Size = new Size(230, 23);
+            txtSoodusHind.TabIndex = 13;
+            // 
+            // chkSoodusKuni
+            // 
+            chkSoodusKuni.AutoSize = true;
+            chkSoodusKuni.Location = new Point(255, 454);
+            chkSoodusKuni.Name = "chkSoodusKuni";
+            chkSoodusKuni.TabIndex = 14;
+            chkSoodusKuni.Text = "Soodus kuni:";
+            chkSoodusKuni.CheckedChanged += chkSoodusKuni_CheckedChanged;
+            // 
+            // dtpSoodusKuni
+            // 
+            dtpSoodusKuni.Enabled = false;
+            dtpSoodusKuni.Format = DateTimePickerFormat.Short;
+            dtpSoodusKuni.Location = new Point(360, 452);
+            dtpSoodusKuni.Name = "dtpSoodusKuni";
+            dtpSoodusKuni.Size = new Size(130, 23);
+            dtpSoodusKuni.TabIndex = 15;
+            // 
             // Form2
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -210,6 +250,10 @@ namespace Automaatne_andmebaasi_loomine
             Controls.Add(btnKustuta);
             Controls.Add(btnArve);
             Controls.Add(btnLisaLattu);
+            Controls.Add(txtKirjeldus);
+            Controls.Add(txtSoodusHind);
+            Controls.Add(chkSoodusKuni);
+            Controls.Add(dtpSoodusKuni);
             Name = "Form2";
             BackColor = Color.LightBlue;
             Text = "Toodete haldus";
@@ -238,5 +282,9 @@ namespace Automaatne_andmebaasi_loomine
         private System.Windows.Forms.Button btnValiPilt;
         private System.Windows.Forms.Button btnArve;
         private System.Windows.Forms.Button btnLisaLattu;
+        private System.Windows.Forms.TextBox txtKirjeldus;
+        private System.Windows.Forms.TextBox txtSoodusHind;
+        private System.Windows.Forms.CheckBox chkSoodusKuni;
+        private System.Windows.Forms.DateTimePicker dtpSoodusKuni;
     }
 }
