@@ -41,6 +41,7 @@ namespace Automaatne_andmebaasi_loomine
             btnAruanded = new Button();
             btnKasutajad = new Button();
             btnLogi = new Button();
+            btnSeaded = new Button();
             SuspendLayout();
             // 
             // lblTere
@@ -134,6 +135,13 @@ namespace Automaatne_andmebaasi_loomine
             btnLogi.Text = "Tegevuste logi";
             btnLogi.Click += btnLogi_Click;
             // 
+            // btnSeaded
+            // 
+            btnSeaded.Name = "btnSeaded";
+            btnSeaded.Size = new Size(220, 38);
+            btnSeaded.Text = "Poe seaded";
+            btnSeaded.Click += btnSeaded_Click;
+            // 
             // FormMain
             // 
             ClientSize = new Size(280, 300);
@@ -150,6 +158,7 @@ namespace Automaatne_andmebaasi_loomine
             Controls.Add(btnAruanded);
             Controls.Add(btnKasutajad);
             Controls.Add(btnLogi);
+            Controls.Add(btnSeaded);
             Name = "FormMain";
             BackColor = Color.LightBlue;
             Text = "Peamenüü";
@@ -172,5 +181,6 @@ namespace Automaatne_andmebaasi_loomine
         private System.Windows.Forms.Button btnAruanded;
         private System.Windows.Forms.Button btnKasutajad;
         private System.Windows.Forms.Button btnLogi;
+        private System.Windows.Forms.Button btnSeaded;
     }
 }
