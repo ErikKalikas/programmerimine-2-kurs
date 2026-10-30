@@ -64,17 +64,23 @@ namespace Automaatne_andmebaasi_loomine
             if (kategooriaIdVeerg != null) kategooriaIdVeerg.Visible = false;
         }
 
-        // Kontrollib, et väljad on õigesti täidetud
-        private bool VormOnKorras()
+        // Loeb vormilt koguse ja hinna ning kontrollib, et väljad on õigesti täidetud
+        private bool LoeVorm(out int kogus, out decimal hind)
         {
-            if (string.IsNullOrWhiteSpace(txtNimetus.Text) ||
-                !int.TryParse(txtKogus.Text, out _) ||
-                !float.TryParse(txtHind.Text, out _) ||
-                comboKategooria.SelectedValue == null)
-            {
-                MessageBox.Show("Täida nimetus, kogus (täisarv), hind (number) ja vali kategooria!");
-                return false;
-            }
+            hind = 0;
+
+            if (!ToodeValidaator.OnKorrektneNimi(txtNimetus.Text))
+            { kogus = 0; MessageBox.Show("Sisesta toote nimetus."); return false; }
+
+            if (!ToodeValidaator.LoeKogus(txtKogus.Text, out kogus))
+            { MessageBox.Show("Kogus peab olema täisarv (0 või rohkem)."); return false; }
+
+            if (!ToodeValidaator.LoeHind(txtHind.Text, out hind))
+            { MessageBox.Show("Hind peab olema arv, nt 2,50."); return false; }
+
+            if (comboKategooria.SelectedValue == null)
+            { MessageBox.Show("Vali kategooria."); return false; }
+
             return true;
         }
 
@@ -98,19 +104,19 @@ namespace Automaatne_andmebaasi_loomine
 
         private void btnLisa_Click(object? sender, EventArgs e)
         {
-            if (!VormOnKorras()) return;
+            if (!LoeVorm(out int kogus, out decimal hind)) return;
 
             var uus = new Toode
             {
                 Toodenimetus = txtNimetus.Text,
-                Kogus = int.Parse(txtKogus.Text),
-                Hind = float.Parse(txtHind.Text),
+                Kogus = kogus,
+                Hind = hind,
                 KategooriaId = Convert.ToInt32(comboKategooria.SelectedValue),
-                Pilt = string.IsNullOrEmpty(valitudPilt) ? string.Empty : Path.GetFileName(valitudPilt)
+                Pilt = string.IsNullOrEmpty(valitudPilt) ? null : Path.GetFileName(valitudPilt)
             };
 
             // kopeerime pildi projekti kausta
-            if (!string.IsNullOrEmpty(valitudPilt))
+            if (!string.IsNullOrEmpty(valitudPilt) && uus.Pilt != null)
             {
                 File.Copy(valitudPilt, Path.Combine("Images", uus.Pilt), true);
             }
@@ -150,7 +156,7 @@ namespace Automaatne_andmebaasi_loomine
                 MessageBox.Show("Vali tabelist toode!");
                 return;
             }
-            if (!VormOnKorras()) return;
+            if (!LoeVorm(out int kogus, out decimal hind)) return;
 
             int id = (int)dataGridViewTooted.SelectedRows[0].Cells["Id"].Value;
 
@@ -158,8 +164,8 @@ namespace Automaatne_andmebaasi_loomine
             if (toode == null) return;
 
             toode.Toodenimetus = txtNimetus.Text;
-            toode.Kogus = int.Parse(txtKogus.Text);
-            toode.Hind = float.Parse(txtHind.Text);
+            toode.Kogus = kogus;
+            toode.Hind = hind;
             toode.KategooriaId = Convert.ToInt32(comboKategooria.SelectedValue);
 
             if (valitudPilt != null)

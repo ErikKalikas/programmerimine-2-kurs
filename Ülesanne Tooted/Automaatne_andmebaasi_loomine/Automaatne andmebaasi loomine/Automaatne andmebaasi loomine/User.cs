@@ -1,5 +1,8 @@
+using Microsoft.EntityFrameworkCore;
+
 namespace Automaatne_andmebaasi_loomine
 {
+    [Index(nameof(Email), IsUnique = true)]   // sama e-postiga kahte kasutajat ei saa olla
     public class Kasutaja
     {
         public int Id { get; set; }

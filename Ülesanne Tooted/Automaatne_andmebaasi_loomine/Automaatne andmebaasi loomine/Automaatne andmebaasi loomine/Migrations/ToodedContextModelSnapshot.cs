@@ -30,7 +30,7 @@ namespace Automaatne_andmebaasi_loomine.Migrations
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Nimi")
                         .IsRequired()
@@ -45,6 +45,9 @@ namespace Automaatne_andmebaasi_loomine.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Email")
+                        .IsUnique();
 
                     b.ToTable("Kasutajad");
                 });
@@ -68,6 +71,26 @@ namespace Automaatne_andmebaasi_loomine.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Kategooriatabel", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Kategooria_nimetus = "Joogid",
+                            Kirjeldus = "Erinevad joogid"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Kategooria_nimetus = "Toit",
+                            Kirjeldus = "Toiduained"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Kategooria_nimetus = "Muu",
+                            Kirjeldus = "Muud tooted"
+                        });
                 });
 
             modelBuilder.Entity("Automaatne_andmebaasi_loomine.Toode", b =>
@@ -78,8 +101,8 @@ namespace Automaatne_andmebaasi_loomine.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<float>("Hind")
-                        .HasColumnType("real");
+                    b.Property<decimal>("Hind")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("KategooriaId")
                         .HasColumnType("int");
@@ -88,7 +111,6 @@ namespace Automaatne_andmebaasi_loomine.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Pilt")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Toodenimetus")

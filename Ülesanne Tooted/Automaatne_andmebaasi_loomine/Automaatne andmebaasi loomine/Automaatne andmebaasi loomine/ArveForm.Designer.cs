@@ -33,6 +33,7 @@ namespace Automaatne_andmebaasi_loomine
             btnLisaKorvi = new Button();
             btnEemalda = new Button();
             btnGenPDF = new Button();
+            txtEmail = new TextBox();
             btnSaadaEmail = new Button();
             lblKokku = new Label();
             SuspendLayout();
@@ -74,9 +75,16 @@ namespace Automaatne_andmebaasi_loomine
             btnGenPDF.Text = "Genereeri PDF";
             btnGenPDF.Click += btnGenPDF_Click;
             // 
+            // txtEmail
+            // 
+            txtEmail.Location = new Point(350, 190);
+            txtEmail.Name = "txtEmail";
+            txtEmail.PlaceholderText = "Saaja e-post";
+            txtEmail.Size = new Size(180, 23);
+            // 
             // btnSaadaEmail
             // 
-            btnSaadaEmail.Location = new Point(350, 185);
+            btnSaadaEmail.Location = new Point(350, 220);
             btnSaadaEmail.Name = "btnSaadaEmail";
             btnSaadaEmail.Size = new Size(180, 30);
             btnSaadaEmail.Text = "Saada emailiga";
@@ -97,6 +105,7 @@ namespace Automaatne_andmebaasi_loomine
             Controls.Add(btnLisaKorvi);
             Controls.Add(btnEemalda);
             Controls.Add(btnGenPDF);
+            Controls.Add(txtEmail);
             Controls.Add(btnSaadaEmail);
             Controls.Add(lblKokku);
             Name = "ArveForm";
@@ -114,6 +123,7 @@ namespace Automaatne_andmebaasi_loomine
         private System.Windows.Forms.Button btnLisaKorvi;
         private System.Windows.Forms.Button btnEemalda;
         private System.Windows.Forms.Button btnGenPDF;
+        private System.Windows.Forms.TextBox txtEmail;
         private System.Windows.Forms.Button btnSaadaEmail;
         private System.Windows.Forms.Label lblKokku;
     }
