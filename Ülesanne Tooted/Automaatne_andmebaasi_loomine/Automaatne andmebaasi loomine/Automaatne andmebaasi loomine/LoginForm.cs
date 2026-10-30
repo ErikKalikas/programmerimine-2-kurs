@@ -30,6 +30,16 @@ namespace Automaatne_andmebaasi_loomine
                 db.SaveChanges();
             }
 
+            // Kui kategooriaid pole, lisame mõned, et ComboBox poleks tühi
+            if (!db.Kategooriatabel.Any())
+            {
+                db.Kategooriatabel.AddRange(
+                    new Kategooria { Kategooria_nimetus = "Joogid", Kirjeldus = "Erinevad joogid" },
+                    new Kategooria { Kategooria_nimetus = "Toit", Kirjeldus = "Toiduained" },
+                    new Kategooria { Kategooria_nimetus = "Muu", Kirjeldus = "Muud tooted" });
+                db.SaveChanges();
+            }
+
             LisaNaidisTooted(db);
         }
 
@@ -38,31 +48,31 @@ namespace Automaatne_andmebaasi_loomine
         {
             var naidised = new[]
             {
-                ("Õun", 50, 0.40m, "oun.jpg", "Toit"),
-                ("Banaan", 40, 0.30m, "banaan.jpg", "Toit"),
-                ("Apelsin", 35, 0.45m, "apelsin.jpg", "Toit"),
-                ("Sidrun", 30, 0.35m, "sidrun.jpg", "Toit"),
-                ("Pirn", 25, 0.50m, "pirn.jpg", "Toit"),
-                ("Kiivi", 30, 0.25m, "kiivi.jpg", "Toit"),
-                ("Ananass", 10, 2.49m, "ananass.jpg", "Toit"),
-                ("Arbuus", 8, 3.99m, "arbuus.jpg", "Toit"),
-                ("Maasikas", 60, 0.10m, "maasikas.jpg", "Toit"),
-                ("Viinamari", 40, 0.05m, "viinamari.jpg", "Toit"),
-                ("Avokaado", 20, 1.19m, "avokaado.jpg", "Toit"),
-                ("Tomat", 45, 0.30m, "tomat.jpg", "Toit"),
-                ("Kartul", 100, 0.15m, "kartul.jpg", "Toit"),
-                ("Sibul", 70, 0.12m, "sibul.jpg", "Toit"),
-                ("Mais", 25, 0.89m, "mais.jpg", "Toit"),
-                ("Pusa must", 5, 34.99m, "pusa_must.jpg", "Muu"),
-                ("Pusa sinine", 5, 34.99m, "pusa_sinine.jpg", "Muu"),
-                ("Pusa lilla", 5, 34.99m, "pusa_lilla.jpg", "Muu"),
-                ("T-särk valge", 10, 14.99m, "tsark_valge.jpg", "Muu"),
-                ("T-särk lilla", 10, 14.99m, "tsark_lilla.jpg", "Muu"),
-                ("T-särk punane", 10, 14.99m, "tsark_punane.jpg", "Muu"),
-                ("Kruus .NET", 15, 8.99m, "kruus_dotnet.jpg", "Muu"),
-                ("Kruus Cup<T>", 15, 8.99m, "kruus_cup.jpg", "Muu"),
-                ("Märk punane", 30, 1.99m, "mark_punane.jpg", "Muu"),
-                ("Märk lilla", 30, 1.99m, "mark_lilla.jpg", "Muu")
+                ("Õun", 50, 0.40f, "oun.jpg", "Toit"),
+                ("Banaan", 40, 0.30f, "banaan.jpg", "Toit"),
+                ("Apelsin", 35, 0.45f, "apelsin.jpg", "Toit"),
+                ("Sidrun", 30, 0.35f, "sidrun.jpg", "Toit"),
+                ("Pirn", 25, 0.50f, "pirn.jpg", "Toit"),
+                ("Kiivi", 30, 0.25f, "kiivi.jpg", "Toit"),
+                ("Ananass", 10, 2.49f, "ananass.jpg", "Toit"),
+                ("Arbuus", 8, 3.99f, "arbuus.jpg", "Toit"),
+                ("Maasikas", 60, 0.10f, "maasikas.jpg", "Toit"),
+                ("Viinamari", 40, 0.05f, "viinamari.jpg", "Toit"),
+                ("Avokaado", 20, 1.19f, "avokaado.jpg", "Toit"),
+                ("Tomat", 45, 0.30f, "tomat.jpg", "Toit"),
+                ("Kartul", 100, 0.15f, "kartul.jpg", "Toit"),
+                ("Sibul", 70, 0.12f, "sibul.jpg", "Toit"),
+                ("Mais", 25, 0.89f, "mais.jpg", "Toit"),
+                ("Pusa must", 5, 34.99f, "pusa_must.jpg", "Muu"),
+                ("Pusa sinine", 5, 34.99f, "pusa_sinine.jpg", "Muu"),
+                ("Pusa lilla", 5, 34.99f, "pusa_lilla.jpg", "Muu"),
+                ("T-särk valge", 10, 14.99f, "tsark_valge.jpg", "Muu"),
+                ("T-särk lilla", 10, 14.99f, "tsark_lilla.jpg", "Muu"),
+                ("T-särk punane", 10, 14.99f, "tsark_punane.jpg", "Muu"),
+                ("Kruus .NET", 15, 8.99f, "kruus_dotnet.jpg", "Muu"),
+                ("Kruus Cup<T>", 15, 8.99f, "kruus_cup.jpg", "Muu"),
+                ("Märk punane", 30, 1.99f, "mark_punane.jpg", "Muu"),
+                ("Märk lilla", 30, 1.99f, "mark_lilla.jpg", "Muu")
             };
 
             foreach (var (nimetus, kogus, hind, pilt, kategooria) in naidised)
@@ -88,12 +98,20 @@ namespace Automaatne_andmebaasi_loomine
         {
             using var db = new ToodedContext();
 
-            var kasutaja = new KasutajaTeenus(db).LogiSisse(txtEmail.Text, txtParool.Text);
+            string email = txtEmail.Text;
+            string parool = txtParool.Text;
+
+            var kasutaja = db.Kasutajad.FirstOrDefault(k => k.Email == email);
 
             if (kasutaja == null)
             {
-                lblVeateade.Text = "Vale e-post või parool.";
-                txtParool.Clear();
+                lblVeateade.Text = "Vale email!";
+                return;
+            }
+
+            if (!PasswordHelper.Verify(parool, kasutaja.ParoolHash))
+            {
+                lblVeateade.Text = "Vale parool!";
                 return;
             }
 
