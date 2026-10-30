@@ -55,7 +55,9 @@ namespace Automaatne_andmebaasi_loomine
             string raw = Convert.ToBase64String(puhver.ToArray())
                 .Replace('+', '-').Replace('/', '_').TrimEnd('=');
 
-            await gmail.Users.Messages.Send(new Google.Apis.Gmail.v1.Data.Message { Raw = raw }   // täisnimi, sest WinFormsis on ka oma Message, "me").ExecuteAsync();
+            // Message täisnimega, sest WinFormsis on ka oma klass Message
+            var gmailKiri = new Google.Apis.Gmail.v1.Data.Message { Raw = raw };
+            await gmail.Users.Messages.Send(gmailKiri, "me").ExecuteAsync();
         }
 
         // Unustab salvestatud loa, järgmisel saatmisel küsitakse Google'i kontot uuesti
