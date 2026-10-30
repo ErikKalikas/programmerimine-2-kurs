@@ -5,12 +5,13 @@ namespace Automaatne_andmebaasi_loomine
         public Toode Toode { get; set; } = null!;
         public int Kogus { get; set; }
 
-        // Arvutus decimal'iga ja ümardus sentideni, et ei tekiks nt 30,000002
-        public float Summa => (float)Math.Round((decimal)Toode.Hind * Kogus, 2);
+        // Arvutus decimal'iga ja ümardus sentideni, et ei tekiks nt 30,000002. Soodushind arvestatakse.
+        public float Summa => (float)Math.Round((decimal)Toode.HetkeHind * Kogus, 2);
 
         public override string ToString()
         {
-            return $"{Toode.Toodenimetus} – {Kogus} tk – {Summa:0.00} €";
+            string soodus = Toode.OnSoodus ? $"  (−{Toode.SoodusProtsent}%)" : "";
+            return $"{Toode.Toodenimetus} – {Kogus} tk × {Toode.HetkeHind:0.00} € = {Summa:0.00} €{soodus}";
         }
     }
 }

@@ -28,21 +28,39 @@ namespace Automaatne_andmebaasi_loomine
         /// </summary>
         private void InitializeComponent()
         {
+            txtOtsi = new TextBox();
+            cmbSorteeri = new ComboBox();
             tabPood = new TabControl();
             btnOstukorv = new Button();
             SuspendLayout();
             // 
+            // txtOtsi
+            // 
+            txtOtsi.Location = new Point(10, 12);
+            txtOtsi.Name = "txtOtsi";
+            txtOtsi.PlaceholderText = "🔍 Otsi toodet...";
+            txtOtsi.Size = new Size(260, 23);
+            txtOtsi.TextChanged += txtOtsi_TextChanged;
+            // 
+            // cmbSorteeri
+            // 
+            cmbSorteeri.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbSorteeri.Location = new Point(285, 12);
+            cmbSorteeri.Name = "cmbSorteeri";
+            cmbSorteeri.Size = new Size(200, 23);
+            cmbSorteeri.SelectedIndexChanged += cmbSorteeri_SelectedIndexChanged;
+            // 
             // tabPood
             // 
-            tabPood.Location = new Point(10, 10);
+            tabPood.Location = new Point(10, 45);
             tabPood.Name = "tabPood";
-            tabPood.Size = new Size(900, 600);
+            tabPood.Size = new Size(900, 570);
             // 
             // btnOstukorv
             // 
-            btnOstukorv.Location = new Point(10, 620);
+            btnOstukorv.Location = new Point(10, 625);
             btnOstukorv.Name = "btnOstukorv";
-            btnOstukorv.Size = new Size(300, 35);
+            btnOstukorv.Size = new Size(320, 35);
             btnOstukorv.Text = "Ostukorv";
             btnOstukorv.Click += btnOstukorv_Click;
             // 
@@ -51,16 +69,21 @@ namespace Automaatne_andmebaasi_loomine
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(930, 670);
+            Controls.Add(txtOtsi);
+            Controls.Add(cmbSorteeri);
             Controls.Add(tabPood);
             Controls.Add(btnOstukorv);
             Name = "Form3";
             BackColor = Color.LightBlue;
             Text = "Pood";
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
 
+        private System.Windows.Forms.TextBox txtOtsi;
+        private System.Windows.Forms.ComboBox cmbSorteeri;
         private System.Windows.Forms.TabControl tabPood;
         private System.Windows.Forms.Button btnOstukorv;
     }
