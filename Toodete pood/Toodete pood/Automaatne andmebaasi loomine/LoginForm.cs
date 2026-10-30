@@ -10,6 +10,7 @@ namespace Automaatne_andmebaasi_loomine
         public LoginForm()
         {
             InitializeComponent();
+            AcceptButton = btnOstja;
 
             using var db = new ToodedContext();
 
@@ -56,13 +57,26 @@ namespace Automaatne_andmebaasi_loomine
                 ("Kiivi", 30, 0.25f, "kiivi.jpg", "Toit"),
                 ("Ananass", 10, 2.49f, "ananass.jpg", "Toit"),
                 ("Arbuus", 8, 3.99f, "arbuus.jpg", "Toit"),
-                ("Maasikas", 60, 0.10f, "maasikas.jpg", "Toit"),
-                ("Viinamari", 40, 0.05f, "viinamari.jpg", "Toit"),
                 ("Avokaado", 20, 1.19f, "avokaado.jpg", "Toit"),
                 ("Tomat", 45, 0.30f, "tomat.jpg", "Toit"),
                 ("Kartul", 100, 0.15f, "kartul.jpg", "Toit"),
                 ("Sibul", 70, 0.12f, "sibul.jpg", "Toit"),
-                ("Mais", 25, 0.89f, "mais.jpg", "Toit"),
+                ("Mango", 20, 1.49f, "mango.jpg", "Toit"),
+                ("Porgand", 80, 0.20f, "porgand.jpg", "Toit"),
+                ("Kurk", 30, 0.99f, "kurk.jpg", "Toit"),
+                ("Paprika punane", 30, 0.79f, "paprika.jpg", "Toit"),
+                ("Õunamahl Bravo 1 l", 25, 2.19f, "mahl_oun_bravo.jpg", "Joogid"),
+                ("Apelsinimahl Bravo 1 l", 25, 2.19f, "mahl_apelsin_bravo.jpg", "Joogid"),
+                ("Apelsinimahl Tropicana 1 l", 20, 3.49f, "mahl_tropicana.jpg", "Joogid"),
+                ("Greibimahl Tropicana 1 l", 15, 3.49f, "mahl_greip_tropicana.jpg", "Joogid"),
+                ("Mandariinimahl Tropicana 1 l", 15, 3.49f, "mahl_mandariin_tropicana.jpg", "Joogid"),
+                ("Apelsini-greibimahl God Morgon 1 l", 20, 2.79f, "mahl_godmorgon.jpg", "Joogid"),
+                ("Piim Arla 3% 1 l", 40, 1.29f, "piim_arla.jpg", "Joogid"),
+                ("Piim Arla 1,5% 1 l", 40, 1.19f, "piim_arla_15.jpg", "Joogid"),
+                ("Laktoosivaba piim Arla 1 l", 25, 1.59f, "piim_laktoosivaba.jpg", "Joogid"),
+                ("Kaerajook Oatly 1 l", 25, 2.49f, "kaerajook_oatly.jpg", "Joogid"),
+                ("Sojajook Alpro 1 l", 20, 2.29f, "sojajook_alpro.jpg", "Joogid"),
+                ("Hapupiim Arla 1 l", 30, 1.39f, "hapupiim_arla.jpg", "Joogid"),
                 ("Pusa must", 5, 34.99f, "pusa_must.jpg", "Muu"),
                 ("Pusa sinine", 5, 34.99f, "pusa_sinine.jpg", "Muu"),
                 ("Pusa lilla", 5, 34.99f, "pusa_lilla.jpg", "Muu"),
@@ -74,6 +88,13 @@ namespace Automaatne_andmebaasi_loomine
                 ("Märk punane", 30, 1.99f, "mark_punane.jpg", "Muu"),
                 ("Märk lilla", 30, 1.99f, "mark_lilla.jpg", "Muu")
             };
+
+            // Varasemad näidistooted, mille jaoks head pilti polnud: eemaldame need
+            foreach (var (vanaNimi, vanaPilt) in new[] { ("Maasikas", "maasikas.jpg"), ("Viinamari", "viinamari.jpg"), ("Mais", "mais.jpg") })
+            {
+                var vana = db.Toodetabel.FirstOrDefault(t => t.Toodenimetus == vanaNimi && t.Pilt == vanaPilt);
+                if (vana != null) db.Toodetabel.Remove(vana);
+            }
 
             foreach (var (nimetus, kogus, hind, pilt, kategooria) in naidised)
             {
@@ -115,6 +136,12 @@ namespace Automaatne_andmebaasi_loomine
                 return;
             }
 
+            if (kasutaja.Roll != "admin")
+            {
+                lblVeateade.Text = "See konto ei ole administraator!";
+                return;
+            }
+
             // roll salvestatakse globaalselt
             AktiivneKasutaja.Roll = kasutaja.Roll;
 
@@ -128,6 +155,27 @@ namespace Automaatne_andmebaasi_loomine
             AvaPeamenyy();
         }
 
+        // "Logi sisse administraatorina": näitab e-posti ja parooli välju
+        private void btnAdmin_Click(object? sender, EventArgs e) => NaitaAdminiVorm(true);
+
+        private void btnTagasi_Click(object? sender, EventArgs e) => NaitaAdminiVorm(false);
+
+        private void NaitaAdminiVorm(bool admin)
+        {
+            btnOstja.Visible = !admin;
+            btnAdmin.Visible = !admin;
+
+            txtEmail.Visible = admin;
+            txtParool.Visible = admin;
+            btnLogin.Visible = admin;
+            btnTagasi.Visible = admin;
+
+            AcceptButton = admin ? btnLogin : btnOstja;   // Enter vajutab õiget nuppu
+            lblVeateade.Text = "";
+            txtParool.Clear();
+            if (admin) txtEmail.Focus();
+        }
+
         private void AvaPeamenyy()
         {
             lblVeateade.Text = "";
@@ -139,7 +187,10 @@ namespace Automaatne_andmebaasi_loomine
                 // "Logi välja" tühjendab rolli: siis tuleb tagasi sisselogimise aken,
                 // muidu (akna sulgemisel) sulgub kogu programm
                 if (AktiivneKasutaja.Roll == "")
+                {
+                    NaitaAdminiVorm(false);
                     this.Show();
+                }
                 else
                     this.Close();
             };

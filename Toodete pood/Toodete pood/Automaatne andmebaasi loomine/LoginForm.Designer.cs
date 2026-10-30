@@ -28,12 +28,32 @@ namespace Automaatne_andmebaasi_loomine
         /// </summary>
         private void InitializeComponent()
         {
+            btnOstja = new Button();
+            btnAdmin = new Button();
             txtEmail = new TextBox();
             txtParool = new TextBox();
             btnLogin = new Button();
-            btnOstja = new Button();
+            btnTagasi = new Button();
             lblVeateade = new Label();
             SuspendLayout();
+            // 
+            // btnOstja
+            // 
+            btnOstja.Location = new Point(30, 30);
+            btnOstja.Name = "btnOstja";
+            btnOstja.Size = new Size(200, 45);
+            btnOstja.TabIndex = 0;
+            btnOstja.Text = "Sisene poodi";
+            btnOstja.Click += btnOstja_Click;
+            // 
+            // btnAdmin
+            // 
+            btnAdmin.Location = new Point(30, 90);
+            btnAdmin.Name = "btnAdmin";
+            btnAdmin.Size = new Size(200, 30);
+            btnAdmin.TabIndex = 1;
+            btnAdmin.Text = "Logi sisse administraatorina";
+            btnAdmin.Click += btnAdmin_Click;
             // 
             // txtEmail
             // 
@@ -41,7 +61,8 @@ namespace Automaatne_andmebaasi_loomine
             txtEmail.Name = "txtEmail";
             txtEmail.PlaceholderText = "Email";
             txtEmail.Size = new Size(200, 23);
-            txtEmail.TabIndex = 0;
+            txtEmail.TabIndex = 2;
+            txtEmail.Visible = false;
             // 
             // txtParool
             // 
@@ -50,25 +71,28 @@ namespace Automaatne_andmebaasi_loomine
             txtParool.PasswordChar = '*';
             txtParool.PlaceholderText = "Parool";
             txtParool.Size = new Size(200, 23);
-            txtParool.TabIndex = 1;
+            txtParool.TabIndex = 3;
+            txtParool.Visible = false;
             // 
             // btnLogin
             // 
             btnLogin.Location = new Point(30, 110);
             btnLogin.Name = "btnLogin";
             btnLogin.Size = new Size(200, 30);
-            btnLogin.TabIndex = 2;
+            btnLogin.TabIndex = 4;
             btnLogin.Text = "Logi sisse";
+            btnLogin.Visible = false;
             btnLogin.Click += btnLogin_Click;
             // 
-            // btnOstja
+            // btnTagasi
             // 
-            btnOstja.Location = new Point(30, 150);
-            btnOstja.Name = "btnOstja";
-            btnOstja.Size = new Size(200, 30);
-            btnOstja.TabIndex = 3;
-            btnOstja.Text = "Sisene ostjana";
-            btnOstja.Click += btnOstja_Click;
+            btnTagasi.Location = new Point(30, 150);
+            btnTagasi.Name = "btnTagasi";
+            btnTagasi.Size = new Size(200, 30);
+            btnTagasi.TabIndex = 5;
+            btnTagasi.Text = "Tagasi";
+            btnTagasi.Visible = false;
+            btnTagasi.Click += btnTagasi_Click;
             // 
             // lblVeateade
             // 
@@ -80,24 +104,28 @@ namespace Automaatne_andmebaasi_loomine
             // LoginForm
             // 
             ClientSize = new Size(260, 230);
+            Controls.Add(btnOstja);
+            Controls.Add(btnAdmin);
             Controls.Add(txtEmail);
             Controls.Add(txtParool);
             Controls.Add(btnLogin);
-            Controls.Add(btnOstja);
+            Controls.Add(btnTagasi);
             Controls.Add(lblVeateade);
             Name = "LoginForm";
             BackColor = Color.LightBlue;
-            Text = "Login";
+            Text = "Tere tulemast";
             ResumeLayout(false);
             PerformLayout();
         }
 
         #endregion
 
+        private System.Windows.Forms.Button btnOstja;
+        private System.Windows.Forms.Button btnAdmin;
         private System.Windows.Forms.TextBox txtEmail;
         private System.Windows.Forms.TextBox txtParool;
         private System.Windows.Forms.Button btnLogin;
-        private System.Windows.Forms.Button btnOstja;
+        private System.Windows.Forms.Button btnTagasi;
         private System.Windows.Forms.Label lblVeateade;
     }
 }
