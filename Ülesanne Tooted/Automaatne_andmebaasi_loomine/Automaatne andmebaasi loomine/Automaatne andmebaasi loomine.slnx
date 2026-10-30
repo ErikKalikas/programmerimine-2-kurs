@@ -1,3 +1,4 @@
 <Solution>
   <Project Path="Automaatne andmebaasi loomine/Automaatne andmebaasi loomine.csproj" />
+  <Project Path="Tooded_EFCore.Tests/Tooded_EFCore.Tests.csproj" />
 </Solution>
