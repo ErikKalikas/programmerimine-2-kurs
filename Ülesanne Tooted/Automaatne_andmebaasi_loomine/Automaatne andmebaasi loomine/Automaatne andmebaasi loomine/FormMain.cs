@@ -9,6 +9,7 @@ namespace Automaatne_andmebaasi_loomine
         {
             InitializeComponent();
             btnTooted.Enabled = AktiivneKasutaja.Roll == "admin";
+            btnKategooriad.Enabled = AktiivneKasutaja.Roll == "admin";
         }
 
         private void btnTooted_Click(object? sender, EventArgs e)
@@ -27,6 +28,12 @@ namespace Automaatne_andmebaasi_loomine
         {
             ArveForm arve = new ArveForm();
             arve.ShowDialog();
+        }
+
+        private void btnKategooriad_Click(object? sender, EventArgs e)
+        {
+            KategooriadForm f = new KategooriadForm();
+            f.ShowDialog();
         }
     }
 }

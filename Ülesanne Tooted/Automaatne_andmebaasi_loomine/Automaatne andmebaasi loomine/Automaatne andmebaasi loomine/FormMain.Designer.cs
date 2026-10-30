@@ -31,6 +31,7 @@ namespace Automaatne_andmebaasi_loomine
             btnTooted = new Button();
             btnPood = new Button();
             btnArve = new Button();
+            btnKategooriad = new Button();
             SuspendLayout();
             // 
             // btnTooted
@@ -57,12 +58,21 @@ namespace Automaatne_andmebaasi_loomine
             btnArve.Text = "Arve";
             btnArve.Click += btnArve_Click;
             // 
+            // btnKategooriad
+            // 
+            btnKategooriad.Location = new Point(30, 180);
+            btnKategooriad.Name = "btnKategooriad";
+            btnKategooriad.Size = new Size(200, 40);
+            btnKategooriad.Text = "Kategooriad";
+            btnKategooriad.Click += btnKategooriad_Click;
+            // 
             // FormMain
             // 
-            ClientSize = new Size(300, 220);
+            ClientSize = new Size(300, 260);
             Controls.Add(btnTooted);
             Controls.Add(btnPood);
             Controls.Add(btnArve);
+            Controls.Add(btnKategooriad);
             Name = "FormMain";
             BackColor = Color.LightBlue;
             Text = "Peamenüü";
@@ -74,5 +84,6 @@ namespace Automaatne_andmebaasi_loomine
         private System.Windows.Forms.Button btnTooted;
         private System.Windows.Forms.Button btnPood;
         private System.Windows.Forms.Button btnArve;
+        private System.Windows.Forms.Button btnKategooriad;
     }
 }
