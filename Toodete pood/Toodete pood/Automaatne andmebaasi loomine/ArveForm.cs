@@ -1,5 +1,3 @@
-using PdfSharpCore.Drawing;
-using PdfSharpCore.Pdf;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -98,8 +96,8 @@ namespace Automaatne_andmebaasi_loomine
             MessageBox.Show($"PDF on loodud:\n{failinimi}");
         }
 
-        // Loob PDF-i praeguse ostukorvi järgi ja tagastab faili tee (tühja korvi puhul null)
-        private string? LooPdf()
+        // Loob PDF-arve praeguse ostukorvi järgi ja tagastab faili tee (tühja korvi puhul null)
+        private string? LooPdf(string? ostja = null)
         {
             if (Ostukorv.Ridad.Count == 0)
             {
@@ -107,34 +105,7 @@ namespace Automaatne_andmebaasi_loomine
                 return null;
             }
 
-            Directory.CreateDirectory("Arved");
-
-            string failinimi = $"Arved/Arve_{DateTime.Now:yyyyMMdd_HHmmss}.pdf";
-
-            PdfDocument document = new PdfDocument();
-            PdfPage page = document.AddPage();
-            XGraphics gfx = XGraphics.FromPdfPage(page);
-
-            XFont font = new XFont("Verdana", 12);
-
-            gfx.DrawString("Arve", new XFont("Verdana", 20), XBrushes.Black,
-                new XRect(0, 20, page.Width, 40), XStringFormats.TopCenter);
-
-            int y = 80;
-            foreach (var item in Ostukorv.Ridad)
-            {
-                gfx.DrawString(item.ToString(), font, XBrushes.Black,
-                    new XRect(20, y, page.Width - 40, 20), XStringFormats.TopLeft);
-                y += 30;
-            }
-
-            gfx.DrawString($"Kokku: {Ostukorv.Kokku:0.00} €",
-                new XFont("Verdana", 14), XBrushes.Black,
-                new XRect(20, y + 20, page.Width, 20), XStringFormats.TopLeft);
-
-            document.Save(failinimi);
-
-            return Path.GetFullPath(failinimi);
+            return ArvePdf.Loo(Ostukorv.Ridad, ostja);
         }
 
         private async void btnSaadaEmail_Click(object? sender, EventArgs e)
@@ -151,7 +122,7 @@ namespace Automaatne_andmebaasi_loomine
             if (string.IsNullOrWhiteSpace(email)) return;
 
             // PDF tehakse alati uuesti praeguse korvi järgi, et ei saadetaks vana arvet
-            string? pdfPath = LooPdf();
+            string? pdfPath = LooPdf(email.Trim());
             if (pdfPath == null) return;
 
             btnSaadaEmail.Enabled = false;
