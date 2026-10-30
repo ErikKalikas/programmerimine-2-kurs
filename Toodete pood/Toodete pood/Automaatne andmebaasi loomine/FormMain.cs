@@ -13,8 +13,8 @@ namespace Automaatne_andmebaasi_loomine
             if (AktiivneKasutaja.Roll == "admin")
             {
                 Text = "Peamenüü – administraator";
-                lblTere.Text = "Administraator";
-                nupud = new[] { btnTooted, btnKategooriad, btnKoikTellimused, btnAruanded, btnKasutajad, btnPood, btnArve, btnLogiValja };
+                lblTere.Text = $"Administraator: {AktiivneKasutaja.Nimi}";
+                nupud = new[] { btnTooted, btnKategooriad, btnKoikTellimused, btnAruanded, btnKasutajad, btnPood, btnArve, btnProfiil, btnLogiValja };
             }
             else if (AktiivneKasutaja.OnKonto)
             {
@@ -112,7 +112,9 @@ namespace Automaatne_andmebaasi_loomine
         {
             using var f = new ProfiilForm();
             f.ShowDialog();
-            lblTere.Text = $"Tere, {AktiivneKasutaja.Nimi}!";
+            lblTere.Text = AktiivneKasutaja.Roll == "admin"
+                ? $"Administraator: {AktiivneKasutaja.Nimi}"
+                : $"Tere, {AktiivneKasutaja.Nimi}!";
         }
     }
 }
