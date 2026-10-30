@@ -14,7 +14,7 @@ namespace Automaatne_andmebaasi_loomine
             {
                 Text = "Peamenüü – administraator";
                 lblTere.Text = $"Administraator: {AktiivneKasutaja.Nimi}";
-                nupud = new[] { btnTooted, btnKategooriad, btnKoikTellimused, btnAruanded, btnKasutajad, btnLogi, btnPood, btnArve, btnProfiil, btnLogiValja };
+                nupud = new[] { btnTooted, btnKategooriad, btnKoikTellimused, btnAruanded, btnKasutajad, btnLogi, btnSeaded, btnPood, btnArve, btnProfiil, btnLogiValja };
             }
             else if (AktiivneKasutaja.OnKonto)
             {
@@ -111,6 +111,12 @@ namespace Automaatne_andmebaasi_loomine
         private void btnLogi_Click(object? sender, EventArgs e)
         {
             using var f = new LogiForm();
+            f.ShowDialog();
+        }
+
+        private void btnSeaded_Click(object? sender, EventArgs e)
+        {
+            using var f = new SeadedForm();
             f.ShowDialog();
         }
 

@@ -63,7 +63,6 @@ namespace Automaatne_andmebaasi_loomine
     // Koostab ostukorvist ilusa PDF-arve (päis, tabel, käibemaks, kokkuvõte)
     public static class ArvePdf
     {
-        private const decimal KaibemaksProtsent = 24m;   // Eesti käibemaks alates 01.07.2025
 
         private static readonly XColor Sinine = XColor.FromArgb(31, 78, 121);
         private static readonly XColor Helesinine = XColor.FromArgb(221, 235, 247);
@@ -93,6 +92,9 @@ namespace Automaatne_andmebaasi_loomine
             var unicode = new XPdfFontOptions(PdfFontEncoding.Unicode);   // täpitähed õ ä ö ü ja €
             XFont Font(double suurus, XFontStyle stiil = XFontStyle.Regular) => new XFont("Verdana", suurus, stiil, unicode);
 
+            var pood = PoeSeaded.Lae();                               // poe andmed ja käibemaks seadetest
+            decimal KaibemaksProtsent = (decimal)pood.KmProtsent;
+
             var dokument = new PdfDocument();
             dokument.Info.Title = $"Arve {nr}";
 
@@ -102,8 +104,19 @@ namespace Automaatne_andmebaasi_loomine
 
             // ---------- Päis ----------
             gfx.DrawRectangle(new XSolidBrush(Sinine), 0, 0, leht.Width.Point, 95);
-            gfx.DrawString("TOODETE POOD", Font(22, XFontStyle.Bold), XBrushes.White, new XRect(Serv, 25, 300, 30), Vasak);
-            gfx.DrawString("Värsked tooted iga päev", Font(10), XBrushes.White, new XRect(Serv, 55, 300, 20), Vasak);
+            double tekstX = Serv;
+            string? logoTee = string.IsNullOrEmpty(pood.Logo) ? null : Path.Combine("Images", pood.Logo);
+            if (logoTee != null && File.Exists(logoTee))
+            {
+                // logo valgel ruudul päise vasakus servas
+                using var logo = XImage.FromFile(logoTee);
+                double lk = 65, ll = Math.Min(130, lk * logo.PixelWidth / Math.Max(1, logo.PixelHeight));
+                gfx.DrawRectangle(XBrushes.White, Serv - 4, 15, ll + 8, lk + 8);
+                gfx.DrawImage(logo, Serv, 19, ll, lk);
+                tekstX = Serv + ll + 18;
+            }
+            gfx.DrawString(pood.PoeNimi.ToUpper(), Font(22, XFontStyle.Bold), XBrushes.White, new XRect(tekstX, 25, 330, 30), Vasak);
+            gfx.DrawString(pood.Hyydlause, Font(10), XBrushes.White, new XRect(tekstX, 55, 330, 20), Vasak);
             gfx.DrawString("ARVE", Font(22, XFontStyle.Bold), XBrushes.White, new XRect(Serv, 25, parem - Serv, 30), Parem);
             gfx.DrawString($"Nr {nr}", Font(10), XBrushes.White, new XRect(Serv, 55, parem - Serv, 20), Parem);
 
@@ -116,7 +129,7 @@ namespace Automaatne_andmebaasi_loomine
                 y += 18;
             }
             InfoRida("Kuupäev:", aeg.ToString("dd.MM.yyyy HH:mm"));
-            InfoRida("Müüja:", "Toodete pood");
+            InfoRida("Müüja:", pood.PoeNimi);
             if (!string.IsNullOrWhiteSpace(a.OstjaNimi)) InfoRida("Ostja:", a.OstjaNimi);
             if (!string.IsNullOrWhiteSpace(a.OstjaEmail)) InfoRida("E-post:", a.OstjaEmail);
             if (!string.IsNullOrWhiteSpace(a.OstjaTelefon)) InfoRida("Telefon:", a.OstjaTelefon);
@@ -152,7 +165,7 @@ namespace Automaatne_andmebaasi_loomine
             foreach (var rida in a.Read)
             {
                 // Kui leht saab täis, jätkub tabel uuel lehel
-                if (y + ReaKorgus > leht.Height.Point - 60)
+                if (y + ReaKorgus > leht.Height.Point - 95)
                 {
                     leht = dokument.AddPage();
                     gfx = XGraphics.FromPdfPage(leht);
@@ -178,7 +191,7 @@ namespace Automaatne_andmebaasi_loomine
             gfx.DrawLine(Joon, Serv, y, parem, y);   // tabeli alumine joon
 
             // ---------- Kokkuvõte ----------
-            if (y + 200 > leht.Height.Point - 60)
+            if (y + 200 > leht.Height.Point - 95)
             {
                 leht = dokument.AddPage();
                 gfx = XGraphics.FromPdfPage(leht);
@@ -214,12 +227,22 @@ namespace Automaatne_andmebaasi_loomine
             gfx.DrawString($"Tooteid kokku: {a.Read.Sum(r => r.Kogus)} tk", Font(9), new XSolidBrush(Hall), new XRect(Serv, y, 250, 30), Vasak);
 
             // ---------- Jalus ----------
-            double jy = leht.Height.Point - 70;
+            double jy = leht.Height.Point - 80;
             gfx.DrawLine(new XPen(Sinine, 1), Serv, jy, parem, jy);
             gfx.DrawString("Aitäh ostu eest! Ootame teid jälle.", Font(11, XFontStyle.Bold), new XSolidBrush(Sinine),
                 new XRect(0, jy + 8, leht.Width.Point, 20), Keskel);
+
+            // poe rekvisiidid (ainult täidetud väljad)
+            var rekvisiidid = new List<string> { pood.PoeNimi };
+            if (pood.Aadress != "") rekvisiidid.Add(pood.Aadress);
+            if (pood.Registrikood != "") rekvisiidid.Add($"Reg. kood {pood.Registrikood}");
+            if (pood.KmkrNr != "") rekvisiidid.Add($"KMKR {pood.KmkrNr}");
+            if (pood.Telefon != "") rekvisiidid.Add(pood.Telefon);
+            if (pood.Email != "") rekvisiidid.Add(pood.Email);
+            gfx.DrawString(string.Join("  •  ", rekvisiidid), Font(8), new XSolidBrush(Hall),
+                new XRect(0, jy + 30, leht.Width.Point, 14), Keskel);
             gfx.DrawString("Arve on koostatud elektrooniliselt ja kehtib allkirjata.", Font(8), new XSolidBrush(Hall),
-                new XRect(0, jy + 28, leht.Width.Point, 16), Keskel);
+                new XRect(0, jy + 46, leht.Width.Point, 14), Keskel);
 
             dokument.Save(failinimi);
             return failinimi;

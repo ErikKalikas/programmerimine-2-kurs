@@ -180,7 +180,15 @@ namespace Automaatne_andmebaasi_loomine
             try
             {
                 // Esimesel korral avaneb brauser Google'i sisselogimiseks
-                await GmailSaatja.SaadaAsync(email, $"Arve nr {arve.Value.Nr}", "Arve on manuses. Aitäh ostu eest!", pdfPath);
+                // Kirja teema ja sisu tulevad poe seadetest (mall)
+                var pood = PoeSeaded.Lae();
+                string Taida(string mall) => mall
+                    .Replace("{nr}", arve.Value.Nr)
+                    .Replace("{nimi}", AktiivneKasutaja.OnKonto && AktiivneKasutaja.Nimi != "" ? ", " + AktiivneKasutaja.Nimi : "")
+                    .Replace("{summa}", $"{Ostukorv.Kokku:0.00} €")
+                    .Replace("{pood}", pood.PoeNimi);
+
+                await GmailSaatja.SaadaAsync(email, Taida(pood.KirjaTeema), Taida(pood.KirjaSisu), pdfPath);
 
                 // Ost on tehtud: tellimus salvestatakse, laoseis väheneb ja korv tühjeneb
                 Ostukorv.KinnitaOst(arve.Value.Nr, email, pdfPath);
