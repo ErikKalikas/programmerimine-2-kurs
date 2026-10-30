@@ -39,6 +39,7 @@ namespace Automaatne_andmebaasi_loomine
             btnLogiValja = new Button();
             btnKoikTellimused = new Button();
             btnAruanded = new Button();
+            btnKasutajad = new Button();
             SuspendLayout();
             // 
             // lblTere
@@ -118,6 +119,13 @@ namespace Automaatne_andmebaasi_loomine
             btnAruanded.Text = "Müügiaruanne";
             btnAruanded.Click += btnAruanded_Click;
             // 
+            // btnKasutajad
+            // 
+            btnKasutajad.Name = "btnKasutajad";
+            btnKasutajad.Size = new Size(220, 38);
+            btnKasutajad.Text = "Kasutajad";
+            btnKasutajad.Click += btnKasutajad_Click;
+            // 
             // FormMain
             // 
             ClientSize = new Size(280, 300);
@@ -132,6 +140,7 @@ namespace Automaatne_andmebaasi_loomine
             Controls.Add(btnLogiValja);
             Controls.Add(btnKoikTellimused);
             Controls.Add(btnAruanded);
+            Controls.Add(btnKasutajad);
             Name = "FormMain";
             BackColor = Color.LightBlue;
             Text = "Peamenüü";
@@ -152,5 +161,6 @@ namespace Automaatne_andmebaasi_loomine
         private System.Windows.Forms.Button btnLogiValja;
         private System.Windows.Forms.Button btnKoikTellimused;
         private System.Windows.Forms.Button btnAruanded;
+        private System.Windows.Forms.Button btnKasutajad;
     }
 }

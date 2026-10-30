@@ -10,9 +10,18 @@ namespace Automaatne_andmebaasi_loomine
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public Kasutaja? UusKasutaja { get; private set; }
 
-        public RegistreerimineForm()
+        private readonly string roll;
+
+        // roll "kasutaja" = ostja registreerub ise, "admin" = administraator lisab uue administraatori
+        public RegistreerimineForm(string roll = "kasutaja")
         {
             InitializeComponent();
+            this.roll = roll;
+            if (roll == "admin")
+            {
+                Text = "Uus administraator";
+                btnRegistreeru.Text = "Lisa";
+            }
         }
 
         private void btnRegistreeru_Click(object? sender, EventArgs e)
@@ -38,7 +47,7 @@ namespace Automaatne_andmebaasi_loomine
                 Nimi = nimi,
                 Email = email,
                 ParoolHash = PasswordHelper.Hash(txtParool.Text),
-                Roll = "kasutaja",
+                Roll = roll,
                 Telefon = txtTelefon.Text.Trim(),
                 Aadress = txtAadress.Text.Trim()
             };
@@ -46,7 +55,7 @@ namespace Automaatne_andmebaasi_loomine
             db.SaveChanges();
 
             UusKasutaja = kasutaja;
-            MessageBox.Show($"Tere tulemast, {nimi}! Konto on loodud.");
+            MessageBox.Show(roll == "admin" ? $"Administraator {nimi} on lisatud." : $"Tere tulemast, {nimi}! Konto on loodud.");
             DialogResult = DialogResult.OK;
         }
     }
