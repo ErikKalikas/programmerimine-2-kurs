@@ -1,5 +1,0 @@
-# Visual Studio ja ehitamise failid: tekivad ise, gitis neid hoida ei tohi
-.vs/
-bin/
-obj/
-*.user
