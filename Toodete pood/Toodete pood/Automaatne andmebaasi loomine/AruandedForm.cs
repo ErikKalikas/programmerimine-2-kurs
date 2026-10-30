@@ -100,6 +100,68 @@ namespace Automaatne_andmebaasi_loomine
                     Osakaal = kokkuRead > 0 ? $"{x.Müük / kokkuRead * 100:0}%" : "–"
                 })
                 .ToList();
+
+            pnlGraafik.Invalidate();   // joonista graafik uuesti
+        }
+
+        // Müügitulu tulpdiagramm: päevade kaupa (pika perioodi korral kuude kaupa)
+        private void pnlGraafik_Paint(object? sender, PaintEventArgs e)
+        {
+            var g = e.Graphics;
+            g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+
+            DateTime alates = dtpAlates.Value.Date, kuni = dtpKuni.Value.Date;
+            bool kuudeKaupa = (kuni - alates).TotalDays > 62;
+
+            // perioodid ja nende tulu
+            var tulbad = new List<(string Silt, decimal Summa)>();
+            if (kuudeKaupa)
+            {
+                for (var k = new DateTime(alates.Year, alates.Month, 1); k <= kuni; k = k.AddMonths(1))
+                    tulbad.Add((k.ToString("MM.yy"),
+                        perioodis.Where(t => t.Kuupaev.Year == k.Year && t.Kuupaev.Month == k.Month).Sum(t => (decimal)t.Summa)));
+            }
+            else
+            {
+                for (var p = alates; p <= kuni; p = p.AddDays(1))
+                    tulbad.Add((p.ToString("dd.MM"), perioodis.Where(t => t.Kuupaev.Date == p).Sum(t => (decimal)t.Summa)));
+            }
+
+            using var pealkiriFont = new Font("Segoe UI", 9F, FontStyle.Bold);
+            using var vaikeFont = new Font("Segoe UI", 7F);
+            g.DrawString(kuudeKaupa ? "Müügitulu kuude kaupa" : "Müügitulu päevade kaupa", pealkiriFont, Brushes.Black, 8, 4);
+
+            decimal max = tulbad.Count > 0 ? tulbad.Max(t => t.Summa) : 0;
+            if (max == 0)
+            {
+                g.DrawString("Selles perioodis müüki ei olnud.", vaikeFont, Brushes.DimGray, 8, 26);
+                return;
+            }
+
+            const int vasak = 10, ylal = 28, all = 22;
+            int laius = pnlGraafik.ClientSize.Width - vasak * 2;
+            int korgus = pnlGraafik.ClientSize.Height - ylal - all;
+            float samm = (float)laius / tulbad.Count;
+            float tulbaLaius = Math.Max(2, samm * 0.7f);
+            int sildiIga = Math.Max(1, (int)Math.Ceiling(40 / samm));   // silte ei tohi olla liiga tihedalt
+
+            using var pintsel = new SolidBrush(Color.FromArgb(31, 78, 121));
+            g.DrawLine(Pens.Gray, vasak, ylal + korgus, vasak + laius, ylal + korgus);
+
+            for (int i = 0; i < tulbad.Count; i++)
+            {
+                float h = (float)(tulbad[i].Summa / max) * (korgus - 12);
+                float x = vasak + i * samm + (samm - tulbaLaius) / 2;
+                float y = ylal + korgus - h;
+                if (h > 0) g.FillRectangle(pintsel, x, y, tulbaLaius, h);
+
+                // suurima tulba ja vähese tulpade arvu korral näita summat
+                if (tulbad[i].Summa > 0 && (tulbad.Count <= 15 || tulbad[i].Summa == max))
+                    g.DrawString($"{tulbad[i].Summa:0}€", vaikeFont, Brushes.Black, x - 2, y - 12);
+
+                if (i % sildiIga == 0)
+                    g.DrawString(tulbad[i].Silt, vaikeFont, Brushes.DimGray, x - 4, ylal + korgus + 3);
+            }
         }
     }
 }
