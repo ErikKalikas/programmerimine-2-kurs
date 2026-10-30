@@ -40,6 +40,7 @@ namespace Automaatne_andmebaasi_loomine
             dgvTop = new DataGridView();
             lblKat = new Label();
             dgvKategooriad = new DataGridView();
+            pnlGraafik = new Panel();
             ((System.ComponentModel.ISupportInitialize)dgvTop).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dgvKategooriad).BeginInit();
             SuspendLayout();
@@ -142,9 +143,18 @@ namespace Automaatne_andmebaasi_loomine
             dgvKategooriad.RowHeadersVisible = false;
             dgvKategooriad.Size = new Size(585, 125);
             // 
+            // pnlGraafik
+            // 
+            pnlGraafik.BackColor = Color.White;
+            pnlGraafik.BorderStyle = BorderStyle.FixedSingle;
+            pnlGraafik.Location = new Point(12, 448);
+            pnlGraafik.Name = "pnlGraafik";
+            pnlGraafik.Size = new Size(873, 190);
+            pnlGraafik.Paint += pnlGraafik_Paint;
+            // 
             // AruandedForm
             // 
-            ClientSize = new Size(900, 450);
+            ClientSize = new Size(900, 650);
             Controls.Add(btnTana);
             Controls.Add(btnNadal);
             Controls.Add(btnKuu);
@@ -157,6 +167,7 @@ namespace Automaatne_andmebaasi_loomine
             Controls.Add(dgvTop);
             Controls.Add(lblKat);
             Controls.Add(dgvKategooriad);
+            Controls.Add(pnlGraafik);
             Name = "AruandedForm";
             StartPosition = FormStartPosition.CenterParent;
             BackColor = Color.LightBlue;
@@ -181,5 +192,6 @@ namespace Automaatne_andmebaasi_loomine
         private System.Windows.Forms.DataGridView dgvTop;
         private System.Windows.Forms.Label lblKat;
         private System.Windows.Forms.DataGridView dgvKategooriad;
+        private System.Windows.Forms.Panel pnlGraafik;
     }
 }
