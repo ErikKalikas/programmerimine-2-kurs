@@ -36,14 +36,27 @@ namespace Automaatne_andmebaasi_loomine
             NaitaKorvi();
         }
 
-        // Näitab ostukorvi sisu ja kogusummat
+        // Näitab ostukorvi sisu ja summasid
         private void NaitaKorvi()
         {
+            int valitud = listOstukorv.SelectedIndex;
+
             listOstukorv.Items.Clear();
             foreach (var rida in Ostukorv.Ridad)
                 listOstukorv.Items.Add(rida);
 
-            lblKokku.Text = $"Kokku: {Ostukorv.Kokku:0.00} €";
+            // valik jääb samale reale ka pärast +/- vajutamist
+            if (valitud >= 0 && valitud < listOstukorv.Items.Count)
+                listOstukorv.SelectedIndex = valitud;
+
+            if (Ostukorv.SoodusProtsent > 0)
+                lblKokku.Text = $"Vahesumma: {Ostukorv.Vahesumma:0.00} €    Soodustus ({Ostukorv.Sooduskood} −{Ostukorv.SoodusProtsent}%): −{Ostukorv.Soodustus:0.00} €\n" +
+                                $"KOKKU: {Ostukorv.Kokku:0.00} €";
+            else
+                lblKokku.Text = $"KOKKU: {Ostukorv.Kokku:0.00} €";
+
+            txtSooduskood.Text = Ostukorv.Sooduskood ?? "";
+            btnRakenda.Text = Ostukorv.Sooduskood != null ? "Eemalda kood" : "Rakenda";
         }
 
         private void btnLisaKorvi_Click(object? sender, EventArgs e)
@@ -75,6 +88,24 @@ namespace Automaatne_andmebaasi_loomine
             NaitaKorvi();
         }
 
+        private void btnPluss_Click(object? sender, EventArgs e) => MuudaKogust(+1);
+
+        private void btnMiinus_Click(object? sender, EventArgs e) => MuudaKogust(-1);
+
+        private void MuudaKogust(int muutus)
+        {
+            int i = listOstukorv.SelectedIndex;
+            if (i < 0)
+            {
+                MessageBox.Show("Vali ostukorvist rida.");
+                return;
+            }
+
+            string? viga = Ostukorv.MuudaKogust(i, muutus);
+            if (viga != null) MessageBox.Show(viga);
+            NaitaKorvi();
+        }
+
         private void btnEemalda_Click(object? sender, EventArgs e)
         {
             int i = listOstukorv.SelectedIndex;
@@ -84,20 +115,35 @@ namespace Automaatne_andmebaasi_loomine
                 return;
             }
 
-            Ostukorv.Ridad.RemoveAt(i);
+            Ostukorv.Eemalda(i);
+            NaitaKorvi();
+        }
+
+        private void btnRakenda_Click(object? sender, EventArgs e)
+        {
+            if (Ostukorv.Sooduskood != null)
+            {
+                Ostukorv.EemaldaKood();
+            }
+            else
+            {
+                if (string.IsNullOrWhiteSpace(txtSooduskood.Text)) return;
+                string? viga = Ostukorv.RakendaKood(txtSooduskood.Text);
+                if (viga != null) MessageBox.Show(viga);
+            }
             NaitaKorvi();
         }
 
         private void btnGenPDF_Click(object? sender, EventArgs e)
         {
-            string? failinimi = LooPdf();
-            if (failinimi == null) return;
+            var arve = LooPdf(AktiivneKasutaja.OnKonto ? AktiivneKasutaja.Email : null);
+            if (arve == null) return;
 
-            MessageBox.Show($"PDF on loodud:\n{failinimi}");
+            MessageBox.Show($"PDF on loodud:\n{arve.Value.Fail}");
         }
 
-        // Loob PDF-arve praeguse ostukorvi järgi ja tagastab faili tee (tühja korvi puhul null)
-        private string? LooPdf(string? ostja = null)
+        // Loob PDF-arve praeguse ostukorvi järgi (tühja korvi puhul null)
+        private (string Fail, string Nr)? LooPdf(string? email)
         {
             if (Ostukorv.Ridad.Count == 0)
             {
@@ -105,7 +151,8 @@ namespace Automaatne_andmebaasi_loomine
                 return null;
             }
 
-            return ArvePdf.Loo(Ostukorv.Ridad, ostja);
+            var andmed = ArveAndmed.Ostukorvist(email);
+            return (ArvePdf.Loo(andmed), andmed.Nr);
         }
 
         private async void btnSaadaEmail_Click(object? sender, EventArgs e)
@@ -116,24 +163,27 @@ namespace Automaatne_andmebaasi_loomine
                 return;
             }
 
+            // Kontoga ostjal on e-post juba ette täidetud
+            string vaikimisi = AktiivneKasutaja.OnKonto ? AktiivneKasutaja.Email : "nimi@example.com";
             string email = Microsoft.VisualBasic.Interaction.InputBox(
-                "Sisesta e-mail", "Saaja", "nimi@example.com");
+                "Kuhu arve saata?", "E-post", vaikimisi).Trim();
 
             if (string.IsNullOrWhiteSpace(email)) return;
 
             // PDF tehakse alati uuesti praeguse korvi järgi, et ei saadetaks vana arvet
-            string? pdfPath = LooPdf(email.Trim());
-            if (pdfPath == null) return;
+            var arve = LooPdf(email);
+            if (arve == null) return;
+            string pdfPath = arve.Value.Fail;
 
             btnSaadaEmail.Enabled = false;
             btnSaadaEmail.Text = "Saadan...";
             try
             {
                 // Esimesel korral avaneb brauser Google'i sisselogimiseks
-                await GmailSaatja.SaadaAsync(email.Trim(), "Arve", "Arve on manuses.", pdfPath);
+                await GmailSaatja.SaadaAsync(email, $"Arve nr {arve.Value.Nr}", "Arve on manuses. Aitäh ostu eest!", pdfPath);
 
-                // Ost on tehtud: laoseis väheneb ja korv tühjeneb
-                Ostukorv.KinnitaOst();
+                // Ost on tehtud: tellimus salvestatakse, laoseis väheneb ja korv tühjeneb
+                Ostukorv.KinnitaOst(arve.Value.Nr, email, pdfPath);
                 NaitaKorvi();
 
                 MessageBox.Show("Arve saadetud! Täname ostu eest.");

@@ -28,72 +28,108 @@ namespace Automaatne_andmebaasi_loomine
         /// </summary>
         private void InitializeComponent()
         {
-            btnTooted = new Button();
+            lblTere = new Label();
             btnPood = new Button();
             btnArve = new Button();
+            btnTellimused = new Button();
+            btnLemmikud = new Button();
+            btnProfiil = new Button();
+            btnTooted = new Button();
             btnKategooriad = new Button();
             btnLogiValja = new Button();
             SuspendLayout();
             // 
-            // btnTooted
+            // lblTere
             // 
-            btnTooted.Location = new Point(30, 30);
-            btnTooted.Name = "btnTooted";
-            btnTooted.Size = new Size(200, 40);
-            btnTooted.Text = "Tootehaldus";
-            btnTooted.Click += btnTooted_Click;
+            lblTere.AutoSize = true;
+            lblTere.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
+            lblTere.Location = new Point(30, 15);
+            lblTere.Name = "lblTere";
             // 
             // btnPood
             // 
-            btnPood.Location = new Point(30, 80);
             btnPood.Name = "btnPood";
-            btnPood.Size = new Size(200, 40);
+            btnPood.Size = new Size(220, 38);
             btnPood.Text = "Pood";
             btnPood.Click += btnPood_Click;
             // 
             // btnArve
             // 
-            btnArve.Location = new Point(30, 130);
             btnArve.Name = "btnArve";
-            btnArve.Size = new Size(200, 40);
-            btnArve.Text = "Arve";
+            btnArve.Size = new Size(220, 38);
+            btnArve.Text = "Ostukorv";
             btnArve.Click += btnArve_Click;
+            // 
+            // btnTellimused
+            // 
+            btnTellimused.Name = "btnTellimused";
+            btnTellimused.Size = new Size(220, 38);
+            btnTellimused.Text = "Minu tellimused";
+            btnTellimused.Click += btnTellimused_Click;
+            // 
+            // btnLemmikud
+            // 
+            btnLemmikud.Name = "btnLemmikud";
+            btnLemmikud.Size = new Size(220, 38);
+            btnLemmikud.Text = "Lemmikud";
+            btnLemmikud.Click += btnLemmikud_Click;
+            // 
+            // btnProfiil
+            // 
+            btnProfiil.Name = "btnProfiil";
+            btnProfiil.Size = new Size(220, 38);
+            btnProfiil.Text = "Minu profiil";
+            btnProfiil.Click += btnProfiil_Click;
+            // 
+            // btnTooted
+            // 
+            btnTooted.Name = "btnTooted";
+            btnTooted.Size = new Size(220, 38);
+            btnTooted.Text = "Tootehaldus";
+            btnTooted.Click += btnTooted_Click;
             // 
             // btnKategooriad
             // 
-            btnKategooriad.Location = new Point(30, 180);
             btnKategooriad.Name = "btnKategooriad";
-            btnKategooriad.Size = new Size(200, 40);
+            btnKategooriad.Size = new Size(220, 38);
             btnKategooriad.Text = "Kategooriad";
             btnKategooriad.Click += btnKategooriad_Click;
             // 
             // btnLogiValja
             // 
-            btnLogiValja.Location = new Point(30, 240);
             btnLogiValja.Name = "btnLogiValja";
-            btnLogiValja.Size = new Size(200, 40);
+            btnLogiValja.Size = new Size(220, 38);
             btnLogiValja.Text = "Logi välja";
             btnLogiValja.Click += btnLogiValja_Click;
             // 
             // FormMain
             // 
-            ClientSize = new Size(300, 300);
-            Controls.Add(btnTooted);
+            ClientSize = new Size(280, 300);
+            Controls.Add(lblTere);
             Controls.Add(btnPood);
             Controls.Add(btnArve);
+            Controls.Add(btnTellimused);
+            Controls.Add(btnLemmikud);
+            Controls.Add(btnProfiil);
+            Controls.Add(btnTooted);
             Controls.Add(btnKategooriad);
             Controls.Add(btnLogiValja);
             Name = "FormMain";
             BackColor = Color.LightBlue;
             Text = "Peamenüü";
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
 
-        private System.Windows.Forms.Button btnTooted;
+        private System.Windows.Forms.Label lblTere;
         private System.Windows.Forms.Button btnPood;
         private System.Windows.Forms.Button btnArve;
+        private System.Windows.Forms.Button btnTellimused;
+        private System.Windows.Forms.Button btnLemmikud;
+        private System.Windows.Forms.Button btnProfiil;
+        private System.Windows.Forms.Button btnTooted;
         private System.Windows.Forms.Button btnKategooriad;
         private System.Windows.Forms.Button btnLogiValja;
     }

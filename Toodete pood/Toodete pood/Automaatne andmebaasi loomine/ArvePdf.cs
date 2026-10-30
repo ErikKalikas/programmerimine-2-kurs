@@ -3,6 +3,63 @@ using PdfSharpCore.Pdf;
 
 namespace Automaatne_andmebaasi_loomine
 {
+    // Arve sisu: tuleb kas ostukorvist (uus ost) või salvestatud tellimusest (vana arve uuesti)
+    public class ArveAndmed
+    {
+        public string Nr { get; set; } = string.Empty;
+        public DateTime Aeg { get; set; }
+        public List<(string Nimetus, int Kogus, float Hind)> Read { get; set; } = new();
+        public string? OstjaNimi { get; set; }
+        public string? OstjaEmail { get; set; }
+        public string? OstjaTelefon { get; set; }
+        public string? OstjaAadress { get; set; }
+        public string? Sooduskood { get; set; }
+        public decimal Soodustus { get; set; }
+
+        public static ArveAndmed Ostukorvist(string? email)
+        {
+            var a = new ArveAndmed
+            {
+                Aeg = DateTime.Now,
+                OstjaEmail = email,
+                Sooduskood = Ostukorv.Sooduskood != null ? $"{Ostukorv.Sooduskood} −{Ostukorv.SoodusProtsent}%" : null,
+                Soodustus = (decimal)Ostukorv.Soodustus,
+                Read = Ostukorv.Ridad.Select(r => (r.Toode.Toodenimetus, r.Kogus, r.Toode.HetkeHind)).ToList()
+            };
+            a.Nr = a.Aeg.ToString("yyyyMMdd-HHmmss");
+            a.LisaOstjaAndmed(AktiivneKasutaja.Id);
+            return a;
+        }
+
+        public static ArveAndmed Tellimusest(Tellimus t)
+        {
+            var a = new ArveAndmed
+            {
+                Nr = t.Nr,
+                Aeg = t.Kuupaev,
+                OstjaEmail = t.Email,
+                Sooduskood = t.Sooduskood,
+                Soodustus = (decimal)t.Soodustus,
+                Read = t.Read.Select(r => (r.Toodenimetus, r.Kogus, r.Hind)).ToList()
+            };
+            a.LisaOstjaAndmed(t.KasutajaId);
+            return a;
+        }
+
+        // Kontoga ostja nimi, telefon ja aadress tulevad profiilist
+        private void LisaOstjaAndmed(int? kasutajaId)
+        {
+            if (kasutajaId == null) return;
+            using var db = new ToodedContext();
+            var k = db.Kasutajad.Find(kasutajaId.Value);
+            if (k == null) return;
+            OstjaNimi = k.Nimi;
+            OstjaTelefon = k.Telefon;
+            OstjaAadress = k.Aadress;
+            if (string.IsNullOrWhiteSpace(OstjaEmail)) OstjaEmail = k.Email;
+        }
+    }
+
     // Koostab ostukorvist ilusa PDF-arve (päis, tabel, käibemaks, kokkuvõte)
     public static class ArvePdf
     {
@@ -25,13 +82,13 @@ namespace Automaatne_andmebaasi_loomine
         private const double XNr = Serv, XToode = 70, XKogus = 330, XHind = 420, XSumma = 555;
 
         // Tagastab loodud faili täieliku tee
-        public static string Loo(IReadOnlyList<OstukorviRida> read, string? ostja = null)
+        public static string Loo(ArveAndmed a)
         {
             Directory.CreateDirectory("Arved");
 
-            DateTime aeg = DateTime.Now;
-            string nr = aeg.ToString("yyyyMMdd-HHmmss");
-            string failinimi = Path.GetFullPath($"Arved/Arve_{aeg:yyyyMMdd_HHmmss}.pdf");
+            DateTime aeg = a.Aeg;
+            string nr = a.Nr;
+            string failinimi = Path.GetFullPath($"Arved/Arve_{nr.Replace('-', '_')}.pdf");
 
             var unicode = new XPdfFontOptions(PdfFontEncoding.Unicode);   // täpitähed õ ä ö ü ja €
             XFont Font(double suurus, XFontStyle stiil = XFontStyle.Regular) => new XFont("Verdana", suurus, stiil, unicode);
@@ -60,7 +117,10 @@ namespace Automaatne_andmebaasi_loomine
             }
             InfoRida("Kuupäev:", aeg.ToString("dd.MM.yyyy HH:mm"));
             InfoRida("Müüja:", "Toodete pood");
-            if (!string.IsNullOrWhiteSpace(ostja)) InfoRida("Ostja:", ostja);
+            if (!string.IsNullOrWhiteSpace(a.OstjaNimi)) InfoRida("Ostja:", a.OstjaNimi);
+            if (!string.IsNullOrWhiteSpace(a.OstjaEmail)) InfoRida("E-post:", a.OstjaEmail);
+            if (!string.IsNullOrWhiteSpace(a.OstjaTelefon)) InfoRida("Telefon:", a.OstjaTelefon);
+            if (!string.IsNullOrWhiteSpace(a.OstjaAadress)) InfoRida("Aadress:", a.OstjaAadress);
             InfoRida("Makseviis:", "Arve e-postiga");
             y += 15;
 
@@ -89,7 +149,7 @@ namespace Automaatne_andmebaasi_loomine
             TabeliPais();
             XFont reaFont = Font(9);
             int jrk = 0;
-            foreach (var rida in read)
+            foreach (var rida in a.Read)
             {
                 // Kui leht saab täis, jätkub tabel uuel lehel
                 if (y + ReaKorgus > leht.Height.Point - 60)
@@ -107,25 +167,26 @@ namespace Automaatne_andmebaasi_loomine
                     gfx.DrawLine(Joon, Serv, y, parem, y);   // eraldusjoon eelmise rea alla
 
                 gfx.DrawString(jrk.ToString(), reaFont, XBrushes.Black, new XRect(XNr + 6, y, 30, ReaKorgus), Vasak);
-                gfx.DrawString(Mahuta(rida.Toode.Toodenimetus, reaFont, XKogus - XToode - 70), reaFont, XBrushes.Black,
+                gfx.DrawString(Mahuta(rida.Nimetus, reaFont, XKogus - XToode - 70), reaFont, XBrushes.Black,
                     new XRect(XToode, y, XKogus - XToode - 60, ReaKorgus), Vasak);
                 gfx.DrawString($"{rida.Kogus} tk", reaFont, XBrushes.Black, new XRect(XKogus - 60, y, 60, ReaKorgus), Parem);
-                gfx.DrawString($"{rida.Toode.Hind:0.00} €", reaFont, XBrushes.Black, new XRect(XHind - 80, y, 80, ReaKorgus), Parem);
-                gfx.DrawString($"{rida.Summa:0.00} €", Font(9, XFontStyle.Bold), XBrushes.Black, new XRect(XSumma - 100, y, 94, ReaKorgus), Parem);
+                gfx.DrawString($"{rida.Hind:0.00} €", reaFont, XBrushes.Black, new XRect(XHind - 80, y, 80, ReaKorgus), Parem);
+                gfx.DrawString($"{Math.Round((decimal)rida.Hind * rida.Kogus, 2):0.00} €", Font(9, XFontStyle.Bold), XBrushes.Black, new XRect(XSumma - 100, y, 94, ReaKorgus), Parem);
 
                 y += ReaKorgus;
             }
             gfx.DrawLine(Joon, Serv, y, parem, y);   // tabeli alumine joon
 
             // ---------- Kokkuvõte ----------
-            if (y + 150 > leht.Height.Point - 60)
+            if (y + 200 > leht.Height.Point - 60)
             {
                 leht = dokument.AddPage();
                 gfx = XGraphics.FromPdfPage(leht);
                 y = Serv;
             }
 
-            decimal kokku = read.Sum(r => (decimal)r.Summa);
+            decimal vahesumma = a.Read.Sum(r => Math.Round((decimal)r.Hind * r.Kogus, 2));
+            decimal kokku = vahesumma - a.Soodustus;
             decimal kaibemaks = Math.Round(kokku * KaibemaksProtsent / (100 + KaibemaksProtsent), 2);
             decimal ilmaKm = kokku - kaibemaks;
 
@@ -133,9 +194,14 @@ namespace Automaatne_andmebaasi_loomine
             double sx = 330;   // kokkuvõtte ploki algus
             void SummaRida(string silt, decimal summa)
             {
-                gfx.DrawString(silt, Font(10), new XSolidBrush(Hall), new XRect(sx, y, 130, 18), Vasak);
+                gfx.DrawString(silt, Font(10), new XSolidBrush(Hall), new XRect(sx, y, 170, 18), Vasak);
                 gfx.DrawString($"{summa:0.00} €", Font(10), XBrushes.Black, new XRect(sx, y, parem - sx - 6, 18), Parem);
                 y += 20;
+            }
+            if (a.Soodustus > 0)
+            {
+                SummaRida("Vahesumma:", vahesumma);
+                SummaRida($"Soodustus ({a.Sooduskood}):", -a.Soodustus);
             }
             SummaRida("Summa km-ta:", ilmaKm);
             SummaRida($"Käibemaks {KaibemaksProtsent:0}%:", kaibemaks);
@@ -145,7 +211,7 @@ namespace Automaatne_andmebaasi_loomine
             gfx.DrawString("KOKKU TASUDA", Font(11, XFontStyle.Bold), new XSolidBrush(Sinine), new XRect(sx, y, 150, 30), Vasak);
             gfx.DrawString($"{kokku:0.00} €", Font(14, XFontStyle.Bold), new XSolidBrush(Sinine), new XRect(sx, y, parem - sx - 6, 30), Parem);
 
-            gfx.DrawString($"Tooteid kokku: {read.Sum(r => r.Kogus)} tk", Font(9), new XSolidBrush(Hall), new XRect(Serv, y, 250, 30), Vasak);
+            gfx.DrawString($"Tooteid kokku: {a.Read.Sum(r => r.Kogus)} tk", Font(9), new XSolidBrush(Hall), new XRect(Serv, y, 250, 30), Vasak);
 
             // ---------- Jalus ----------
             double jy = leht.Height.Point - 70;

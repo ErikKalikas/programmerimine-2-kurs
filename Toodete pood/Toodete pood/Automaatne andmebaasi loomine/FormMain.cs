@@ -9,29 +9,48 @@ namespace Automaatne_andmebaasi_loomine
         {
             InitializeComponent();
 
+            Button[] nupud;
             if (AktiivneKasutaja.Roll == "admin")
             {
                 Text = "Peamenüü – administraator";
+                lblTere.Text = "Administraator";
+                nupud = new[] { btnTooted, btnKategooriad, btnPood, btnArve, btnLogiValja };
+            }
+            else if (AktiivneKasutaja.OnKonto)
+            {
+                // Kontoga ostja: pood, korv, tellimused, lemmikud ja profiil
+                Text = "Pood";
+                lblTere.Text = $"Tere, {AktiivneKasutaja.Nimi}!";
+                nupud = new[] { btnPood, btnArve, btnTellimused, btnLemmikud, btnProfiil, btnLogiValja };
             }
             else
             {
-                // Ostja näeb ainult poodi ja ostukorvi, midagi muuta ei saa
-                Text = "Pood – ostja";
-                btnTooted.Visible = false;
-                btnKategooriad.Visible = false;
-
-                btnPood.Location = new Point(30, 30);
-                btnArve.Location = new Point(30, 80);
-                btnArve.Text = "Ostukorv";
-                btnLogiValja.Location = new Point(30, 140);
-                ClientSize = new Size(300, 200);
+                // Külaline näeb ainult poodi ja ostukorvi, midagi muuta ei saa
+                Text = "Pood";
+                lblTere.Text = "Tere, külaline!";
+                btnLogiValja.Text = "Tagasi algusesse";
+                nupud = new[] { btnPood, btnArve, btnLogiValja };
             }
+
+            // Nupud üksteise alla; teised peidetakse
+            foreach (Control c in Controls)
+                if (c is Button) c.Visible = false;
+
+            int y = 50;
+            foreach (var nupp in nupud)
+            {
+                if (nupp == btnLogiValja) y += 10;   // väike vahe enne väljalogimist
+                nupp.Location = new Point(30, y);
+                nupp.Visible = true;
+                y += 46;
+            }
+            ClientSize = new Size(280, y + 10);
         }
 
         private void btnLogiValja_Click(object? sender, EventArgs e)
         {
-            AktiivneKasutaja.Roll = "";   // LoginForm näeb seda ja avab end uuesti
-            Ostukorv.Ridad.Clear();
+            AktiivneKasutaja.LogiValja();   // LoginForm näeb tühja rolli ja avab end uuesti
+            Ostukorv.Unusta();              // korv jääb faili alles järgmiseks korraks
             Close();
         }
 
@@ -57,6 +76,25 @@ namespace Automaatne_andmebaasi_loomine
         {
             KategooriadForm f = new KategooriadForm();
             f.ShowDialog();
+        }
+
+        private void btnTellimused_Click(object? sender, EventArgs e)
+        {
+            using var f = new TellimusedForm();
+            f.ShowDialog();
+        }
+
+        private void btnLemmikud_Click(object? sender, EventArgs e)
+        {
+            using var f = new LemmikudForm();
+            f.ShowDialog();
+        }
+
+        private void btnProfiil_Click(object? sender, EventArgs e)
+        {
+            using var f = new ProfiilForm();
+            f.ShowDialog();
+            lblTere.Text = $"Tere, {AktiivneKasutaja.Nimi}!";
         }
     }
 }

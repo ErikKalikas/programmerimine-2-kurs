@@ -11,6 +11,9 @@ namespace Automaatne_andmebaasi_loomine
         public DbSet<Toode> Toodetabel { get; set; }
         public DbSet<Kategooria> Kategooriatabel { get; set; }
         public DbSet<Kasutaja> Kasutajad { get; set; }
+        public DbSet<Tellimus> Tellimused { get; set; }
+        public DbSet<TellimuseRida> TellimuseRead { get; set; }
+        public DbSet<Lemmik> Lemmikud { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

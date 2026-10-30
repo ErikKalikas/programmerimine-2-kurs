@@ -29,7 +29,10 @@ namespace Automaatne_andmebaasi_loomine
         private void InitializeComponent()
         {
             btnOstja = new Button();
+            btnKlient = new Button();
+            btnRegistreeru = new Button();
             btnAdmin = new Button();
+            lblPealkiri = new Label();
             txtEmail = new TextBox();
             txtParool = new TextBox();
             btnLogin = new Button();
@@ -39,29 +42,55 @@ namespace Automaatne_andmebaasi_loomine
             // 
             // btnOstja
             // 
-            btnOstja.Location = new Point(30, 30);
+            btnOstja.Location = new Point(30, 25);
             btnOstja.Name = "btnOstja";
-            btnOstja.Size = new Size(200, 45);
+            btnOstja.Size = new Size(220, 45);
             btnOstja.TabIndex = 0;
             btnOstja.Text = "Sisene poodi";
             btnOstja.Click += btnOstja_Click;
             // 
+            // btnKlient
+            // 
+            btnKlient.Location = new Point(30, 80);
+            btnKlient.Name = "btnKlient";
+            btnKlient.Size = new Size(220, 30);
+            btnKlient.TabIndex = 1;
+            btnKlient.Text = "Logi sisse";
+            btnKlient.Click += btnKlient_Click;
+            // 
+            // btnRegistreeru
+            // 
+            btnRegistreeru.Location = new Point(30, 115);
+            btnRegistreeru.Name = "btnRegistreeru";
+            btnRegistreeru.Size = new Size(220, 30);
+            btnRegistreeru.TabIndex = 2;
+            btnRegistreeru.Text = "Registreeru";
+            btnRegistreeru.Click += btnRegistreeru_Click;
+            // 
             // btnAdmin
             // 
-            btnAdmin.Location = new Point(30, 90);
+            btnAdmin.Location = new Point(30, 165);
             btnAdmin.Name = "btnAdmin";
-            btnAdmin.Size = new Size(200, 30);
-            btnAdmin.TabIndex = 1;
+            btnAdmin.Size = new Size(220, 28);
+            btnAdmin.TabIndex = 3;
             btnAdmin.Text = "Logi sisse administraatorina";
             btnAdmin.Click += btnAdmin_Click;
             // 
+            // lblPealkiri
+            // 
+            lblPealkiri.AutoSize = true;
+            lblPealkiri.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            lblPealkiri.Location = new Point(30, 8);
+            lblPealkiri.Name = "lblPealkiri";
+            lblPealkiri.Visible = false;
+            // 
             // txtEmail
             // 
-            txtEmail.Location = new Point(30, 30);
+            txtEmail.Location = new Point(30, 35);
             txtEmail.Name = "txtEmail";
             txtEmail.PlaceholderText = "Email";
-            txtEmail.Size = new Size(200, 23);
-            txtEmail.TabIndex = 2;
+            txtEmail.Size = new Size(220, 23);
+            txtEmail.TabIndex = 4;
             txtEmail.Visible = false;
             // 
             // txtParool
@@ -70,16 +99,16 @@ namespace Automaatne_andmebaasi_loomine
             txtParool.Name = "txtParool";
             txtParool.PasswordChar = '*';
             txtParool.PlaceholderText = "Parool";
-            txtParool.Size = new Size(200, 23);
-            txtParool.TabIndex = 3;
+            txtParool.Size = new Size(220, 23);
+            txtParool.TabIndex = 5;
             txtParool.Visible = false;
             // 
             // btnLogin
             // 
             btnLogin.Location = new Point(30, 110);
             btnLogin.Name = "btnLogin";
-            btnLogin.Size = new Size(200, 30);
-            btnLogin.TabIndex = 4;
+            btnLogin.Size = new Size(220, 30);
+            btnLogin.TabIndex = 6;
             btnLogin.Text = "Logi sisse";
             btnLogin.Visible = false;
             btnLogin.Click += btnLogin_Click;
@@ -88,8 +117,8 @@ namespace Automaatne_andmebaasi_loomine
             // 
             btnTagasi.Location = new Point(30, 150);
             btnTagasi.Name = "btnTagasi";
-            btnTagasi.Size = new Size(200, 30);
-            btnTagasi.TabIndex = 5;
+            btnTagasi.Size = new Size(220, 30);
+            btnTagasi.TabIndex = 7;
             btnTagasi.Text = "Tagasi";
             btnTagasi.Visible = false;
             btnTagasi.Click += btnTagasi_Click;
@@ -97,15 +126,18 @@ namespace Automaatne_andmebaasi_loomine
             // lblVeateade
             // 
             lblVeateade.AutoSize = true;
-            lblVeateade.Location = new Point(30, 190);
+            lblVeateade.Location = new Point(30, 200);
             lblVeateade.Name = "lblVeateade";
             lblVeateade.Size = new Size(0, 15);
             // 
             // LoginForm
             // 
-            ClientSize = new Size(260, 230);
+            ClientSize = new Size(280, 235);
             Controls.Add(btnOstja);
+            Controls.Add(btnKlient);
+            Controls.Add(btnRegistreeru);
             Controls.Add(btnAdmin);
+            Controls.Add(lblPealkiri);
             Controls.Add(txtEmail);
             Controls.Add(txtParool);
             Controls.Add(btnLogin);
@@ -121,7 +153,10 @@ namespace Automaatne_andmebaasi_loomine
         #endregion
 
         private System.Windows.Forms.Button btnOstja;
+        private System.Windows.Forms.Button btnKlient;
+        private System.Windows.Forms.Button btnRegistreeru;
         private System.Windows.Forms.Button btnAdmin;
+        private System.Windows.Forms.Label lblPealkiri;
         private System.Windows.Forms.TextBox txtEmail;
         private System.Windows.Forms.TextBox txtParool;
         private System.Windows.Forms.Button btnLogin;

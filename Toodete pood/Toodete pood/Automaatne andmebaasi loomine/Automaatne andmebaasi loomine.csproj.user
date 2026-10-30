@@ -22,5 +22,20 @@
     <Compile Update="KategooriadForm.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Update="RegistreerimineForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="ProfiilForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="TooteKaartForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="TellimusedForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="LemmikudForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
   </ItemGroup>
 </Project>
