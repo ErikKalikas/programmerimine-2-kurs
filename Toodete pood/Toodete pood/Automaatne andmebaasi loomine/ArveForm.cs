@@ -93,15 +93,24 @@ namespace Automaatne_andmebaasi_loomine
         {
             float kokku = ostukorv.Sum(r => r.Summa);
 
-            lblKokku.Text = $"Kokku: {kokku} €";
+            lblKokku.Text = $"Kokku: {kokku:0.00} €";
         }
 
         private void btnGenPDF_Click(object? sender, EventArgs e)
         {
+            string? failinimi = LooPdf();
+            if (failinimi == null) return;
+
+            MessageBox.Show($"PDF on loodud:\n{failinimi}");
+        }
+
+        // Loob PDF-i praeguse ostukorvi järgi ja tagastab faili tee (tühja korvi puhul null)
+        private string? LooPdf()
+        {
             if (ostukorv.Count == 0)
             {
                 MessageBox.Show("Ostukorv on tühi.");
-                return;
+                return null;
             }
 
             Directory.CreateDirectory("Arved");
@@ -125,20 +134,20 @@ namespace Automaatne_andmebaasi_loomine
                 y += 30;
             }
 
-            gfx.DrawString($"Kokku: {ostukorv.Sum(r => r.Summa)} €",
+            gfx.DrawString($"Kokku: {ostukorv.Sum(r => r.Summa):0.00} €",
                 new XFont("Verdana", 14), XBrushes.Black,
                 new XRect(20, y + 20, page.Width, 20), XStringFormats.TopLeft);
 
             document.Save(failinimi);
 
-            MessageBox.Show($"PDF on loodud:\n{failinimi}");
+            return Path.GetFullPath(failinimi);
         }
 
         private async void btnSaadaEmail_Click(object? sender, EventArgs e)
         {
-            if (!Directory.Exists("Arved") || Directory.GetFiles("Arved", "*.pdf").Length == 0)
+            if (ostukorv.Count == 0)
             {
-                MessageBox.Show("Arvet pole veel loodud. Vajuta enne \"Genereeri PDF\".");
+                MessageBox.Show("Ostukorv on tühi.");
                 return;
             }
 
@@ -147,9 +156,9 @@ namespace Automaatne_andmebaasi_loomine
 
             if (string.IsNullOrWhiteSpace(email)) return;
 
-            string pdfPath = Path.GetFullPath(Directory.GetFiles("Arved", "*.pdf")
-                .OrderByDescending(f => f)
-                .First());
+            // PDF tehakse alati uuesti praeguse korvi järgi, et ei saadetaks vana arvet
+            string? pdfPath = LooPdf();
+            if (pdfPath == null) return;
 
             btnSaadaEmail.Enabled = false;
             btnSaadaEmail.Text = "Saadan...";
