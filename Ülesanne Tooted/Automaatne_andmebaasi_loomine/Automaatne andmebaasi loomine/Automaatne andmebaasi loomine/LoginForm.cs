@@ -120,6 +120,7 @@ namespace Automaatne_andmebaasi_loomine
 
             // peale login
             FormMain main = new FormMain();
+            main.FormClosed += (_, _) => this.Close(); // FormMain sulgemisel sulgub kogu programm
             main.Show();
             this.Hide();
         }
