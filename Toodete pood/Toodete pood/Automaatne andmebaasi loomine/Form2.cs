@@ -12,6 +12,9 @@ namespace Automaatne_andmebaasi_loomine
         private readonly ToodedContext _db;
         private string? valitudPilt;
 
+        // Nii väikese laoseisuga toode on "otsakorral" ja märgitakse punaseks
+        private const int OtsakorralPiir = 5;
+
         public Form2()
         {
             InitializeComponent();
@@ -24,8 +27,23 @@ namespace Automaatne_andmebaasi_loomine
             Directory.CreateDirectory("Images");
 
             LaeKategooriad();
+            LaeFilter();
             LaeTooted();
         }
+
+        // Kategooria filter tabeli kohal: "Kõik kategooriad" + kõik kategooriad
+        private void LaeFilter()
+        {
+            cmbFilter.SelectedIndexChanged -= Filter_Changed;
+            cmbFilter.Items.Clear();
+            cmbFilter.Items.Add("Kõik kategooriad");
+            foreach (var k in _db.Kategooriatabel.OrderBy(k => k.Kategooria_nimetus).ToList())
+                cmbFilter.Items.Add(k.Kategooria_nimetus);
+            cmbFilter.SelectedIndex = 0;
+            cmbFilter.SelectedIndexChanged += Filter_Changed;
+        }
+
+        private void Filter_Changed(object? sender, EventArgs e) => LaeTooted();
 
         private void Form2_Load(object? sender, EventArgs e)
         {
@@ -46,7 +64,7 @@ namespace Automaatne_andmebaasi_loomine
 
         private void LaeTooted()
         {
-            dataGridViewTooted.DataSource = _db.Toodetabel
+            var tooted = _db.Toodetabel
                 .Include(t => t.Kategooria)
                 .Select(t => new
                 {
@@ -60,12 +78,42 @@ namespace Automaatne_andmebaasi_loomine
                 })
                 .ToList();
 
+            // Otsakorral tooted kogu laos (filtrist sõltumata)
+            int otsakorral = tooted.Count(t => t.Kogus < OtsakorralPiir);
+            lblHoiatus.Text = otsakorral > 0
+                ? $"⚠ {otsakorral} toodet on otsakorral (alla {OtsakorralPiir} tk)"
+                : "";
+
+            // Otsing, kategooria ja "ainult otsakorral"
+            string otsing = txtOtsi.Text.Trim();
+            if (otsing != "")
+                tooted = tooted.Where(t => t.Toodenimetus.Contains(otsing, StringComparison.CurrentCultureIgnoreCase)).ToList();
+            if (cmbFilter.SelectedIndex > 0)
+                tooted = tooted.Where(t => t.Kategooria == cmbFilter.SelectedItem?.ToString()).ToList();
+            if (chkOtsakorral.Checked)
+                tooted = tooted.Where(t => t.Kogus < OtsakorralPiir).ToList();
+
+            dataGridViewTooted.DataSource = tooted;
+
             // Hind alati kahe komakohaga (float võib muidu näidata nt 30,000002)
             var hindVeerg = dataGridViewTooted.Columns["Hind"];
             if (hindVeerg != null) hindVeerg.DefaultCellStyle.Format = "0.00";
 
             var kategooriaIdVeerg = dataGridViewTooted.Columns["KategooriaId"];
             if (kategooriaIdVeerg != null) kategooriaIdVeerg.Visible = false;
+        }
+
+        // Otsakorral read punaseks (otsas tooted tumedamalt)
+        private void dataGridViewTooted_DataBindingComplete(object? sender, DataGridViewBindingCompleteEventArgs e)
+        {
+            foreach (DataGridViewRow rida in dataGridViewTooted.Rows)
+            {
+                int kogus = Convert.ToInt32(rida.Cells["Kogus"].Value);
+                if (kogus <= 0)
+                    rida.DefaultCellStyle.BackColor = Color.LightCoral;
+                else if (kogus < OtsakorralPiir)
+                    rida.DefaultCellStyle.BackColor = Color.MistyRose;
+            }
         }
 
         // Kontrollib, et väljad on õigesti täidetud

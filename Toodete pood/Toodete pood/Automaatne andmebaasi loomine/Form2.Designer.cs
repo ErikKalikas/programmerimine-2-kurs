@@ -29,6 +29,10 @@ namespace Automaatne_andmebaasi_loomine
         private void InitializeComponent()
         {
             dataGridViewTooted = new DataGridView();
+            txtOtsi = new TextBox();
+            cmbFilter = new ComboBox();
+            chkOtsakorral = new CheckBox();
+            lblHoiatus = new Label();
             txtNimetus = new TextBox();
             txtKogus = new TextBox();
             txtHind = new TextBox();
@@ -46,7 +50,7 @@ namespace Automaatne_andmebaasi_loomine
             // dataGridViewTooted
             // 
             dataGridViewTooted.AllowUserToAddRows = false;
-            dataGridViewTooted.Location = new Point(12, 12);
+            dataGridViewTooted.Location = new Point(12, 45);
             dataGridViewTooted.MultiSelect = false;
             dataGridViewTooted.Name = "dataGridViewTooted";
             dataGridViewTooted.ReadOnly = true;
@@ -54,6 +58,39 @@ namespace Automaatne_andmebaasi_loomine
             dataGridViewTooted.Size = new Size(600, 300);
             dataGridViewTooted.TabIndex = 0;
             dataGridViewTooted.CellClick += dataGridViewTooted_CellClick;
+            dataGridViewTooted.DataBindingComplete += dataGridViewTooted_DataBindingComplete;
+            // 
+            // txtOtsi
+            // 
+            txtOtsi.Location = new Point(12, 12);
+            txtOtsi.Name = "txtOtsi";
+            txtOtsi.PlaceholderText = "🔍 Otsi toodet...";
+            txtOtsi.Size = new Size(240, 23);
+            txtOtsi.TextChanged += Filter_Changed;
+            // 
+            // cmbFilter
+            // 
+            cmbFilter.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbFilter.Location = new Point(262, 12);
+            cmbFilter.Name = "cmbFilter";
+            cmbFilter.Size = new Size(170, 23);
+            cmbFilter.SelectedIndexChanged += Filter_Changed;
+            // 
+            // chkOtsakorral
+            // 
+            chkOtsakorral.AutoSize = true;
+            chkOtsakorral.Location = new Point(445, 14);
+            chkOtsakorral.Name = "chkOtsakorral";
+            chkOtsakorral.Text = "Ainult otsakorral";
+            chkOtsakorral.CheckedChanged += Filter_Changed;
+            // 
+            // lblHoiatus
+            // 
+            lblHoiatus.AutoSize = true;
+            lblHoiatus.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            lblHoiatus.ForeColor = Color.Firebrick;
+            lblHoiatus.Location = new Point(12, 352);
+            lblHoiatus.Name = "lblHoiatus";
             // 
             // txtNimetus
             // 
@@ -148,6 +185,10 @@ namespace Automaatne_andmebaasi_loomine
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(860, 560);
             Controls.Add(dataGridViewTooted);
+            Controls.Add(txtOtsi);
+            Controls.Add(cmbFilter);
+            Controls.Add(chkOtsakorral);
+            Controls.Add(lblHoiatus);
             Controls.Add(txtNimetus);
             Controls.Add(txtKogus);
             Controls.Add(txtHind);
@@ -171,6 +212,10 @@ namespace Automaatne_andmebaasi_loomine
         #endregion
 
         private System.Windows.Forms.DataGridView dataGridViewTooted;
+        private System.Windows.Forms.TextBox txtOtsi;
+        private System.Windows.Forms.ComboBox cmbFilter;
+        private System.Windows.Forms.CheckBox chkOtsakorral;
+        private System.Windows.Forms.Label lblHoiatus;
         private System.Windows.Forms.TextBox txtNimetus;
         private System.Windows.Forms.TextBox txtKogus;
         private System.Windows.Forms.TextBox txtHind;
