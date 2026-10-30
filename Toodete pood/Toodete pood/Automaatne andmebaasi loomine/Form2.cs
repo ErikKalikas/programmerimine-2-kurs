@@ -60,6 +60,10 @@ namespace Automaatne_andmebaasi_loomine
                 })
                 .ToList();
 
+            // Hind alati kahe komakohaga (float võib muidu näidata nt 30,000002)
+            var hindVeerg = dataGridViewTooted.Columns["Hind"];
+            if (hindVeerg != null) hindVeerg.DefaultCellStyle.Format = "0.00";
+
             var kategooriaIdVeerg = dataGridViewTooted.Columns["KategooriaId"];
             if (kategooriaIdVeerg != null) kategooriaIdVeerg.Visible = false;
         }
@@ -104,7 +108,7 @@ namespace Automaatne_andmebaasi_loomine
             {
                 Toodenimetus = txtNimetus.Text,
                 Kogus = int.Parse(txtKogus.Text),
-                Hind = float.Parse(txtHind.Text),
+                Hind = (float)Math.Round(float.Parse(txtHind.Text), 2),
                 KategooriaId = Convert.ToInt32(comboKategooria.SelectedValue),
                 Pilt = string.IsNullOrEmpty(valitudPilt) ? string.Empty : Path.GetFileName(valitudPilt)
             };
@@ -129,7 +133,7 @@ namespace Automaatne_andmebaasi_loomine
 
             txtNimetus.Text = rida.Cells["Toodenimetus"].Value?.ToString();
             txtKogus.Text = rida.Cells["Kogus"].Value?.ToString();
-            txtHind.Text = rida.Cells["Hind"].Value?.ToString();
+            txtHind.Text = Convert.ToSingle(rida.Cells["Hind"].Value).ToString("0.00");
             comboKategooria.SelectedValue = rida.Cells["KategooriaId"].Value;
 
             // uus pilt pole veel valitud
@@ -159,7 +163,7 @@ namespace Automaatne_andmebaasi_loomine
 
             toode.Toodenimetus = txtNimetus.Text;
             toode.Kogus = int.Parse(txtKogus.Text);
-            toode.Hind = float.Parse(txtHind.Text);
+            toode.Hind = (float)Math.Round(float.Parse(txtHind.Text), 2);
             toode.KategooriaId = Convert.ToInt32(comboKategooria.SelectedValue);
 
             if (valitudPilt != null)

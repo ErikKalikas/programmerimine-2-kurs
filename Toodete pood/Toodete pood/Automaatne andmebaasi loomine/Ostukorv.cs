@@ -5,7 +5,7 @@ namespace Automaatne_andmebaasi_loomine
     {
         public static List<OstukorviRida> Ridad { get; } = new();
 
-        public static float Kokku => Ridad.Sum(r => r.Summa);
+        public static float Kokku => (float)Math.Round(Ridad.Sum(r => (decimal)r.Summa), 2);
 
         // Lisab toote korvi. Tagastab veateate või null, kui lisamine õnnestus.
         public static string? Lisa(Toode toode, int kogus)
