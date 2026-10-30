@@ -55,6 +55,7 @@ namespace Automaatne_andmebaasi_loomine
             db.SaveChanges();
 
             UusKasutaja = kasutaja;
+            if (roll == "admin") Tegevuslogi.Kirjuta($"Lisas administraatori {email}");
             MessageBox.Show(roll == "admin" ? $"Administraator {nimi} on lisatud." : $"Tere tulemast, {nimi}! Konto on loodud.");
             DialogResult = DialogResult.OK;
         }

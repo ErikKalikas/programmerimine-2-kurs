@@ -53,6 +53,7 @@ namespace Automaatne_andmebaasi_loomine
 
             k.ParoolHash = PasswordHelper.Hash(txtUusParool.Text);
             db.SaveChanges();
+            Tegevuslogi.Kirjuta("Muutis oma parooli");
 
             txtVanaParool.Clear();
             txtUusParool.Clear();

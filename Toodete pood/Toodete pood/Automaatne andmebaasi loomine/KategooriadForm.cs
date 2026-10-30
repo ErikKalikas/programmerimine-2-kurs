@@ -52,6 +52,7 @@ namespace Automaatne_andmebaasi_loomine
                 Kirjeldus = txtKirjeldus.Text
             });
             _db.SaveChanges();
+            Tegevuslogi.Kirjuta($"Lisas kategooria \"{txtNimetus.Text}\"");
             LaeKategooriad();
         }
 
@@ -73,10 +74,14 @@ namespace Automaatne_andmebaasi_loomine
             var kat = _db.Kategooriatabel.Find(id);
             if (kat == null) return;
 
+            string vanaNimi = kat.Kategooria_nimetus;
             kat.Kategooria_nimetus = txtNimetus.Text;
             kat.Kirjeldus = txtKirjeldus.Text;
 
             _db.SaveChanges();
+            Tegevuslogi.Kirjuta(vanaNimi == kat.Kategooria_nimetus
+                ? $"Muutis kategooriat \"{kat.Kategooria_nimetus}\""
+                : $"Nimetas kategooria \"{vanaNimi}\" ümber: \"{kat.Kategooria_nimetus}\"");
             LaeKategooriad();
         }
 
@@ -102,6 +107,7 @@ namespace Automaatne_andmebaasi_loomine
 
             _db.Kategooriatabel.Remove(kat);
             _db.SaveChanges();
+            Tegevuslogi.Kirjuta($"Kustutas kategooria \"{kat.Kategooria_nimetus}\"");
             LaeKategooriad();
             txtNimetus.Text = "";
             txtKirjeldus.Text = "";
