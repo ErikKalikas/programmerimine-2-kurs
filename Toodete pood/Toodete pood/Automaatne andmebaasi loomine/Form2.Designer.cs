@@ -43,6 +43,7 @@ namespace Automaatne_andmebaasi_loomine
             btnKustuta = new Button();
             btnValiPilt = new Button();
             btnArve = new Button();
+            btnLisaLattu = new Button();
             ((System.ComponentModel.ISupportInitialize)dataGridViewTooted).BeginInit();
             ((System.ComponentModel.ISupportInitialize)picturePilt).BeginInit();
             SuspendLayout();
@@ -179,6 +180,15 @@ namespace Automaatne_andmebaasi_loomine
             btnArve.Text = "Lisa arvele";
             btnArve.Click += btnArve_Click;
             // 
+            // btnLisaLattu
+            // 
+            btnLisaLattu.Location = new Point(715, 390);
+            btnLisaLattu.Name = "btnLisaLattu";
+            btnLisaLattu.Size = new Size(115, 23);
+            btnLisaLattu.TabIndex = 11;
+            btnLisaLattu.Text = "Lisa lattu +";
+            btnLisaLattu.Click += btnLisaLattu_Click;
+            // 
             // Form2
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -199,6 +209,7 @@ namespace Automaatne_andmebaasi_loomine
             Controls.Add(btnUuenda);
             Controls.Add(btnKustuta);
             Controls.Add(btnArve);
+            Controls.Add(btnLisaLattu);
             Name = "Form2";
             BackColor = Color.LightBlue;
             Text = "Toodete haldus";
@@ -226,5 +237,6 @@ namespace Automaatne_andmebaasi_loomine
         private System.Windows.Forms.Button btnKustuta;
         private System.Windows.Forms.Button btnValiPilt;
         private System.Windows.Forms.Button btnArve;
+        private System.Windows.Forms.Button btnLisaLattu;
     }
 }
