@@ -74,6 +74,7 @@ namespace Automaatne_andmebaasi_loomine
             if (k == null) return;
             k.Roll = uus;
             db.SaveChanges();
+            Tegevuslogi.Kirjuta($"Muutis kasutaja {k.Email} rolliks: {(uus == "admin" ? "administraator" : "ostja")}");
             Lae();
         }
 
@@ -87,6 +88,7 @@ namespace Automaatne_andmebaasi_loomine
             if (k == null) return;
             k.Blokeeritud = !k.Blokeeritud;
             db.SaveChanges();
+            Tegevuslogi.Kirjuta(k.Blokeeritud ? $"Blokeeris kasutaja {k.Email}" : $"Avas kasutaja {k.Email} blokeeringu");
 
             MessageBox.Show(k.Blokeeritud ? $"{k.Nimi} on blokeeritud ega saa enam sisse logida." : $"{k.Nimi} saab jälle sisse logida.");
             Lae();

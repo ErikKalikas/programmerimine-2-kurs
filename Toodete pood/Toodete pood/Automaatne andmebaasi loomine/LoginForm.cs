@@ -211,6 +211,7 @@ namespace Automaatne_andmebaasi_loomine
             }
 
             AktiivneKasutaja.LogiSisse(kasutaja);
+            if (kasutaja.Roll == "admin") Tegevuslogi.Kirjuta("Logis sisse administraatorina");
             AvaPeamenyy();
         }
 

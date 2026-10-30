@@ -212,6 +212,7 @@ namespace Automaatne_andmebaasi_loomine
 
             _db.Toodetabel.Add(uus);
             _db.SaveChanges();
+            Tegevuslogi.Kirjuta($"Lisas toote \"{uus.Toodenimetus}\" (hind {uus.Hind:0.00} €, laos {uus.Kogus} tk)");
             LaeTooted();
             valitudPilt = null;
         }
@@ -260,6 +261,12 @@ namespace Automaatne_andmebaasi_loomine
             var toode = _db.Toodetabel.Find(id);
             if (toode == null) return;
 
+            // vanad väärtused logi jaoks
+            string vanaNimi = toode.Toodenimetus;
+            float vanaHind = toode.Hind;
+            int vanaKogus = toode.Kogus;
+            float? vanaSoodus = toode.SoodusHind;
+
             toode.Toodenimetus = txtNimetus.Text;
             toode.Kogus = int.Parse(txtKogus.Text);
             toode.Hind = (float)Math.Round(float.Parse(txtHind.Text), 2);
@@ -275,6 +282,15 @@ namespace Automaatne_andmebaasi_loomine
             }
 
             _db.SaveChanges();
+
+            var muudatused = new List<string>();
+            if (vanaNimi != toode.Toodenimetus) muudatused.Add($"nimi \"{vanaNimi}\" → \"{toode.Toodenimetus}\"");
+            if (vanaHind != toode.Hind) muudatused.Add($"hind {vanaHind:0.00} → {toode.Hind:0.00} €");
+            if (vanaKogus != toode.Kogus) muudatused.Add($"laos {vanaKogus} → {toode.Kogus} tk");
+            if (vanaSoodus != toode.SoodusHind)
+                muudatused.Add($"soodushind {(vanaSoodus?.ToString("0.00") ?? "–")} → {(toode.SoodusHind?.ToString("0.00") ?? "–")}");
+            Tegevuslogi.Kirjuta($"Muutis toodet \"{toode.Toodenimetus}\"" +
+                                (muudatused.Count > 0 ? ": " + string.Join(", ", muudatused) : ""));
             LaeTooted();
             valitudPilt = null;
         }
@@ -294,6 +310,7 @@ namespace Automaatne_andmebaasi_loomine
 
             _db.Toodetabel.Remove(toode);
             _db.SaveChanges();
+            Tegevuslogi.Kirjuta($"Kustutas toote \"{toode.Toodenimetus}\"");
             LaeTooted();
             picturePilt.Image = null;
         }
@@ -323,6 +340,7 @@ namespace Automaatne_andmebaasi_loomine
 
             toode.Kogus += lisa;
             _db.SaveChanges();
+            Tegevuslogi.Kirjuta($"Lisas lattu \"{toode.Toodenimetus}\" +{lisa} tk (nüüd {toode.Kogus} tk)");
             LaeTooted();
             MessageBox.Show($"{toode.Toodenimetus}: laos nüüd {toode.Kogus} tk.");
         }
