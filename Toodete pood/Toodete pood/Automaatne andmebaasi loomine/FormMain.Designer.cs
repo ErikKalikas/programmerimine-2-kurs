@@ -32,6 +32,7 @@ namespace Automaatne_andmebaasi_loomine
             btnPood = new Button();
             btnArve = new Button();
             btnKategooriad = new Button();
+            btnLogiValja = new Button();
             SuspendLayout();
             // 
             // btnTooted
@@ -66,13 +67,22 @@ namespace Automaatne_andmebaasi_loomine
             btnKategooriad.Text = "Kategooriad";
             btnKategooriad.Click += btnKategooriad_Click;
             // 
+            // btnLogiValja
+            // 
+            btnLogiValja.Location = new Point(30, 240);
+            btnLogiValja.Name = "btnLogiValja";
+            btnLogiValja.Size = new Size(200, 40);
+            btnLogiValja.Text = "Logi välja";
+            btnLogiValja.Click += btnLogiValja_Click;
+            // 
             // FormMain
             // 
-            ClientSize = new Size(300, 260);
+            ClientSize = new Size(300, 300);
             Controls.Add(btnTooted);
             Controls.Add(btnPood);
             Controls.Add(btnArve);
             Controls.Add(btnKategooriad);
+            Controls.Add(btnLogiValja);
             Name = "FormMain";
             BackColor = Color.LightBlue;
             Text = "Peamenüü";
@@ -85,5 +95,6 @@ namespace Automaatne_andmebaasi_loomine
         private System.Windows.Forms.Button btnPood;
         private System.Windows.Forms.Button btnArve;
         private System.Windows.Forms.Button btnKategooriad;
+        private System.Windows.Forms.Button btnLogiValja;
     }
 }

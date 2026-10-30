@@ -16,6 +16,7 @@ namespace Automaatne_andmebaasi_loomine
             InitializeComponent();
             _db = new ToodedContext();
             LaeKategooriadJaPildid();
+            NaitaKokku();
         }
 
         private void LaeKategooriadJaPildid()
@@ -33,6 +34,7 @@ namespace Automaatne_andmebaasi_loomine
 
                 // Too kategooria tooted andmebaasist
                 var tooted = _db.Toodetabel
+                                .AsNoTracking()   // alati värske laoseis andmebaasist
                                 .Where(t => t.KategooriaId == kat.Id)
                                 .ToList();
 
@@ -60,19 +62,17 @@ namespace Automaatne_andmebaasi_loomine
                     if (File.Exists(piltPath))
                         pb.Image = Image.FromFile(piltPath);
 
-                    // Pildile klikk näitab toote infot
-                    pb.Click += (s, e) =>
-                    {
-                        MessageBox.Show($"Toode: {t.Toodenimetus}\nHind: {t.Hind}€");
-                    };
+                    // Pildile klikk lisab toote ostukorvi
+                    pb.Cursor = Cursors.Hand;
+                    pb.Click += (s, e) => LisaKorvi(t);
 
                     // Nimetus
                     Label lbl = new Label();
-                    lbl.Text = t.Toodenimetus;
+                    lbl.Text = $"{t.Toodenimetus}\n{t.Hind:0.00} €";
                     lbl.AutoSize = false;
                     lbl.TextAlign = ContentAlignment.MiddleCenter;
                     lbl.Location = new Point(5, 150);
-                    lbl.Width = 140;
+                    lbl.Size = new Size(140, 40);
 
                     // Lisa elemendid paneelile
                     p.Controls.Add(pb);
@@ -97,6 +97,39 @@ namespace Automaatne_andmebaasi_loomine
                 // Lisa TabPage TabControli sisse
                 tabPood.TabPages.Add(page);
             }
+        }
+
+        private void LisaKorvi(Toode t)
+        {
+            string kogusStr = Microsoft.VisualBasic.Interaction.InputBox(
+                $"{t.Toodenimetus} – {t.Hind:0.00} €\nLaos: {t.Kogus} tk\n\nMitu tükki?", "Lisa korvi", "1");
+
+            if (string.IsNullOrEmpty(kogusStr)) return;   // vajutati Cancel
+
+            if (!int.TryParse(kogusStr, out int kogus) || kogus <= 0)
+            {
+                MessageBox.Show("Vale kogus.");
+                return;
+            }
+
+            string? viga = Ostukorv.Lisa(t, kogus);
+            MessageBox.Show(viga ?? $"{t.Toodenimetus} ({kogus} tk) lisati korvi.");
+            NaitaKokku();
+        }
+
+        private void NaitaKokku()
+        {
+            btnOstukorv.Text = $"Ostukorv ({Ostukorv.Ridad.Sum(r => r.Kogus)} tk, {Ostukorv.Kokku:0.00} €)";
+        }
+
+        private void btnOstukorv_Click(object? sender, EventArgs e)
+        {
+            ArveForm arve = new ArveForm();
+            arve.ShowDialog();
+
+            // pärast ostu on laoseis muutunud
+            LaeKategooriadJaPildid();
+            NaitaKokku();
         }
     }
 }

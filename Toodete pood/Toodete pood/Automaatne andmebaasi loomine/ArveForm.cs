@@ -11,8 +11,6 @@ namespace Automaatne_andmebaasi_loomine
 {
     public partial class ArveForm : Form
     {
-        List<OstukorviRida> ostukorv = new List<OstukorviRida>();
-
         // Ainult koodist määratav, vormi disainer seda ei salvesta (muidu viga WFO1000)
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public Toode? SelectedToode { get; set; }
@@ -33,6 +31,21 @@ namespace Automaatne_andmebaasi_loomine
             // Kui vorm avati Form2-st, on see toode kohe valitud
             if (SelectedToode != null)
                 comboTooted.SelectedValue = SelectedToode.Id;
+
+            // Gmaili kontot saab vahetada ainult admin
+            btnGmailValja.Visible = AktiivneKasutaja.Roll == "admin";
+
+            NaitaKorvi();
+        }
+
+        // Näitab ostukorvi sisu ja kogusummat
+        private void NaitaKorvi()
+        {
+            listOstukorv.Items.Clear();
+            foreach (var rida in Ostukorv.Ridad)
+                listOstukorv.Items.Add(rida);
+
+            lblKokku.Text = $"Kokku: {Ostukorv.Kokku:0.00} €";
         }
 
         private void btnLisaKorvi_Click(object? sender, EventArgs e)
@@ -46,32 +59,22 @@ namespace Automaatne_andmebaasi_loomine
             string kogusStr = Microsoft.VisualBasic.Interaction.InputBox(
                 "Sisesta kogus", "Kogus", "1");
 
+            if (string.IsNullOrEmpty(kogusStr)) return;   // vajutati Cancel
+
             if (!int.TryParse(kogusStr, out int kogus) || kogus <= 0)
             {
                 MessageBox.Show("Vale kogus.");
                 return;
             }
 
-            // Kui toode on juba korvis, suurendame kogust
-            var olemas = ostukorv.FirstOrDefault(r => r.Toode.Id == toode.Id);
-            if (olemas != null)
+            string? viga = Ostukorv.Lisa(toode, kogus);
+            if (viga != null)
             {
-                olemas.Kogus += kogus;
-                listOstukorv.Items[ostukorv.IndexOf(olemas)] = olemas;
-            }
-            else
-            {
-                var rida = new OstukorviRida
-                {
-                    Toode = toode,
-                    Kogus = kogus
-                };
-
-                ostukorv.Add(rida);
-                listOstukorv.Items.Add(rida);
+                MessageBox.Show(viga);
+                return;
             }
 
-            ArvutaKoguSumma();
+            NaitaKorvi();
         }
 
         private void btnEemalda_Click(object? sender, EventArgs e)
@@ -83,17 +86,8 @@ namespace Automaatne_andmebaasi_loomine
                 return;
             }
 
-            ostukorv.RemoveAt(i);
-            listOstukorv.Items.RemoveAt(i);
-
-            ArvutaKoguSumma();
-        }
-
-        private void ArvutaKoguSumma()
-        {
-            float kokku = ostukorv.Sum(r => r.Summa);
-
-            lblKokku.Text = $"Kokku: {kokku:0.00} €";
+            Ostukorv.Ridad.RemoveAt(i);
+            NaitaKorvi();
         }
 
         private void btnGenPDF_Click(object? sender, EventArgs e)
@@ -107,7 +101,7 @@ namespace Automaatne_andmebaasi_loomine
         // Loob PDF-i praeguse ostukorvi järgi ja tagastab faili tee (tühja korvi puhul null)
         private string? LooPdf()
         {
-            if (ostukorv.Count == 0)
+            if (Ostukorv.Ridad.Count == 0)
             {
                 MessageBox.Show("Ostukorv on tühi.");
                 return null;
@@ -127,14 +121,14 @@ namespace Automaatne_andmebaasi_loomine
                 new XRect(0, 20, page.Width, 40), XStringFormats.TopCenter);
 
             int y = 80;
-            foreach (var item in ostukorv)
+            foreach (var item in Ostukorv.Ridad)
             {
                 gfx.DrawString(item.ToString(), font, XBrushes.Black,
                     new XRect(20, y, page.Width - 40, 20), XStringFormats.TopLeft);
                 y += 30;
             }
 
-            gfx.DrawString($"Kokku: {ostukorv.Sum(r => r.Summa):0.00} €",
+            gfx.DrawString($"Kokku: {Ostukorv.Kokku:0.00} €",
                 new XFont("Verdana", 14), XBrushes.Black,
                 new XRect(20, y + 20, page.Width, 20), XStringFormats.TopLeft);
 
@@ -145,7 +139,7 @@ namespace Automaatne_andmebaasi_loomine
 
         private async void btnSaadaEmail_Click(object? sender, EventArgs e)
         {
-            if (ostukorv.Count == 0)
+            if (Ostukorv.Ridad.Count == 0)
             {
                 MessageBox.Show("Ostukorv on tühi.");
                 return;
@@ -167,7 +161,11 @@ namespace Automaatne_andmebaasi_loomine
                 // Esimesel korral avaneb brauser Google'i sisselogimiseks
                 await GmailSaatja.SaadaAsync(email.Trim(), "Arve", "Arve on manuses.", pdfPath);
 
-                MessageBox.Show("Arve saadetud!");
+                // Ost on tehtud: laoseis väheneb ja korv tühjeneb
+                Ostukorv.KinnitaOst();
+                NaitaKorvi();
+
+                MessageBox.Show("Arve saadetud! Täname ostu eest.");
             }
             catch (OperationCanceledException)
             {
