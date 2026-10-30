@@ -192,6 +192,12 @@ namespace Automaatne_andmebaasi_loomine
                 return;
             }
 
+            if (kasutaja.Blokeeritud)
+            {
+                lblVeateade.Text = "See konto on blokeeritud.";
+                return;
+            }
+
             if (reziim == "admin" && kasutaja.Roll != "admin")
             {
                 lblVeateade.Text = "See konto ei ole administraator!";
