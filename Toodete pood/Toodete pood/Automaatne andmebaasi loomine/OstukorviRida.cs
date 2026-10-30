@@ -9,7 +9,7 @@ namespace Automaatne_andmebaasi_loomine
 
         public override string ToString()
         {
-            return $"{Toode.Toodenimetus} – {Kogus} tk – {Summa} €";
+            return $"{Toode.Toodenimetus} – {Kogus} tk – {Summa:0.00} €";
         }
     }
 }
