@@ -40,5 +40,8 @@
     <Compile Update="KoikTellimusedForm.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Update="AruandedForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
   </ItemGroup>
 </Project>
