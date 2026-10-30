@@ -34,6 +34,7 @@ namespace Automaatne_andmebaasi_loomine
             btnEemalda = new Button();
             btnGenPDF = new Button();
             btnSaadaEmail = new Button();
+            btnGmailValja = new Button();
             lblKokku = new Label();
             SuspendLayout();
             // 
@@ -82,6 +83,14 @@ namespace Automaatne_andmebaasi_loomine
             btnSaadaEmail.Text = "Saada emailiga";
             btnSaadaEmail.Click += btnSaadaEmail_Click;
             // 
+            // btnGmailValja
+            // 
+            btnGmailValja.Location = new Point(350, 225);
+            btnGmailValja.Name = "btnGmailValja";
+            btnGmailValja.Size = new Size(180, 30);
+            btnGmailValja.Text = "Vaheta Gmaili kontot";
+            btnGmailValja.Click += btnGmailValja_Click;
+            // 
             // lblKokku
             // 
             lblKokku.AutoSize = true;
@@ -98,6 +107,7 @@ namespace Automaatne_andmebaasi_loomine
             Controls.Add(btnEemalda);
             Controls.Add(btnGenPDF);
             Controls.Add(btnSaadaEmail);
+            Controls.Add(btnGmailValja);
             Controls.Add(lblKokku);
             Name = "ArveForm";
             BackColor = Color.LightBlue;
@@ -115,6 +125,7 @@ namespace Automaatne_andmebaasi_loomine
         private System.Windows.Forms.Button btnEemalda;
         private System.Windows.Forms.Button btnGenPDF;
         private System.Windows.Forms.Button btnSaadaEmail;
+        private System.Windows.Forms.Button btnGmailValja;
         private System.Windows.Forms.Label lblKokku;
     }
 }
