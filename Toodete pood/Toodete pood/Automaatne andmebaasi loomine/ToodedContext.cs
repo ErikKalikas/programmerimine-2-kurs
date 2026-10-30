@@ -14,6 +14,8 @@ namespace Automaatne_andmebaasi_loomine
         public DbSet<Tellimus> Tellimused { get; set; }
         public DbSet<TellimuseRida> TellimuseRead { get; set; }
         public DbSet<Lemmik> Lemmikud { get; set; }
+        public DbSet<LogiKirje> Logid { get; set; }
+        public DbSet<PoeSeaded> Seaded { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

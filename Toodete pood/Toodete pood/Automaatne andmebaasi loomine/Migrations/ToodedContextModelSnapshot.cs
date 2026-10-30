@@ -33,6 +33,9 @@ namespace Automaatne_andmebaasi_loomine.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("Blokeeritud")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -100,6 +103,85 @@ namespace Automaatne_andmebaasi_loomine.Migrations
                     b.HasIndex("ToodeId");
 
                     b.ToTable("Lemmikud");
+                });
+
+            modelBuilder.Entity("Automaatne_andmebaasi_loomine.LogiKirje", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("Aeg")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Kasutaja")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Tegevus")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Logid");
+                });
+
+            modelBuilder.Entity("Automaatne_andmebaasi_loomine.PoeSeaded", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Aadress")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Hyydlause")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("KirjaSisu")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("KirjaTeema")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<float>("KmProtsent")
+                        .HasColumnType("real");
+
+                    b.Property<string>("KmkrNr")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Logo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PoeNimi")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Registrikood")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Telefon")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Seaded");
                 });
 
             modelBuilder.Entity("Automaatne_andmebaasi_loomine.Tellimus", b =>
@@ -198,6 +280,9 @@ namespace Automaatne_andmebaasi_loomine.Migrations
 
                     b.Property<float?>("SoodusHind")
                         .HasColumnType("real");
+
+                    b.Property<DateTime?>("SoodusKuni")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Toodenimetus")
                         .IsRequired()
