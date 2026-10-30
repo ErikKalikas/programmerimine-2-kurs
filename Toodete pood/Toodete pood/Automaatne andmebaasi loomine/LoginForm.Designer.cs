@@ -31,6 +31,7 @@ namespace Automaatne_andmebaasi_loomine
             txtEmail = new TextBox();
             txtParool = new TextBox();
             btnLogin = new Button();
+            btnOstja = new Button();
             lblVeateade = new Label();
             SuspendLayout();
             // 
@@ -60,19 +61,29 @@ namespace Automaatne_andmebaasi_loomine
             btnLogin.Text = "Logi sisse";
             btnLogin.Click += btnLogin_Click;
             // 
+            // btnOstja
+            // 
+            btnOstja.Location = new Point(30, 150);
+            btnOstja.Name = "btnOstja";
+            btnOstja.Size = new Size(200, 30);
+            btnOstja.TabIndex = 3;
+            btnOstja.Text = "Sisene ostjana";
+            btnOstja.Click += btnOstja_Click;
+            // 
             // lblVeateade
             // 
             lblVeateade.AutoSize = true;
-            lblVeateade.Location = new Point(30, 150);
+            lblVeateade.Location = new Point(30, 190);
             lblVeateade.Name = "lblVeateade";
             lblVeateade.Size = new Size(0, 15);
             // 
             // LoginForm
             // 
-            ClientSize = new Size(260, 190);
+            ClientSize = new Size(260, 230);
             Controls.Add(txtEmail);
             Controls.Add(txtParool);
             Controls.Add(btnLogin);
+            Controls.Add(btnOstja);
             Controls.Add(lblVeateade);
             Name = "LoginForm";
             BackColor = Color.LightBlue;
@@ -86,6 +97,7 @@ namespace Automaatne_andmebaasi_loomine
         private System.Windows.Forms.TextBox txtEmail;
         private System.Windows.Forms.TextBox txtParool;
         private System.Windows.Forms.Button btnLogin;
+        private System.Windows.Forms.Button btnOstja;
         private System.Windows.Forms.Label lblVeateade;
     }
 }

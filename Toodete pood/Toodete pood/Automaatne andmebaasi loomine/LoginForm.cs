@@ -118,9 +118,31 @@ namespace Automaatne_andmebaasi_loomine
             // roll salvestatakse globaalselt
             AktiivneKasutaja.Roll = kasutaja.Roll;
 
-            // peale login
+            AvaPeamenyy();
+        }
+
+        // Ostja režiim: parooli pole vaja, saab ainult poes osta
+        private void btnOstja_Click(object? sender, EventArgs e)
+        {
+            AktiivneKasutaja.Roll = "kasutaja";
+            AvaPeamenyy();
+        }
+
+        private void AvaPeamenyy()
+        {
+            lblVeateade.Text = "";
+            txtParool.Clear();
+
             FormMain main = new FormMain();
-            main.FormClosed += (_, _) => this.Close(); // FormMain sulgemisel sulgub kogu programm
+            main.FormClosed += (_, _) =>
+            {
+                // "Logi välja" tühjendab rolli: siis tuleb tagasi sisselogimise aken,
+                // muidu (akna sulgemisel) sulgub kogu programm
+                if (AktiivneKasutaja.Roll == "")
+                    this.Show();
+                else
+                    this.Close();
+            };
             main.Show();
             this.Hide();
         }

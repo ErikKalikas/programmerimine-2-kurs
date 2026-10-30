@@ -29,6 +29,7 @@ namespace Automaatne_andmebaasi_loomine
         private void InitializeComponent()
         {
             tabPood = new TabControl();
+            btnOstukorv = new Button();
             SuspendLayout();
             // 
             // tabPood
@@ -37,12 +38,21 @@ namespace Automaatne_andmebaasi_loomine
             tabPood.Name = "tabPood";
             tabPood.Size = new Size(900, 600);
             // 
+            // btnOstukorv
+            // 
+            btnOstukorv.Location = new Point(10, 620);
+            btnOstukorv.Name = "btnOstukorv";
+            btnOstukorv.Size = new Size(300, 35);
+            btnOstukorv.Text = "Ostukorv";
+            btnOstukorv.Click += btnOstukorv_Click;
+            // 
             // Form3
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(930, 630);
+            ClientSize = new Size(930, 670);
             Controls.Add(tabPood);
+            Controls.Add(btnOstukorv);
             Name = "Form3";
             BackColor = Color.LightBlue;
             Text = "Pood";
@@ -52,5 +62,6 @@ namespace Automaatne_andmebaasi_loomine
         #endregion
 
         private System.Windows.Forms.TabControl tabPood;
+        private System.Windows.Forms.Button btnOstukorv;
     }
 }

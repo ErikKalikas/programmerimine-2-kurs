@@ -8,8 +8,31 @@ namespace Automaatne_andmebaasi_loomine
         public FormMain()
         {
             InitializeComponent();
-            btnTooted.Enabled = AktiivneKasutaja.Roll == "admin";
-            btnKategooriad.Enabled = AktiivneKasutaja.Roll == "admin";
+
+            if (AktiivneKasutaja.Roll == "admin")
+            {
+                Text = "Peamenüü – administraator";
+            }
+            else
+            {
+                // Ostja näeb ainult poodi ja ostukorvi, midagi muuta ei saa
+                Text = "Pood – ostja";
+                btnTooted.Visible = false;
+                btnKategooriad.Visible = false;
+
+                btnPood.Location = new Point(30, 30);
+                btnArve.Location = new Point(30, 80);
+                btnArve.Text = "Ostukorv";
+                btnLogiValja.Location = new Point(30, 140);
+                ClientSize = new Size(300, 200);
+            }
+        }
+
+        private void btnLogiValja_Click(object? sender, EventArgs e)
+        {
+            AktiivneKasutaja.Roll = "";   // LoginForm näeb seda ja avab end uuesti
+            Ostukorv.Ridad.Clear();
+            Close();
         }
 
         private void btnTooted_Click(object? sender, EventArgs e)
