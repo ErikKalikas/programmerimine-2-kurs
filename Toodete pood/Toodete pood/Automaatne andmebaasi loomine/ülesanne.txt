@@ -1,0 +1,1275 @@
+WinForms (.NET 8) + EF Core 8 + automaatne andmebaasi loomine
+JUHEND: WinForms (.NET 8) + EF Core 8 + automaatne andmebaasi loomine (MIGRATIONS)
+🎯 Eesmärk:
+Luua WinForms rakendus
+
+Luua andmebaas automaatselt (ilma SQL päringuteta)
+
+Luua tabelid Toode ja Kategooria automaatselt
+
+Kasutada EF Core Migrations süsteemi
+
+🟦 1. Projekti loomine (Õige WinForms Mall)
+Ava Visual Studio
+
+Vajuta Create a new project
+
+Otsi mall: Windows Forms App
+
+⚠️ Mitte “Windows Forms App (.NET Framework)”!
+
+Vajuta Next
+
+Pane nimeks näiteks:
+
+Tooded_EFCore
+Väga tähtis: Target Framework valikust vali:
+
+.NET 8.0
+Vajuta Create
+
+Projekt on loodud.
+
+🟦 2. EF Core 8 paigaldamine
+Ava:
+
+Tools → NuGet Package Manager → Package Manager Console
+
+Paigalda kolm paketti:
+
+Install-Package Microsoft.EntityFrameworkCore -Version 8.0.6
+Install-Package Microsoft.EntityFrameworkCore.SqlServer -Version 8.0.6
+Install-Package Microsoft.EntityFrameworkCore.Tools -Version 8.0.6
+Kõik peavad edukalt paigalduma.
+
+🟦 3. Mudelite loomine (Toode.cs ja Kategooria.cs)
+Loo uued failid:
+
+📌 Toode.cs
+public class Toode
+{
+    public int Id { get; set; }
+    public string Toodenimetus { get; set; }
+    public int Kogus { get; set; }
+    public float Hind { get; set; }
+    public string Pilt { get; set; }
+
+    public int KategooriaId { get; set; }
+    public Kategooria Kategooria { get; set; }
+}
+📌 Kategooria.cs
+using System.Collections.Generic;
+
+public class Kategooria
+{
+    public int Id { get; set; }
+    public string Kategooria_nimetus { get; set; }
+    public string Kirjeldus { get; set; }
+
+    public ICollection<Toode> Tooded { get; set; }
+}
+🟦 4. Andmebaasi kontekst (ToodedContext.cs)
+Loo fail ToodedContext.cs:
+
+using Microsoft.EntityFrameworkCore;
+
+public class ToodedContext : DbContext
+{
+    public DbSet<Toode> Toodetabel { get; set; }
+    public DbSet<Kategooria> Kategooriatabel { get; set; }
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        optionsBuilder.UseSqlServer(
+            @"Server=(localdb)\MSSQLLocalDB;Database=Tooded_DB;Trusted_Connection=True;");
+    }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<Kategooria>().ToTable("Kategooriatabel");
+        modelBuilder.Entity<Toode>().ToTable("Toodetabel");
+    }
+}
+EF Core saab nüüd aru:
+
+✔ et vaja on 2 tabelit
+✔ et need tuleb panna LocalDB andmebaasi
+✔ kuidas välisvõti seostub
+
+🟦 5. Loo migratsioon
+Ava PMC:
+
+Add-Migration InitialCreate
+Süsteem genereerib:
+
+koodi, mis loob tabelid
+
+koodi, mis loob seosed
+
+skeemiandmed
+
+SQL-i ise kirjutama ei pea.
+
+🟦 6. Loo andmebaas automaatselt
+PMC:
+
+Update-Database
+EF Core teeb:
+
+✔ loob andmebaasi „Tooded_DB“
+✔ loob tabeli „Kategooriatabel“
+✔ loob tabeli „Toodetabel“
+✔ lisab välisvõtme
+
+Õpilane ei pea avama SQL Serverit ega kirjutama käske.
+
+🟦 7. Kontroll (soovi korral)
+Visual Studio →
+
+View → SQL Server Object Explorer → (localdb)\MSSQLLocalDB → Databases
+
+Näed:
+
+Tooded_DB
+
+Tables
+
+Kategooriatabel
+
+Toodetabel
+
+Kõik on loodud automaatselt.
+
+
+
+⭐ OSA 2 — Form2: CRUD kasutajaliides + EF Core töö
+Eesmärk:
+
+Luua Windows Form, mis suhtleb EF Core andmebaasiga
+
+Näidata tooteid tabelis
+
+Lubada:
+
+Lisa
+
+Uuenda
+
+Kustuta
+
+Valida kategooria ComboBoxist
+
+Näha pilti PictureBoxis
+
+Salvestada pilt failina
+
+Teeme kõik õpetajasõbralikult ja loogiliselt.
+
+🟦 1. Lisa projektile uus vorm: Form2
+Solution Explorer →
+Right click projekt → Add → Windows Form… → nimi Form2.cs
+
+🟦 2. Kujunda vorm (Form2.Designer.cs)
+🧱 Vormi elemendid (täpselt nii palju kui vaja):
+Element	Nimi	Selgitus
+DataGridView	dataGridViewTooted	Näitab tooteid
+TextBox	txtNimetus	Toote nimi
+TextBox	txtKogus	Kogus
+TextBox	txtHind	Hind
+ComboBox	comboKategooria	Kategooria valik
+PictureBox	picturePilt	Pildi eelvaade
+Button	btnLisa	Lisa toode
+Button	btnUuenda	Uuenda
+Button	btnKustuta	Kustuta
+Button	btnValiPilt	Ava pildi valija
+🧩 MINA KOOSTAN SULLE VALMIS DISAINIKOODI
+👇 Pane see Form2.Designer.cs faili (InitializeComponent meetodisse):
+
+👇 Kopeeri kogu plokk (õpilased saavad ka ilusti kasutada)
+
+private System.Windows.Forms.DataGridView dataGridViewTooted;
+private System.Windows.Forms.TextBox txtNimetus;
+private System.Windows.Forms.TextBox txtKogus;
+private System.Windows.Forms.TextBox txtHind;
+private System.Windows.Forms.ComboBox comboKategooria;
+private System.Windows.Forms.PictureBox picturePilt;
+private System.Windows.Forms.Button btnLisa;
+private System.Windows.Forms.Button btnUuenda;
+private System.Windows.Forms.Button btnKustuta;
+private System.Windows.Forms.Button btnValiPilt;
+
+private void InitializeComponent()
+{
+    this.dataGridViewTooted = new System.Windows.Forms.DataGridView();
+    this.txtNimetus = new System.Windows.Forms.TextBox();
+    this.txtKogus = new System.Windows.Forms.TextBox();
+    this.txtHind = new System.Windows.Forms.TextBox();
+    this.comboKategooria = new System.Windows.Forms.ComboBox();
+    this.picturePilt = new System.Windows.Forms.PictureBox();
+    this.btnLisa = new System.Windows.Forms.Button();
+    this.btnUuenda = new System.Windows.Forms.Button();
+    this.btnKustuta = new System.Windows.Forms.Button();
+    this.btnValiPilt = new System.Windows.Forms.Button();
+    
+    ((System.ComponentModel.ISupportInitialize)(this.dataGridViewTooted)).BeginInit();
+    ((System.ComponentModel.ISupportInitialize)(this.picturePilt)).BeginInit();
+    this.SuspendLayout();
+
+    // dataGridViewTooted
+    this.dataGridViewTooted.Location = new System.Drawing.Point(12, 12);
+    this.dataGridViewTooted.Size = new System.Drawing.Size(600, 300);
+    this.dataGridViewTooted.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+    this.dataGridViewTooted.MultiSelect = false;
+    this.dataGridViewTooted.ReadOnly = true;
+    this.dataGridViewTooted.CellClick += dataGridViewTooted_CellClick;
+
+    // txtNimetus
+    this.txtNimetus.Location = new System.Drawing.Point(630, 30);
+    this.txtNimetus.Width = 200;
+    this.txtNimetus.PlaceholderText = "Toote nimetus";
+
+    // txtKogus
+    this.txtKogus.Location = new System.Drawing.Point(630, 70);
+    this.txtKogus.Width = 200;
+    this.txtKogus.PlaceholderText = "Kogus";
+
+    // txtHind
+    this.txtHind.Location = new System.Drawing.Point(630, 110);
+    this.txtHind.Width = 200;
+    this.txtHind.PlaceholderText = "Hind €";
+
+    // comboKategooria
+    this.comboKategooria.Location = new System.Drawing.Point(630, 150);
+    this.comboKategooria.Width = 200;
+
+    // picturePilt
+    this.picturePilt.Location = new System.Drawing.Point(630, 190);
+    this.picturePilt.Size = new System.Drawing.Size(150, 150);
+    this.picturePilt.SizeMode = PictureBoxSizeMode.Zoom;
+    this.picturePilt.BorderStyle = BorderStyle.FixedSingle;
+
+    // btnValiPilt
+    this.btnValiPilt.Location = new System.Drawing.Point(630, 350);
+    this.btnValiPilt.Text = "Vali pilt";
+    this.btnValiPilt.Click += btnValiPilt_Click;
+
+    // btnLisa
+    this.btnLisa.Location = new System.Drawing.Point(630, 390);
+    this.btnLisa.Text = "Lisa";
+    this.btnLisa.Click += btnLisa_Click;
+
+    // btnUuenda
+    this.btnUuenda.Location = new System.Drawing.Point(630, 430);
+    this.btnUuenda.Text = "Uuenda";
+    this.btnUuenda.Click += btnUuenda_Click;
+
+    // btnKustuta
+    this.btnKustuta.Location = new System.Drawing.Point(630, 470);
+    this.btnKustuta.Text = "Kustuta";
+    this.btnKustuta.Click += btnKustuta_Click;
+
+    // Form2
+    this.ClientSize = new System.Drawing.Size(860, 520);
+    this.Controls.Add(this.dataGridViewTooted);
+    this.Controls.Add(this.txtNimetus);
+    this.Controls.Add(this.txtKogus);
+    this.Controls.Add(this.txtHind);
+    this.Controls.Add(this.comboKategooria);
+    this.Controls.Add(this.picturePilt);
+    this.Controls.Add(this.btnValiPilt);
+    this.Controls.Add(this.btnLisa);
+    this.Controls.Add(this.btnUuenda);
+    this.Controls.Add(this.btnKustuta);
+    this.Text = "Toodete haldus";
+
+    ((System.ComponentModel.ISupportInitialize)(this.dataGridViewTooted)).EndInit();
+    ((System.ComponentModel.ISupportInitialize)(this.picturePilt)).EndInit();
+    this.ResumeLayout(false);
+    this.PerformLayout();
+}
+🟦 3. Form2.cs – Lisame EF Core koodi
+Kopeeri see Form2.cs faili:
+
+📌 Ülemisse ossa:
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.IO;
+using System.Linq;
+using System.Windows.Forms;
+📌 Form2 klassi algus:
+public partial class Form2 : Form
+{
+    private readonly ToodedContext _db;
+    private string valitudPilt;
+
+    public Form2()
+    {
+        InitializeComponent();
+        _db = new ToodedContext();
+        LaeKategooriad();
+        LaeTooted();
+    }
+🟦 4. Andmete laadimine
+📌 Lae kategooriad ComboBoxi:
+private void LaeKategooriad()
+{
+    comboKategooria.DataSource = _db.Kategooriatabel.ToList();
+    comboKategooria.DisplayMember = "Kategooria_nimetus";
+    comboKategooria.ValueMember = "Id";
+}
+📌 Lae tooted DataGridView-sse:
+private void LaeTooted()
+{
+    dataGridViewTooted.DataSource = _db.Toodetabel
+        .Include(t => t.Kategooria)
+        .Select(t => new
+        {
+            t.Id,
+            t.Toodenimetus,
+            t.Kogus,
+            t.Hind,
+            Kategooria = t.Kategooria.Kategooria_nimetus,
+            t.Pilt
+        })
+        .ToList();
+}
+🟦 5. Pildi valimine
+private void btnValiPilt_Click(object sender, EventArgs e)
+{
+    using var ofd = new OpenFileDialog();
+    ofd.Filter = "Pildid|*.jpg;*.png;*.jpeg";
+
+    if (ofd.ShowDialog() == DialogResult.OK)
+    {
+        valitudPilt = ofd.FileName;
+        picturePilt.Image = Image.FromFile(valitudPilt);
+    }
+}
+🟦 6. Lisa toode
+private void btnLisa_Click(object sender, EventArgs e)
+{
+    var uus = new Toode
+    {
+        Toodenimetus = txtNimetus.Text,
+        Kogus = int.Parse(txtKogus.Text),
+        Hind = float.Parse(txtHind.Text),
+        KategooriaId = (int)comboKategooria.SelectedValue,
+        Pilt = Path.GetFileName(valitudPilt)
+    };
+
+    // kopeerime pildi projekti kausta
+    if (!string.IsNullOrEmpty(valitudPilt))
+    {
+        File.Copy(valitudPilt, Path.Combine("Images", uus.Pilt), true);
+    }
+
+    _db.Toodetabel.Add(uus);
+    _db.SaveChanges();
+    LaeTooted();
+}
+🟦 7. Vali rida DataGridView-s
+private void dataGridViewTooted_CellClick(object sender, DataGridViewCellEventArgs e)
+{
+    if (e.RowIndex < 0) return;
+
+    txtNimetus.Text = dataGridViewTooted.Rows[e.RowIndex].Cells["Toodenimetus"].Value.ToString();
+    txtKogus.Text = dataGridViewTooted.Rows[e.RowIndex].Cells["Kogus"].Value.ToString();
+    txtHind.Text = dataGridViewTooted.Rows[e.RowIndex].Cells["Hind"].Value.ToString();
+
+    string pilt = dataGridViewTooted.Rows[e.RowIndex].Cells["Pilt"].Value?.ToString();
+
+    if (!string.IsNullOrEmpty(pilt) && File.Exists(Path.Combine("Images", pilt)))
+        picturePilt.Image = Image.FromFile(Path.Combine("Images", pilt));
+}
+🟦 8. Uuenda toode
+private void btnUuenda_Click(object sender, EventArgs e)
+{
+    int id = (int)dataGridViewTooted.SelectedRows[0].Cells["Id"].Value;
+
+    var toode = _db.Toodetabel.Find(id);
+
+    toode.Toodenimetus = txtNimetus.Text;
+    toode.Kogus = int.Parse(txtKogus.Text);
+    toode.Hind = float.Parse(txtHind.Text);
+    toode.KategooriaId = (int)comboKategooria.SelectedValue;
+
+    if (valitudPilt != null)
+    {
+        toode.Pilt = Path.GetFileName(valitudPilt);
+        File.Copy(valitudPilt, Path.Combine("Images", toode.Pilt), true);
+    }
+
+    _db.SaveChanges();
+    LaeTooted();
+}
+🟦 9. Kustuta toode
+private void btnKustuta_Click(object sender, EventArgs e)
+{
+    int id = (int)dataGridViewTooted.SelectedRows[0].Cells["Id"].Value;
+
+    var toode = _db.Toodetabel.Find(id);
+
+    _db.Toodetabel.Remove(toode);
+    _db.SaveChanges();
+    LaeTooted();
+}
+⭐ OSA 3 — “Pood” vaade TabControliga
+(kategooriate kaupa piltide kuvamine)
+
+Eesmärk:
+
+Iga kategooria on eraldi TabPage
+
+Iga TabPage-s kuvatakse selle kategooria tooted
+
+Iga toode kuvatakse pildina (PictureBox) + nimega
+
+Pildid laaditakse EF Core kaudu
+
+Vajutades pildile saab kuvada detailid (soovi korral lisame hiljem)
+
+🟦 1. Vormi loomine (Form3)
+Lisa projektile uus vorm:
+
+Add → Windows Form… → Form3
+
+See saab olema “Poe vaade”.
+
+🟦 2. Kujundus (Designer)
+Form3.cs → InitializeComponent:
+
+👉 Lisa üks TabControl:
+
+Nimi: tabPood
+
+Asukoht: (10, 10)
+
+Suurus: (900, 600)
+
+Vormi disain on väga lihtne — ainult TabControl.
+
+Designer-kood (Form3.Designer.cs):
+private System.Windows.Forms.TabControl tabPood;
+
+private void InitializeComponent()
+{
+    this.tabPood = new System.Windows.Forms.TabControl();
+    this.SuspendLayout();
+
+    // tabPood
+    this.tabPood.Location = new System.Drawing.Point(10, 10);
+    this.tabPood.Name = "tabPood";
+    this.tabPood.Size = new System.Drawing.Size(900, 600);
+
+    // Form3
+    this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
+    this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+    this.ClientSize = new System.Drawing.Size(930, 630);
+    this.Controls.Add(this.tabPood);
+    this.Name = "Form3";
+    this.Text = "Pood";
+    this.ResumeLayout(false);
+}
+🟦 3. EF Core ühendamine ja andmete kuvamine
+Form3.cs:
+
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Drawing;
+using System.IO;
+using System.Linq;
+using System.Windows.Forms;
+
+public partial class Form3 : Form
+{
+    private readonly ToodedContext _db;
+
+    public Form3()
+    {
+        InitializeComponent();
+        _db = new ToodedContext();
+        LaeKategooriadJaPildid();
+    }
+}
+⭐ 4. Lae kategooriad + loo TabPage + lisa pildid
+private void LaeKategooriadJaPildid()
+{
+    tabPood.TabPages.Clear();
+
+    var kategooriad = _db.Kategooriatabel.ToList();
+
+    foreach (var kat in kategooriad)
+    {
+        // Loo uus tab selle kategooria jaoks
+        var page = new TabPage(kat.Kategooria_nimetus);
+        page.AutoScroll = true;
+
+        // Too kategooria tooted andmebaasist
+        var tooted = _db.Toodetabel
+                        .Where(t => t.KategooriaId == kat.Id)
+                        .ToList();
+
+        int x = 10;
+        int y = 10;
+        int count = 0;
+
+        foreach (var t in tooted)
+        {
+            // Loo paneel iga toote jaoks
+            Panel p = new Panel();
+            p.Width = 150;
+            p.Height = 200;
+            p.BorderStyle = BorderStyle.FixedSingle;
+
+            // Pildikast
+            PictureBox pb = new PictureBox();
+            pb.Width = 140;
+            pb.Height = 140;
+            pb.SizeMode = PictureBoxSizeMode.Zoom;
+            pb.Location = new Point(5, 5);
+
+            // lae pilt failist, kui olemas
+            var piltPath = Path.Combine("Images", t.Pilt ?? "puudub.png");
+            if (File.Exists(piltPath))
+                pb.Image = Image.FromFile(piltPath);
+
+            // Nimetus
+            Label lbl = new Label();
+            lbl.Text = t.Toodenimetus;
+            lbl.AutoSize = false;
+            lbl.TextAlign = ContentAlignment.MiddleCenter;
+            lbl.Location = new Point(5, 150);
+            lbl.Width = 140;
+
+            // Lisa elemendid paneelile
+            p.Controls.Add(pb);
+            p.Controls.Add(lbl);
+
+            // Paiguta paneel TabPage-s
+            p.Location = new Point(x, y);
+            page.Controls.Add(p);
+
+            // Järgmise positsioon
+            x += 160;
+            count++;
+
+            // iga 4 pildi järel uus rida
+            if (count % 4 == 0)
+            {
+                x = 10;
+                y += 210;
+            }
+        }
+
+        // Lisa TabPage TabControli sisse
+        tabPood.TabPages.Add(page);
+    }
+}
+🟦 5. Mis nüüd töötab?
+Kui avad Form3, EF Core:
+
+Loeb kõik kategooriad
+
+Loob iga kategooria jaoks tabi
+
+Leiab selle kategooria tooted
+
+Loeb iga toote pildi
+
+Joonistab need ilusatesse kastidesse
+
+Täpselt nagu päris e-poes.
+Ja õpilased ei kirjuta SQL-i mitte kordagi — EF Core teeb kõik ise.
+
+🟦 6. Soovi korral: pildi klikiga näita detailvaadet
+Kui tahad, et toote pildile klikk avab “Toote info” akna:
+
+pb.Click += (s, e) =>
+{
+    MessageBox.Show($"Toode: {t.Toodenimetus}\nHind: {t.Hind}€");
+};
+Võin lisada eraldi ToodeDetailForm ka, kui soovid.
+
+
+⭐ OSA 4 — Arve genereerimine (PDF) + saatmine e-mailile (SMTP)
+Selle osa lõpus oskavad õpilased:
+
+✔ Koostada ostukorvi
+✔ Salvestada arve PDF-ina
+✔ Lisada PDF-i e-maili manusena
+✔ Saata Gmaili kaudu e-kirja
+
+
+⭐ PdfSharpCore
+See töötab .NET 8-ga ja sobib ideaalselt WinFormsi projekti.
+
+🟦 1. Paigalda PDF teek
+Ava:
+
+Tools → NuGet Package Manager → Package Manager Console
+
+Pane:
+
+Install-Package PdfSharpCore
+🟦 2. Lisa uus vorm: ArveForm
+Projekt →
+Add → Windows Form → ArveForm.cs
+
+See vorm võimaldab õpilastel:
+
+näha ostukorvi tooteid
+
+koostada PDF
+
+saata arve e-mailiga
+
+🟦 3. Kujundus (ArveForm.Designer.cs)
+👉 Pane vormile need elemendid:
+
+Element	Nimi	Funktsioon
+ListBox	listOstukorv	Ostukorvi toodete nimekiri
+Button	btnLisaKorvi	Lisa valitud toode ostukorvi
+Button	btnGenPDF	Genereeri PDF
+Button	btnSaadaEmail	Saada PDF e-mailile
+See on vormi baasversioon (õpilastele ideaalne).
+
+👉 Lisame disainikoodi:
+private System.Windows.Forms.ListBox listOstukorv;
+private System.Windows.Forms.Button btnLisaKorvi;
+private System.Windows.Forms.Button btnGenPDF;
+private System.Windows.Forms.Button btnSaadaEmail;
+
+private void InitializeComponent()
+{
+    this.listOstukorv = new System.Windows.Forms.ListBox();
+    this.btnLisaKorvi = new System.Windows.Forms.Button();
+    this.btnGenPDF = new System.Windows.Forms.Button();
+    this.btnSaadaEmail = new System.Windows.Forms.Button();
+
+    this.SuspendLayout();
+
+    // listOstukorv
+    this.listOstukorv.Location = new System.Drawing.Point(20, 20);
+    this.listOstukorv.Size = new System.Drawing.Size(300, 300);
+
+    // btnLisaKorvi
+    this.btnLisaKorvi.Text = "Lisa toode korvi";
+    this.btnLisaKorvi.Location = new System.Drawing.Point(350, 20);
+    this.btnLisaKorvi.Click += btnLisaKorvi_Click;
+
+    // btnGenPDF
+    this.btnGenPDF.Text = "Genereeri PDF";
+    this.btnGenPDF.Location = new System.Drawing.Point(350, 70);
+    this.btnGenPDF.Click += btnGenPDF_Click;
+
+    // btnSaadaEmail
+    this.btnSaadaEmail.Text = "Saada emailiga";
+    this.btnSaadaEmail.Location = new System.Drawing.Point(350, 120);
+    this.btnSaadaEmail.Click += btnSaadaEmail_Click;
+
+    // ArveForm
+    this.ClientSize = new System.Drawing.Size(550, 350);
+    this.Controls.Add(this.listOstukorv);
+    this.Controls.Add(this.btnLisaKorvi);
+    this.Controls.Add(this.btnGenPDF);
+    this.Controls.Add(this.btnSaadaEmail);
+    this.Text = "Arve";
+    this.ResumeLayout(false);
+}
+🟦 4. Ostukorvi loogika (ArveForm.cs)
+Arve hoitakse lihtsas listis:
+
+List<string> ostukorv = new List<string>();
+🟦 5. Nupu “Lisa toode korvi” loogika
+👉 Seda nuppu kutsutakse Form2-st, kui õpilane valib toote
+(kohe annan sulle Form2 → ArveForm ühenduse).
+
+private void btnLisaKorvi_Click(object sender, EventArgs e)
+{
+    if (SelectedToode == null)
+    {
+        MessageBox.Show("Vali toode enne ostukorvi lisamist.");
+        return;
+    }
+
+    string rida = $"{SelectedToode.Toodenimetus} - {SelectedToode.Hind} € - {SelectedToode.Kogus} tk";
+    ostukorv.Add(rida);
+    listOstukorv.Items.Add(rida);
+}
+👉 Selleks vajame ühte property’t:
+
+public Toode SelectedToode { get; set; }
+🟦 6. PDF genereerimine (PdfSharpCore abil)
+Arve salvestatakse kausta Arved.
+
+using PdfSharpCore.Drawing;
+using PdfSharpCore.Pdf;
+
+private void btnGenPDF_Click(object sender, EventArgs e)
+{
+    Directory.CreateDirectory("Arved");
+
+    string failinimi = $"Arved/Arve_{DateTime.Now:yyyyMMdd_HHmmss}.pdf";
+
+    PdfDocument document = new PdfDocument();
+    PdfPage page = document.AddPage();
+    XGraphics gfx = XGraphics.FromPdfPage(page);
+
+    XFont font = new XFont("Verdana", 12);
+
+    gfx.DrawString("Arve", new XFont("Verdana", 20), XBrushes.Black,
+        new XRect(0, 20, page.Width, 40), XStringFormats.TopCenter);
+
+    int y = 80;
+    foreach (var item in ostukorv)
+    {
+        gfx.DrawString(item, font, XBrushes.Black,
+            new XRect(20, y, page.Width - 40, 20), XStringFormats.TopLeft);
+        y += 30;
+    }
+
+    document.Save(failinimi);
+
+    MessageBox.Show($"PDF on loodud:\n{failinimi}");
+}
+🟦 7. Arve saatmine e-mailiga
+Gmail SMTP näide:
+
+using System.Net;
+using System.Net.Mail;
+
+private void btnSaadaEmail_Click(object sender, EventArgs e)
+{
+    string email = Microsoft.VisualBasic.Interaction.InputBox(
+        "Sisesta e-mail", "Saaja", "nimi@example.com");
+
+    if (string.IsNullOrEmpty(email)) return;
+
+    string pdfPath = Directory.GetFiles("Arved")
+        .OrderByDescending(f => f)
+        .First();
+
+    try
+    {
+        var mail = new MailMessage();
+        mail.From = new MailAddress("sinu_gmail@gmail.com");
+        mail.To.Add(email);
+        mail.Subject = "Arve";
+        mail.Body = "Arve on manuses.";
+        mail.Attachments.Add(new Attachment(pdfPath));
+
+        var smtp = new SmtpClient("smtp.gmail.com", 587)
+        {
+            Credentials = new NetworkCredential("sinu_gmail@gmail.com", "parool"),
+            EnableSsl = true
+        };
+
+        smtp.Send(mail);
+
+        MessageBox.Show("Arve saadetud!");
+    }
+    catch (Exception ex)
+    {
+        MessageBox.Show("Viga: " + ex.Message);
+    }
+}
+🟦 8. Form2 → ArveForm ühendamine
+Form2-sse lisa nupp:
+
+"Lisa arvele"
+
+Nupu kood:
+
+private void btnArve_Click(object sender, EventArgs e)
+{
+    if (dataGridViewTooted.SelectedRows.Count == 0) return;
+
+    int id = (int)dataGridViewTooted.SelectedRows[0].Cells["Id"].Value;
+    var toode = _db.Toodetabel.Find(id);
+
+    ArveForm arve = new ArveForm();
+    arve.SelectedToode = toode;
+    arve.ShowDialog();
+}
+⭐ OSA 5 — Peamenüü + Navigatsioon Formide vahel
+(lõpuks on kõik vormid omavahel loogiliselt ühendatud)
+
+Me loome:
+
+✔ FormMain — peamenüü
+✔ Nupud:
+
+Tootehaldus (Form2)
+
+Pood (Form3)
+
+Arve (ArveForm)
+✔ Vormi vahetamine ilma projekti segadusteta
+✔ Õpilastele ideaalne struktuur
+
+🟦 1. Loo uus vorm: FormMain
+Solution Explorer →
+Add → Windows Form → FormMain.cs
+
+See vorm on teie “avalik leht”.
+
+🟦 2. FormMain kujundus
+Lisame 3 nuppu:
+
+Nupp	Nimi	Funktsioon
+“Tootehaldus”	btnTooted	Avab Form2
+“Pood”	btnPood	Avab Form3
+“Arve”	btnArve	Avab ArveForm
+👉 Pane need InitializeComponent() sisse:
+private Button btnTooted;
+private Button btnPood;
+private Button btnArve;
+
+private void InitializeComponent()
+{
+    this.btnTooted = new Button();
+    this.btnPood = new Button();
+    this.btnArve = new Button();
+
+    this.SuspendLayout();
+
+    // btnTooted
+    this.btnTooted.Text = "Tootehaldus";
+    this.btnTooted.Location = new Point(30, 30);
+    this.btnTooted.Size = new Size(200, 40);
+    this.btnTooted.Click += btnTooted_Click;
+
+    // btnPood
+    this.btnPood.Text = "Pood";
+    this.btnPood.Location = new Point(30, 80);
+    this.btnPood.Size = new Size(200, 40);
+    this.btnPood.Click += btnPood_Click;
+
+    // btnArve
+    this.btnArve.Text = "Arve";
+    this.btnArve.Location = new Point(30, 130);
+    this.btnArve.Size = new Size(200, 40);
+    this.btnArve.Click += btnArve_Click;
+
+    // FormMain
+    this.ClientSize = new Size(300, 220);
+    this.Controls.Add(this.btnTooted);
+    this.Controls.Add(this.btnPood);
+    this.Controls.Add(this.btnArve);
+    this.Text = "Peamenüü";
+    this.ResumeLayout(false);
+}
+🟦 3. FormMain → Form2 navigatsioon
+private void btnTooted_Click(object sender, EventArgs e)
+{
+    Form2 f = new Form2();
+    f.ShowDialog();
+}
+🟦 4. FormMain → Form3 (pood)
+private void btnPood_Click(object sender, EventArgs e)
+{
+    Form3 poodForm = new Form3();
+    poodForm.ShowDialog();
+}
+🟦 5. FormMain → ArveForm
+private void btnArve_Click(object sender, EventArgs e)
+{
+    ArveForm arve = new ArveForm();
+    arve.ShowDialog();
+}
+🟦 6. Tee FormMain esimeseks vormiks (Program.cs)
+Ava: Program.cs
+
+Vaheta rida:
+
+Application.Run(new Form1());
+→ selle vastu:
+
+Application.Run(new FormMain());
+⭐ Nüüd projekt töötab nii:
+🔵 Peamenüü avatakse esimesena
+Nupp → avab sättiva vormi:
+Tooted → Form2 (CRUD + pildid)
+
+Pood → Form3 (kategooriapõhised pildid)
+
+Arve → ArveForm (ostukorv + PDF + e-mail)
+
+Kõik sulguvad ShowDialog() abil viisakalt ja naasevad menüüsse.
+
+⭐ OSA 6.3 — Ostukorv: kogused, hinnad ja kogusumma arvutamine
+Praegu panime ostukorvi lihtsalt teksti.
+Nüüd teeme selle päris ostukorviks, kus:
+
+✔ Saab määrata koguse
+✔ Arvutatakse rea summa
+✔ Arvutatakse ostukorvi summa kokku
+✔ Kuvatakse selgelt ListBoxi all “Kokku: … €”
+
+🟦 6.3.1 — Ostukorvi mudel
+Loo uus fail OstukorviRida.cs
+
+public class OstukorviRida
+{
+    public Toode Toode { get; set; }
+    public int Kogus { get; set; }
+
+    public float Summa => Toode.Hind * Kogus;
+
+    public override string ToString()
+    {
+        return $"{Toode.Toodenimetus} – {Kogus} tk – {Summa} €";
+    }
+}
+🟦 6.3.2 — ArveForm.cs
+Ostukorv ei ole enam List<string>, vaid:
+List<OstukorviRida> ostukorv = new List<OstukorviRida>();
+🟦 6.3.3 — Lisa koguse küsimine
+Nupu Lisa korvi click:
+
+private void btnLisaKorvi_Click(object sender, EventArgs e)
+{
+    if (SelectedToode == null)
+    {
+        MessageBox.Show("Vali toode enne ostukorvi lisamist.");
+        return;
+    }
+
+    string kogusStr = Microsoft.VisualBasic.Interaction.InputBox(
+        "Sisesta kogus", "Kogus", "1");
+
+    if (!int.TryParse(kogusStr, out int kogus) || kogus <= 0)
+    {
+        MessageBox.Show("Vale kogus.");
+        return;
+    }
+
+    var rida = new OstukorviRida
+    {
+        Toode = SelectedToode,
+        Kogus = kogus
+    };
+
+    ostukorv.Add(rida);
+    listOstukorv.Items.Add(rida);
+
+    ArvutaKoguSumma();
+}
+🟦 6.3.4 — Kogu summa arvutamine
+private void ArvutaKoguSumma()
+{
+    float kokku = ostukorv.Sum(r => r.Summa);
+
+    lblKokku.Text = $"Kokku: {kokku} €";
+}
+👉 Formile lisa Label nimega lblKokku.
+
+🟦 6.3.5 — PDF koostamisel lisa kogusumma
+PDF-i all lisa rida:
+
+gfx.DrawString($"Kokku: {ostukorv.Sum(r => r.Summa)} €",
+    new XFont("Verdana", 14), XBrushes.Black,
+    new XRect(20, y + 20, page.Width, 20), XStringFormats.TopLeft);
+
+⭐ OSA 6.4 — Rollid (admin / kasutaja)
+Mida teeme:
+
+Lisame LoginForm
+
+Kasutajad salvestatakse andmebaasi
+
+Roll (admin / kasutaja)
+
+Õigused:
+
+Admin: saab hallata tooteid, kategooriaid, hindu
+
+Kasutaja: saab ainult vaadata poodi, lisada ostukorvi ja teha arvet
+
+🟦 6.4.1 — Loo mudel User.cs
+public class Kasutaja
+{
+    public int Id { get; set; }
+    public string Nimi { get; set; }
+    public string Email { get; set; }
+    public string ParoolHash { get; set; }  
+    public string Roll { get; set; } // "admin" või "kasutaja"
+}
+Lisa DbContexti:
+
+public DbSet<Kasutaja> Kasutajad { get; set; }
+🟦 6.4.2 — Loo migration (kui vaja)
+PMC:
+
+Add-Migration LisaKasutajad
+Update-Database
+🟦 6.4.3 — Loo LoginForm
+Vormile:
+
+TextBox txtEmail
+
+TextBox txtParool (PasswordChar = '*')
+
+Button btnLogin
+
+Label lblVeateade
+
+Login loogika
+private void btnLogin_Click(object sender, EventArgs e)
+{
+    using var db = new ToodedContext();
+
+    string email = txtEmail.Text;
+    string parool = txtParool.Text;
+
+    var kasutaja = db.Kasutajad.FirstOrDefault(k => k.Email == email);
+
+    if (kasutaja == null)
+    {
+        lblVeateade.Text = "Vale email!";
+        return;
+    }
+
+    if (!PasswordHelper.Verify(parool, kasutaja.ParoolHash))
+    {
+        lblVeateade.Text = "Vale parool!";
+        return;
+    }
+
+    // roll salvestatakse globaalselt
+    AktiivneKasutaja.Roll = kasutaja.Roll;
+
+    // peale login
+    FormMain main = new FormMain();
+    main.Show();
+    this.Hide();
+}
+🟦 6.4.4 — Globaalne kasutajaolek
+Loo fail:
+
+public static class AktiivneKasutaja
+{
+    public static string Roll { get; set; }
+}
+🟦 6.4.5 — Keelame Form2 admin funktsioonid
+Form2.cs → Load:
+
+if (AktiivneKasutaja.Roll != "admin")
+{
+    btnLisa.Enabled = false;
+    btnUuenda.Enabled = false;
+    btnKustuta.Enabled = false;
+}
+FormMain.cs → nupud:
+
+btnTooted.Enabled = AktiivneKasutaja.Roll == "admin";
+Poe- ja arvevormid jäävad kõigile.
+
+⭐ OSA 7 — Login + parooli krüpteerimine
+Praegu me ei krüpteeri parooli.
+Nüüd teeme seda turvaliselt ja õpetlikult.
+
+🟦 7.1 — Paigalda turvateek
+PMC:
+
+Install-Package BCrypt.Net-Next
+🟦 7.2 — PasswordHelper klass
+Loo fail:
+
+using BCrypt.Net;
+
+public static class PasswordHelper
+{
+    public static string Hash(string password)
+    {
+        return BCrypt.Net.BCrypt.HashPassword(password);
+    }
+
+    public static bool Verify(string password, string hash)
+    {
+        return BCrypt.Net.BCrypt.Verify(password, hash);
+    }
+}
+🟦 7.3 — Kasutaja loomisel hashitakse parool
+var kasutaja = new Kasutaja
+{
+    Nimi = "Admin",
+    Email = "admin@admin.ee",
+    ParoolHash = PasswordHelper.Hash("admin123"),
+    Roll = "admin"
+};
+🟦 7.4 — Login kontrollib hashiga
+(Meelda — juba tegime seda)
+
+if (!PasswordHelper.Verify(parool, kasutaja.ParoolHash))
+{
+    lblVeateade.Text = "Vale parool!";
+    return;
+}
+
+⭐ OSA 8 — WinForms rakendusele INSTALLERI tegemine (.NET 8)
+🟦 1. Paigalda vajalik Visual Studio laiendus
+Installerit saab teha ainult siis, kui sul on installitud:
+
+Microsoft Visual Studio Installer Projects
+
+Selleks:
+
+Visual Studio → Extensions → Manage Extensions
+
+Otsi: Installer
+
+Vali Microsoft Visual Studio Installer Projects
+
+Vajuta Download
+
+Sulge Visual Studio → Install algab
+
+Ava Visual Studio uuesti
+
+Kui see on olemas → oled valmis.
+
+🟦 2. Loo Setup projekt
+Solution Explorer →
+Right click Solution → Add → New Project
+
+Vali:
+
+👉 “Setup Project”
+(mitte Setup Wizard!)
+
+Pane nimetuseks:
+
+ToodedInstaller
+See projekt tekitab .msi või .exe installerfaili.
+
+🟦 3. Lisa oma WinForms app installerisse
+Ava ToodedInstaller projekt
+
+Topeltklõps “Application Folder”
+
+Paremklõps → Add → Project Output
+
+Vali:
+
+✔ Primary Output (sinu exe + kõik dll-id)
+✔ Content Files (pildid, PDF-kaustad, Images, Arved jne)
+
+Väga oluline:
+Lisa kaustad, mida app kasutab:
+
+Images\
+
+Arved\
+
+XAML/Resources (kui on)
+
+PDF failid (templates)
+
+Kõik failid, mida programm loeb/kopeerib
+
+👉 Kui mõni kaust puudu — programm kukub pärast installeerimist läbi.
+
+🟦 4. Lisa pildid ja PDF kaustad installerisse (FAILID!)
+Installer-projekti "Application Folder" →
+Add → Folder
+
+Lisa:
+
+Images
+Arved
+Seejärel:
+
+Add → Files
+ning lisa sinna failid mis projektis on.
+
+👉 Installer kopeerib need automaatselt “Program Files” kausta.
+
+🟦 5. Loo Start Menu shortcut
+Installeris:
+
+Paremklõps User’s Programs Menu
+
+Add → Folder (nt “Tooded App”)
+
+Paremklõps → Add → Shortcut
+
+Sihtkohaks vali:
+
+📌 Primary Output from ToodedApp
+
+Nii tekib Start menüüsse käsk käivitada sinu WinForms app.
+
+🟦 6. Loo Desktopi ikoon
+Sarnaselt:
+
+Right Click User’s Desktop
+
+Add → Shortcut
+
+Target: Primary Output
+
+Valmis!
+Kasutajal tekib töölaudade ikoon nagu päris programmil.
+
+🟦 7. Määra installerile ikoon (EXE ikoon)
+Kui tahad ilusamat ikooni:
+
+Properties →
+
+Add → File → vali oma .ico fail
+
+Primary Output → Properties → Icon → vali ico
+
+🟦 8. Kontrolli EF Core LocalDB kasutust
+Oluline:
+EF Core LocalDB töötab ainult siis, kui:
+
+DB fail ei ole projektikaustas (.mdf)
+
+Kontekstis kasutatakse SQL LocalDB serverit:
+
+Soovitan kasutada:
+optionsBuilder.UseSqlServer(@"Server=(localdb)\MSSQLLocalDB;Database=Tooded_DB;Trusted_Connection=True;");
+Ära kasuta .mdf faili “AttachDbFileName” variant!
+Sest seda installer ei halda automaatselt.
+
+🟦 9. Build installer
+Solution Explorer → vali ToodedInstaller
+
+Paremklõps → Build
+
+Kui kõik korras, tekib kausta:
+
+ToodedInstaller\Debug\ToodedInstaller.msi
+või
+
+ToodedInstaller\Release\ToodedInstaller.msi
+Selle faili saab:
+
+✔ installida
+✔ uninstallida Control Panelist
+✔ panna USB peale
+✔ anda õpilastele
+
+🟦 10. TESTI installerit
+Installeeri .msi →
+Vaata:
+
+Kas app käivitub?
+
+Kas Images kaust toimib?
+
+Kas Arved kaust on olemas?
+
+Kas PDF genereerib?
+
+Kas e-mail saadab?
+
+Kas CRUD töötab?
+
+Kas pood laadib pilte?
+
+Kui kõik töötab → oled loonud päris tarkvara paigaldaja.
+
+
