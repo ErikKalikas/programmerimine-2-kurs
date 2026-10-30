@@ -2,6 +2,7 @@ using PdfSharpCore.Drawing;
 using PdfSharpCore.Pdf;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
@@ -12,6 +13,8 @@ namespace Automaatne_andmebaasi_loomine
     {
         List<OstukorviRida> ostukorv = new List<OstukorviRida>();
 
+        // Ainult koodist määratav, vormi disainer seda ei salvesta (muidu viga WFO1000)
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public Toode? SelectedToode { get; set; }
 
         public ArveForm()
