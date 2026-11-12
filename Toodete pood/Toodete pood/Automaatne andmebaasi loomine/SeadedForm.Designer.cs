@@ -57,6 +57,7 @@ namespace Automaatne_andmebaasi_loomine
             txtKirjaSisu = new TextBox();
             lblMall = new Label();
             btnSalvesta = new UmarNupp();
+            btnGmailValja = new UmarNupp();
             pnlKaart.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numKm).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pbLogo).BeginInit();
@@ -92,10 +93,11 @@ namespace Automaatne_andmebaasi_loomine
             pnlKaart.Controls.Add(txtKirjaSisu);
             pnlKaart.Controls.Add(lblMall);
             pnlKaart.Controls.Add(btnSalvesta);
+            pnlKaart.Controls.Add(btnGmailValja);
             pnlKaart.Margin = new Padding(0);
             pnlKaart.Name = "pnlKaart";
             pnlKaart.Location = new Point(0, 0);
-            pnlKaart.Size = new Size(640, 814);
+            pnlKaart.Size = new Size(640, 864);
             // 
             // lblPoeAndmed
             // 
@@ -321,6 +323,15 @@ namespace Automaatne_andmebaasi_loomine
             btnSalvesta.Text = "Salvesta";
             btnSalvesta.Click += btnSalvesta_Click;
             // 
+            // btnGmailValja
+            // 
+            btnGmailValja.Location = new Point(180, 800);
+            btnGmailValja.Name = "btnGmailValja";
+            btnGmailValja.Size = new Size(240, 40);
+            btnGmailValja.Stiil = NupuStiil.Hall;
+            btnGmailValja.Text = "Vaheta Gmaili kontot";
+            btnGmailValja.Click += btnGmailValja_Click;
+            // 
             // SeadedForm
             // 
             AutoScaleDimensions = new SizeF(96F, 96F);
@@ -368,5 +379,6 @@ namespace Automaatne_andmebaasi_loomine
         private System.Windows.Forms.TextBox txtKirjaSisu;
         private System.Windows.Forms.Label lblMall;
         private UmarNupp btnSalvesta;
+        private UmarNupp btnGmailValja;
     }
 }

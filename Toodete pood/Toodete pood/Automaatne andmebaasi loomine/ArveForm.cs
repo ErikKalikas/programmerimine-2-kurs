@@ -27,12 +27,9 @@ namespace Automaatne_andmebaasi_loomine
 
         private void ArveForm_Load(object? sender, EventArgs e)
         {
-            // Kui leht avati tootehaldusest ("Lisa arvele"), on see toode kohe valitud
+            // Kui lehele anti toode kaasa, on see kohe valitud
             if (SelectedToode != null)
                 comboTooted.SelectedValue = SelectedToode.Id;
-
-            // Gmaili kontot saab vahetada ainult admin
-            btnGmailValja.Visible = AktiivneKasutaja.Roll == "admin";
 
             NaitaKorvi();
         }
@@ -324,12 +321,6 @@ namespace Automaatne_andmebaasi_loomine
                     btnSaadaEmail.Enabled = Ostukorv.Ridad.Count > 0;
                 }
             }
-        }
-
-        private async void btnGmailValja_Click(object? sender, EventArgs e)
-        {
-            await GmailSaatja.LogiValjaAsync();
-            MessageBox.Show(Keel.T("Gmaili konto unustatud. Järgmisel saatmisel küsitakse kontot uuesti."));
         }
     }
 }

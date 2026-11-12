@@ -1,6 +1,6 @@
 namespace Automaatne_andmebaasi_loomine
 {
-    // Põhiaken (kogu ekraanil): vasakul menüü, üleval pealkiri ja ostukorv, keskel avatud leht.
+    // Põhiaken (kogu ekraanil): vasakul menüü, üleval pealkiri ja ostukorv (ainult ostjal), keskel avatud leht.
     // Lehed (pood, ostukorv, tellimused, tootehaldus jne) avanevad samas aknas, eraldi aknaid ei pea sulgema.
     public partial class FormMain : BaasVorm
     {
@@ -60,8 +60,9 @@ namespace Automaatne_andmebaasi_loomine
             {
                 LisaPealkiri("HALDUS");
                 LisaNupud(btnTooted, btnKategooriad, btnKoikTellimused, btnAruanded, btnKasutajad, btnLogi, btnSeaded);
-                LisaPealkiri("POOD");
-                LisaNupud(btnPood, btnArve, btnProfiil);
+                LisaPealkiri("KONTO");
+                LisaNupud(btnProfiil);
+                btnKorv.Visible = false;   // administraator tooteid ei osta
             }
             else if (AktiivneKasutaja.OnKonto)
             {

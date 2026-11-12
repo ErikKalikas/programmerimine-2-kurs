@@ -349,16 +349,6 @@ namespace Automaatne_andmebaasi_loomine
             MessageBox.Show(Keel.T("{0}: laos nüüd {1} tk.", toode.Toodenimetus, toode.Kogus));
         }
 
-        private void btnArve_Click(object? sender, EventArgs e)
-        {
-            if (dataGridViewTooted.SelectedRows.Count == 0) return;
-
-            int id = (int)dataGridViewTooted.SelectedRows[0].Cells["Id"].Value;
-            var toode = _db.Toodetabel.Find(id);
-
-            // avab ostukorvi samas aknas, valitud toode on kohe valitud
-            FormMain.Aktiivne?.AvaOstukorv(toode);
-        }
     }
 }
 //.

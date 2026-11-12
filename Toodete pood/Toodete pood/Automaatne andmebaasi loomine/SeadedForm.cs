@@ -73,5 +73,12 @@ namespace Automaatne_andmebaasi_loomine
             MessageBox.Show(Keel.T("Seaded salvestatud. Need kehtivad järgmistel arvetel."));
             FormMain.Aktiivne?.UuendaPoeNime();
         }
+
+        // Arved saadetakse Gmaili kaudu; siit saab saatva konto vahetada
+        private async void btnGmailValja_Click(object? sender, EventArgs e)
+        {
+            await GmailSaatja.LogiValjaAsync();
+            MessageBox.Show(Keel.T("Gmaili konto unustatud. Järgmisel saatmisel küsitakse kontot uuesti."));
+        }
     }
 }

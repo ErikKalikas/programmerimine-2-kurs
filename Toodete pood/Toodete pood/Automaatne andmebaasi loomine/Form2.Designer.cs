@@ -57,7 +57,6 @@ namespace Automaatne_andmebaasi_loomine
             btnLisa = new UmarNupp();
             btnUuenda = new UmarNupp();
             btnLisaLattu = new UmarNupp();
-            btnArve = new UmarNupp();
             btnKustuta = new UmarNupp();
             pnlYlal.SuspendLayout();
             tlp.SuspendLayout();
@@ -169,7 +168,6 @@ namespace Automaatne_andmebaasi_loomine
             pnlVorm.Controls.Add(btnLisa);
             pnlVorm.Controls.Add(btnUuenda);
             pnlVorm.Controls.Add(btnLisaLattu);
-            pnlVorm.Controls.Add(btnArve);
             pnlVorm.Controls.Add(btnKustuta);
             pnlVorm.Dock = DockStyle.Fill;
             pnlVorm.Margin = new Padding(0);
@@ -342,19 +340,10 @@ namespace Automaatne_andmebaasi_loomine
             // 
             btnLisaLattu.Location = new Point(20, 604);
             btnLisaLattu.Name = "btnLisaLattu";
-            btnLisaLattu.Size = new Size(165, 40);
+            btnLisaLattu.Size = new Size(340, 40);
             btnLisaLattu.Stiil = NupuStiil.Hall;
             btnLisaLattu.Text = "Lisa lattu +";
             btnLisaLattu.Click += btnLisaLattu_Click;
-            // 
-            // btnArve
-            // 
-            btnArve.Location = new Point(195, 604);
-            btnArve.Name = "btnArve";
-            btnArve.Size = new Size(165, 40);
-            btnArve.Stiil = NupuStiil.Hall;
-            btnArve.Text = "Lisa arvele";
-            btnArve.Click += btnArve_Click;
             // 
             // btnKustuta
             // 
@@ -421,7 +410,6 @@ namespace Automaatne_andmebaasi_loomine
         private UmarNupp btnLisa;
         private UmarNupp btnUuenda;
         private UmarNupp btnLisaLattu;
-        private UmarNupp btnArve;
         private UmarNupp btnKustuta;
     }
 }

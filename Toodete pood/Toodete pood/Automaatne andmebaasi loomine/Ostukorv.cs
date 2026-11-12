@@ -25,6 +25,7 @@ namespace Automaatne_andmebaasi_loomine
         // Lisab toote korvi. Tagastab veateate või null, kui lisamine õnnestus.
         public static string? Lisa(Toode toode, int kogus)
         {
+            if (AktiivneKasutaja.Roll == "admin") return Keel.T("Administraator ei saa tooteid osta.");
             if (kogus <= 0) return Keel.T("Vale kogus.");
             if (toode.Kogus <= 0) return Keel.T("{0} on otsas.", toode.Toodenimetus);
 

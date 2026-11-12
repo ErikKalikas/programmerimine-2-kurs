@@ -309,7 +309,8 @@ namespace Automaatne_andmebaasi_loomine
             lblVeateade.Text = "";
             txtParool.Clear();
 
-            Ostukorv.Lae();   // eelmisel korral pooleli jäänud ostukorv
+            if (AktiivneKasutaja.Roll != "admin")
+                Ostukorv.Lae();   // eelmisel korral pooleli jäänud ostukorv (adminil korvi pole)
 
             FormMain main = new FormMain();
             main.FormClosed += (_, _) =>

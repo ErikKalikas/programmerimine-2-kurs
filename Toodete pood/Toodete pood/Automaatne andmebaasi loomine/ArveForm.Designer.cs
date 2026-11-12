@@ -47,7 +47,6 @@ namespace Automaatne_andmebaasi_loomine
             btnRakenda = new UmarNupp();
             btnSaadaEmail = new UmarNupp();
             btnGenPDF = new UmarNupp();
-            btnGmailValja = new UmarNupp();
             lblKiirlisamine = new Label();
             comboTooted = new ComboBox();
             btnLisaKorvi = new UmarNupp();
@@ -127,7 +126,6 @@ namespace Automaatne_andmebaasi_loomine
             pnlKokkuvote.Controls.Add(btnRakenda);
             pnlKokkuvote.Controls.Add(btnSaadaEmail);
             pnlKokkuvote.Controls.Add(btnGenPDF);
-            pnlKokkuvote.Controls.Add(btnGmailValja);
             pnlKokkuvote.Controls.Add(lblKiirlisamine);
             pnlKokkuvote.Controls.Add(comboTooted);
             pnlKokkuvote.Controls.Add(btnLisaKorvi);
@@ -235,21 +233,11 @@ namespace Automaatne_andmebaasi_loomine
             btnGenPDF.Text = "Genereeri PDF";
             btnGenPDF.Click += btnGenPDF_Click;
             // 
-            // btnGmailValja
-            // 
-            btnGmailValja.Font = new Font("Segoe UI", 9F);
-            btnGmailValja.Location = new Point(20, 356);
-            btnGmailValja.Name = "btnGmailValja";
-            btnGmailValja.Size = new Size(320, 36);
-            btnGmailValja.Stiil = NupuStiil.Hall;
-            btnGmailValja.Text = "Vaheta Gmaili kontot";
-            btnGmailValja.Click += btnGmailValja_Click;
-            // 
             // lblKiirlisamine
             // 
             lblKiirlisamine.AutoSize = true;
             lblKiirlisamine.Font = new Font("Segoe UI Semibold", 10F);
-            lblKiirlisamine.Location = new Point(20, 414);
+            lblKiirlisamine.Location = new Point(20, 372);
             lblKiirlisamine.Name = "lblKiirlisamine";
             lblKiirlisamine.Text = "Lisa toode kiiresti";
             // 
@@ -257,13 +245,13 @@ namespace Automaatne_andmebaasi_loomine
             // 
             comboTooted.DropDownStyle = ComboBoxStyle.DropDownList;
             comboTooted.Font = new Font("Segoe UI", 11F);
-            comboTooted.Location = new Point(20, 440);
+            comboTooted.Location = new Point(20, 398);
             comboTooted.Name = "comboTooted";
             comboTooted.Size = new Size(200, 28);
             // 
             // btnLisaKorvi
             // 
-            btnLisaKorvi.Location = new Point(228, 438);
+            btnLisaKorvi.Location = new Point(228, 396);
             btnLisaKorvi.Name = "btnLisaKorvi";
             btnLisaKorvi.Size = new Size(112, 32);
             btnLisaKorvi.Text = "Lisa";
@@ -308,7 +296,6 @@ namespace Automaatne_andmebaasi_loomine
         private UmarNupp btnRakenda;
         private UmarNupp btnSaadaEmail;
         private UmarNupp btnGenPDF;
-        private UmarNupp btnGmailValja;
         private System.Windows.Forms.Label lblKiirlisamine;
         private System.Windows.Forms.ComboBox comboTooted;
         private UmarNupp btnLisaKorvi;
