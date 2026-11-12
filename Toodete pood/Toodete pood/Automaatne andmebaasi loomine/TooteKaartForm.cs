@@ -1,7 +1,7 @@
 namespace Automaatne_andmebaasi_loomine
 {
     // Toote detailvaade: suur pilt, hind, laoseis, kirjeldus, korvi lisamine ja lemmik
-    public partial class TooteKaartForm : Form
+    public partial class TooteKaartForm : BaasVorm
     {
         private readonly Toode toode;
 
@@ -13,12 +13,12 @@ namespace Automaatne_andmebaasi_loomine
             Text = toode.Toodenimetus;
             pbPilt.Image = Pildid.Lae(toode.Pilt);
             lblNimi.Text = toode.Toodenimetus;
-            lblKirjeldus.Text = string.IsNullOrWhiteSpace(toode.Kirjeldus) ? "Kirjeldus puudub." : toode.Kirjeldus;
+            lblKirjeldus.Text = string.IsNullOrWhiteSpace(toode.Kirjeldus) ? Keel.T("Kirjeldus puudub.") : toode.Kirjeldus;
 
             lblHind.Text = $"{toode.HetkeHind:0.00} €";
             if (toode.OnSoodus)
             {
-                lblHind.ForeColor = Color.Firebrick;
+                lblHind.ForeColor = Teema.Punane;
                 lblVanaHind.Text = $"{toode.Hind:0.00} €   (−{toode.SoodusProtsent}%)";
             }
             else
@@ -31,20 +31,21 @@ namespace Automaatne_andmebaasi_loomine
 
             if (toode.Kogus <= 0)
             {
-                lblLaos.Text = "Otsas";
-                lblLaos.ForeColor = Color.Firebrick;
+                lblLaos.Text = Keel.T("Otsas");
+                lblLaos.ForeColor = Teema.Punane;
             }
             else
             {
-                lblLaos.Text = korvis > 0 ? $"Laos: {toode.Kogus} tk (korvis {korvis} tk)" : $"Laos: {toode.Kogus} tk";
-                lblLaos.ForeColor = Color.DarkGreen;
+                lblLaos.Text = korvis > 0 ? Keel.T("Laos: {0} tk (korvis {1} tk)", toode.Kogus, korvis) : Keel.T("Laos: {0} tk", toode.Kogus);
+                lblLaos.ForeColor = Teema.HallTume;
             }
 
             if (saadaval <= 0)
             {
                 numKogus.Enabled = false;
                 btnLisa.Enabled = false;
-                btnLisa.Text = toode.Kogus <= 0 ? "Otsas" : "Kõik on juba korvis";
+                btnLisa.Text = toode.Kogus <= 0 ? Keel.T("Otsas") : Keel.T("Kõik on juba korvis");
+                btnLisa.Ikoon = "";
             }
             else
             {
@@ -58,7 +59,8 @@ namespace Automaatne_andmebaasi_loomine
 
         private void NaitaLemmikut(bool lemmik)
         {
-            btnLemmik.Text = lemmik ? "♥ Eemalda lemmikutest" : "♡ Lisa lemmikutesse";
+            btnLemmik.Ikoon = lemmik ? "\uEB52" : "\uEB51";
+            btnLemmik.Text = lemmik ? Keel.T("Eemalda lemmikutest") : Keel.T("Lisa lemmikutesse");
         }
 
         private void btnLisa_Click(object? sender, EventArgs e)
@@ -70,7 +72,7 @@ namespace Automaatne_andmebaasi_loomine
                 return;
             }
 
-            MessageBox.Show($"{toode.Toodenimetus} ({numKogus.Value} tk) lisati korvi.");
+            MessageBox.Show(Keel.T("{0} ({1} tk) lisati korvi.", toode.Toodenimetus, numKogus.Value));
             DialogResult = DialogResult.OK;
         }
 

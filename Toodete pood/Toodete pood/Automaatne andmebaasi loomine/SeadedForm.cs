@@ -1,7 +1,7 @@
 namespace Automaatne_andmebaasi_loomine
 {
     // Admin: poe andmed arvel, käibemaks, logo ja arve kirja mall
-    public partial class SeadedForm : Form
+    public partial class SeadedForm : BaasVorm
     {
         private string? logo;   // pildifail kaustas Images
 
@@ -27,7 +27,7 @@ namespace Automaatne_andmebaasi_loomine
 
         private void btnLogo_Click(object? sender, EventArgs e)
         {
-            using var ofd = new OpenFileDialog { Filter = "Pildid|*.png;*.jpg;*.jpeg" };
+            using var ofd = new OpenFileDialog { Filter = Keel.T("Pildid") + "|*.png;*.jpg;*.jpeg" };
             if (ofd.ShowDialog() != DialogResult.OK) return;
 
             // logo kopeeritakse kausta Images (uue nimega, et vahemälu ei näitaks vana pilti)
@@ -49,7 +49,7 @@ namespace Automaatne_andmebaasi_loomine
         {
             if (string.IsNullOrWhiteSpace(txtPoeNimi.Text))
             {
-                MessageBox.Show("Poe nimi ei tohi olla tühi.");
+                MessageBox.Show(Keel.T("Poe nimi ei tohi olla tühi."));
                 return;
             }
 
@@ -70,8 +70,8 @@ namespace Automaatne_andmebaasi_loomine
             db.SaveChanges();
 
             Tegevuslogi.Kirjuta("Muutis poe seadeid");
-            MessageBox.Show("Seaded salvestatud. Need kehtivad järgmistel arvetel.");
-            Close();
+            MessageBox.Show(Keel.T("Seaded salvestatud. Need kehtivad järgmistel arvetel."));
+            FormMain.Aktiivne?.UuendaPoeNime();
         }
     }
 }

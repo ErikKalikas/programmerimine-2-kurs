@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Automaatne_andmebaasi_loomine
 {
     // Admin: kõigi ostjate tellimused (otsing ja kuupäevavahemik)
-    public partial class KoikTellimusedForm : Form
+    public partial class KoikTellimusedForm : BaasVorm
     {
         private List<Tellimus> koik = new();
         private Dictionary<int, Kasutaja> kasutajad = new();
@@ -28,7 +28,7 @@ namespace Automaatne_andmebaasi_loomine
         }
 
         private string Ostja(Tellimus t) =>
-            t.KasutajaId != null && kasutajad.TryGetValue(t.KasutajaId.Value, out var k) ? k.Nimi : "külaline";
+            t.KasutajaId != null && kasutajad.TryGetValue(t.KasutajaId.Value, out var k) ? k.Nimi : Keel.T("külaline");
 
         private void Filter_Changed(object? sender, EventArgs e)
         {
@@ -59,12 +59,12 @@ namespace Automaatne_andmebaasi_loomine
             }).ToList();
 
             decimal summa = naidatud.Sum(t => (decimal)t.Summa);
-            lblKokku.Text = $"{naidatud.Count} tellimust, kokku {summa:0.00} €";
+            lblKokku.Text = Keel.T("{0} tellimust, kokku {1:0.00} €", naidatud.Count, summa);
 
             if (naidatud.Count == 0)
             {
                 dgvRead.DataSource = null;
-                lblRead.Text = "Tellimusi ei leitud.";
+                lblRead.Text = Keel.T("Tellimusi ei leitud.");
             }
         }
 
@@ -73,11 +73,11 @@ namespace Automaatne_andmebaasi_loomine
             if (dgvTellimused.CurrentRow == null || dgvTellimused.CurrentRow.Index >= naidatud.Count) return;
             var t = naidatud[dgvTellimused.CurrentRow.Index];
 
-            lblRead.Text = $"Tellimuse nr {t.Nr} tooted";
+            lblRead.Text = Keel.T("Tellimuse nr {0} tooted", t.Nr);
             dgvRead.DataSource = t.Read.Select(r => new
             {
                 Toode = r.Toodenimetus,
-                Kogus = $"{r.Kogus} tk",
+                Kogus = $"{r.Kogus} {Keel.T("tk")}",
                 Hind = $"{r.Hind:0.00} €",
                 Summa = $"{Math.Round((decimal)r.Hind * r.Kogus, 2):0.00} €"
             }).ToList();

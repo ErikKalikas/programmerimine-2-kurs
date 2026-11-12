@@ -4,7 +4,7 @@ using System.Diagnostics;
 namespace Automaatne_andmebaasi_loomine
 {
     // Ostja varasemad ostud: tooted, arve uuesti avamine ja "Telli uuesti"
-    public partial class TellimusedForm : Form
+    public partial class TellimusedForm : BaasVorm
     {
         private List<Tellimus> tellimused = new();
 
@@ -31,7 +31,7 @@ namespace Automaatne_andmebaasi_loomine
 
             if (tellimused.Count == 0)
             {
-                lblRead.Text = "Sul pole veel ühtegi tellimust.";
+                lblRead.Text = Keel.T("Sul pole veel ühtegi tellimust.");
                 btnAvaArve.Enabled = false;
                 btnTelliUuesti.Enabled = false;
             }
@@ -47,11 +47,11 @@ namespace Automaatne_andmebaasi_loomine
             var t = Valitud;
             if (t == null) return;
 
-            lblRead.Text = $"Tellimuse nr {t.Nr} tooted";
+            lblRead.Text = Keel.T("Tellimuse nr {0} tooted", t.Nr);
             dgvRead.DataSource = t.Read.Select(r => new
             {
                 Toode = r.Toodenimetus,
-                Kogus = $"{r.Kogus} tk",
+                Kogus = $"{r.Kogus} {Keel.T("tk")}",
                 Hind = $"{r.Hind:0.00} €",
                 Summa = $"{Math.Round((decimal)r.Hind * r.Kogus, 2):0.00} €"
             }).ToList();
@@ -93,22 +93,29 @@ namespace Automaatne_andmebaasi_loomine
             foreach (var r in t.Read)
             {
                 var toode = db.Toodetabel.AsNoTracking().FirstOrDefault(x => x.Id == r.ToodeId);
-                if (toode == null) { teated.Add($"{r.Toodenimetus}: toodet enam ei müüda"); continue; }
+                if (toode == null) { teated.Add($"{r.Toodenimetus}: {Keel.T("toodet enam ei müüda")}"); continue; }
 
                 int korvis = Ostukorv.Ridad.FirstOrDefault(x => x.Toode.Id == toode.Id)?.Kogus ?? 0;
                 int kogus = Math.Min(r.Kogus, toode.Kogus - korvis);
-                if (kogus <= 0) { teated.Add($"{r.Toodenimetus}: otsas"); continue; }
+                if (kogus <= 0) { teated.Add($"{r.Toodenimetus}: {Keel.T("otsas")}"); continue; }
 
                 if (Ostukorv.Lisa(toode, kogus) == null)
                 {
                     lisatud++;
-                    if (kogus < r.Kogus) teated.Add($"{r.Toodenimetus}: lisati ainult {kogus} tk (rohkem pole laos)");
+                    if (kogus < r.Kogus) teated.Add($"{r.Toodenimetus}: " + Keel.T("lisati ainult {0} tk (rohkem pole laos)", kogus));
                 }
             }
 
-            string tekst = $"Korvi lisati {lisatud} toodet.";
+            string tekst = Keel.T("Korvi lisati {0} toodet.", lisatud);
             if (teated.Count > 0) tekst += "\n\n" + string.Join("\n", teated);
-            MessageBox.Show(tekst);
+
+            if (lisatud == 0)
+            {
+                MessageBox.Show(tekst);
+                return;
+            }
+            if (MessageBox.Show(tekst + "\n\n" + Keel.T("Kas avada ostukorv?"), Keel.T("Ostukorv"), MessageBoxButtons.YesNo) == DialogResult.Yes)
+                FormMain.Aktiivne?.AvaOstukorv();
         }
     }
 }

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Automaatne_andmebaasi_loomine
 {
     // Admin: müügiaruanne valitud perioodi kohta (tulu, käibemaks, top-10, kategooriad)
-    public partial class AruandedForm : Form
+    public partial class AruandedForm : BaasVorm
     {
         private readonly List<Tellimus> koik;
         private readonly Dictionary<int, string> tooteKategooria;   // ToodeId -> kategooria nimi
@@ -14,6 +14,7 @@ namespace Automaatne_andmebaasi_loomine
         public AruandedForm()
         {
             InitializeComponent();
+            pnlGraafik.Resize += (_, _) => pnlGraafik.Invalidate();
 
             using var db = new ToodedContext();
             koik = db.Tellimused.Include(t => t.Read).AsNoTracking().ToList();
@@ -57,15 +58,15 @@ namespace Automaatne_andmebaasi_loomine
             int ostjaid = perioodis.Select(t => t.KasutajaId?.ToString() ?? t.Email).Distinct().Count();
 
             lblKokkuvote.Text =
-                $"Periood: {alates:dd.MM.yyyy} – {kuni.AddDays(-1):dd.MM.yyyy}\n\n" +
-                $"Tellimusi:  {perioodis.Count}\n" +
-                $"Erinevaid ostjaid:  {ostjaid}\n" +
-                $"Müüdud tooteid:  {read.Sum(r => r.Kogus)} tk\n\n" +
-                $"Müügitulu:  {tulu:0.00} €\n" +
-                $"Keskmine ost:  {keskmine:0.00} €\n" +
-                $"Antud soodustusi:  {soodustused:0.00} €\n\n" +
-                $"Käibemaks {kmProtsent:0}%:  {km:0.00} €\n" +
-                $"Tulu km-ta:  {tulu - km:0.00} €";
+                $"{Keel.T("Periood")}: {alates:dd.MM.yyyy} – {kuni.AddDays(-1):dd.MM.yyyy}\n\n" +
+                $"{Keel.T("Tellimusi")}:  {perioodis.Count}\n" +
+                $"{Keel.T("Erinevaid ostjaid")}:  {ostjaid}\n" +
+                $"{Keel.T("Müüdud tooteid")}:  {read.Sum(r => r.Kogus)} {Keel.T("tk")}\n\n" +
+                $"{Keel.T("Müügitulu")}:  {tulu:0.00} €\n" +
+                $"{Keel.T("Keskmine ost")}:  {keskmine:0.00} €\n" +
+                $"{Keel.T("Antud soodustusi")}:  {soodustused:0.00} €\n\n" +
+                $"{Keel.T("Käibemaks")} {kmProtsent:0}%:  {km:0.00} €\n" +
+                $"{Keel.T("Tulu km-ta")}:  {tulu - km:0.00} €";
 
             // Top-10 tooted müüdud koguse järgi
             dgvTop.DataSource = read
@@ -78,13 +79,13 @@ namespace Automaatne_andmebaasi_loomine
                 })
                 .OrderByDescending(x => x.Kogus).ThenByDescending(x => x.Müük)
                 .Take(10)
-                .Select((x, i) => new { Koht = i + 1, x.Toode, Kogus = $"{x.Kogus} tk", Müük = $"{x.Müük:0.00} €" })
+                .Select((x, i) => new { Koht = i + 1, x.Toode, Kogus = $"{x.Kogus} {Keel.T("tk")}", Müük = $"{x.Müük:0.00} €" })
                 .ToList();
 
             // Kategooriad (summad enne sooduskoodi); kustutatud tooted eraldi
             decimal kokkuRead = read.Sum(r => (decimal)r.Hind * r.Kogus);
             dgvKategooriad.DataSource = read
-                .GroupBy(r => tooteKategooria.TryGetValue(r.ToodeId, out var k) ? k : "Kustutatud tooted")
+                .GroupBy(r => tooteKategooria.TryGetValue(r.ToodeId, out var k) ? k : Keel.T("Kustutatud tooted"))
                 .Select(g => new
                 {
                     Kategooria = g.Key,
@@ -95,7 +96,7 @@ namespace Automaatne_andmebaasi_loomine
                 .Select(x => new
                 {
                     x.Kategooria,
-                    Kogus = $"{x.Kogus} tk",
+                    Kogus = $"{x.Kogus} {Keel.T("tk")}",
                     Müük = $"{x.Müük:0.00} €",
                     Osakaal = kokkuRead > 0 ? $"{x.Müük / kokkuRead * 100:0}%" : "–"
                 })
@@ -127,40 +128,51 @@ namespace Automaatne_andmebaasi_loomine
                     tulbad.Add((p.ToString("dd.MM"), perioodis.Where(t => t.Kuupaev.Date == p).Sum(t => (decimal)t.Summa)));
             }
 
-            using var pealkiriFont = new Font("Segoe UI", 9F, FontStyle.Bold);
-            using var vaikeFont = new Font("Segoe UI", 7F);
-            g.DrawString(kuudeKaupa ? "Müügitulu kuude kaupa" : "Müügitulu päevade kaupa", pealkiriFont, Brushes.Black, 8, 4);
+            using var pealkiriFont = new Font("Segoe UI Semibold", 12F);
+            using var vaikeFont = new Font("Segoe UI", 8F);
+            using var tekstiPintsel = new SolidBrush(Teema.Tekst);
+            using var hallPintsel = new SolidBrush(Teema.HallTume);
+            g.DrawString(Keel.T(kuudeKaupa ? "Müügitulu kuude kaupa" : "Müügitulu päevade kaupa"), pealkiriFont, tekstiPintsel, 4, 0);
 
             decimal max = tulbad.Count > 0 ? tulbad.Max(t => t.Summa) : 0;
             if (max == 0)
             {
-                g.DrawString("Selles perioodis müüki ei olnud.", vaikeFont, Brushes.DimGray, 8, 26);
+                g.DrawString(Keel.T("Selles perioodis müüki ei olnud."), Teema.Tavaline, hallPintsel, 6, 34);
                 return;
             }
 
-            const int vasak = 10, ylal = 28, all = 22;
+            const int vasak = 10, ylal = 44, all = 24;
             int laius = pnlGraafik.ClientSize.Width - vasak * 2;
             int korgus = pnlGraafik.ClientSize.Height - ylal - all;
             float samm = (float)laius / tulbad.Count;
             float tulbaLaius = Math.Max(2, samm * 0.7f);
             int sildiIga = Math.Max(1, (int)Math.Ceiling(40 / samm));   // silte ei tohi olla liiga tihedalt
 
-            using var pintsel = new SolidBrush(Color.FromArgb(31, 78, 121));
-            g.DrawLine(Pens.Gray, vasak, ylal + korgus, vasak + laius, ylal + korgus);
+            using var pintsel = new SolidBrush(Teema.Punane);
+            using var telg = new Pen(Teema.Aare);
+            g.DrawLine(telg, vasak, ylal + korgus, vasak + laius, ylal + korgus);
 
             for (int i = 0; i < tulbad.Count; i++)
             {
                 float h = (float)(tulbad[i].Summa / max) * (korgus - 12);
                 float x = vasak + i * samm + (samm - tulbaLaius) / 2;
                 float y = ylal + korgus - h;
-                if (h > 0) g.FillRectangle(pintsel, x, y, tulbaLaius, h);
+                if (h > 0)
+                {
+                    // ülemiste nurkadega tulp
+                    int r = (int)Math.Min(6, tulbaLaius / 2);
+                    using var tulp = Teema.UmarRuut(new Rectangle((int)x, (int)y, (int)Math.Max(2, tulbaLaius), (int)h + r), r);
+                    g.SetClip(new RectangleF(x - 1, y - 1, tulbaLaius + 2, h + 1));
+                    g.FillPath(pintsel, tulp);
+                    g.ResetClip();
+                }
 
                 // suurima tulba ja vähese tulpade arvu korral näita summat
                 if (tulbad[i].Summa > 0 && (tulbad.Count <= 15 || tulbad[i].Summa == max))
-                    g.DrawString($"{tulbad[i].Summa:0}€", vaikeFont, Brushes.Black, x - 2, y - 12);
+                    g.DrawString($"{tulbad[i].Summa:0}€", vaikeFont, tekstiPintsel, x - 2, y - 14);
 
                 if (i % sildiIga == 0)
-                    g.DrawString(tulbad[i].Silt, vaikeFont, Brushes.DimGray, x - 4, ylal + korgus + 3);
+                    g.DrawString(tulbad[i].Silt, vaikeFont, hallPintsel, x - 4, ylal + korgus + 4);
             }
         }
     }

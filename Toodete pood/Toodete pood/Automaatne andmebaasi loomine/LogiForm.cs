@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Automaatne_andmebaasi_loomine
 {
     // Admin: kes ja millal mida muutis (uuemad ees)
-    public partial class LogiForm : Form
+    public partial class LogiForm : BaasVorm
     {
         private readonly List<LogiKirje> kirjed;
 
@@ -28,8 +28,8 @@ namespace Automaatne_andmebaasi_loomine
 
             if (dgvLogi.Columns.Count == 3)
             {
-                dgvLogi.Columns[0].Width = 130;
-                dgvLogi.Columns[1].Width = 180;
+                dgvLogi.Columns[0].Width = 170;
+                dgvLogi.Columns[1].Width = 220;
                 dgvLogi.Columns[2].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
             }
         }

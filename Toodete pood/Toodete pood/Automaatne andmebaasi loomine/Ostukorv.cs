@@ -17,17 +17,22 @@ namespace Automaatne_andmebaasi_loomine
         public static float Kokku => (float)Math.Round((decimal)Vahesumma - (decimal)Soodustus, 2);
         public static int TooteidKokku => Ridad.Sum(r => r.Kogus);
 
+        // Käivitub iga kord, kui korv muutub (päises olev ostukorvi nupp uuendab end)
+        public static event Action? Muudetud;
+
+        private static void Teata() => Muudetud?.Invoke();
+
         // Lisab toote korvi. Tagastab veateate või null, kui lisamine õnnestus.
         public static string? Lisa(Toode toode, int kogus)
         {
-            if (kogus <= 0) return "Vale kogus.";
-            if (toode.Kogus <= 0) return $"{toode.Toodenimetus} on otsas.";
+            if (kogus <= 0) return Keel.T("Vale kogus.");
+            if (toode.Kogus <= 0) return Keel.T("{0} on otsas.", toode.Toodenimetus);
 
             var olemas = Ridad.FirstOrDefault(r => r.Toode.Id == toode.Id);
             int korvis = olemas?.Kogus ?? 0;
 
             if (korvis + kogus > toode.Kogus)
-                return $"Laos on ainult {toode.Kogus} tk (korvis juba {korvis} tk).";
+                return Keel.T("Laos on ainult {0} tk (korvis juba {1} tk).", toode.Kogus, korvis);
 
             if (olemas != null)
                 olemas.Kogus += kogus;
@@ -45,7 +50,7 @@ namespace Automaatne_andmebaasi_loomine
             var rida = Ridad[indeks];
 
             int uus = rida.Kogus + muutus;
-            if (uus > rida.Toode.Kogus) return $"Laos on ainult {rida.Toode.Kogus} tk.";
+            if (uus > rida.Toode.Kogus) return Keel.T("Laos on ainult {0} tk.", rida.Toode.Kogus);
 
             if (uus <= 0) Ridad.RemoveAt(indeks);
             else rida.Kogus = uus;
@@ -65,10 +70,11 @@ namespace Automaatne_andmebaasi_loomine
         public static string? RakendaKood(string kood)
         {
             int? p = Sooduskoodid.Protsent(kood);
-            if (p == null) return "Sellist sooduskoodi pole.";
+            if (p == null) return Keel.T("Sellist sooduskoodi pole.");
 
             Sooduskood = kood.Trim().ToUpper();
             SoodusProtsent = p.Value;
+            Teata();
             return null;
         }
 
@@ -76,6 +82,7 @@ namespace Automaatne_andmebaasi_loomine
         {
             Sooduskood = null;
             SoodusProtsent = 0;
+            Teata();
         }
 
         // Ost on tehtud: salvestab tellimuse, vähendab laoseisu ja tühjendab korvi
@@ -124,6 +131,7 @@ namespace Automaatne_andmebaasi_loomine
         {
             Ridad.Clear();
             EemaldaKood();
+            Teata();
         }
 
         // ---------- Salvestamine faili ----------
@@ -150,6 +158,7 @@ namespace Automaatne_andmebaasi_loomine
                 File.WriteAllText(Fail, JsonSerializer.Serialize(read));
             }
             catch (IOException) { }   // korvi salvestamata jäämine ei tohi programmi katki teha
+            Teata();
         }
 
         // Laeb sisselogitud kasutaja (või külalise) korvi failist; hinnad ja laoseis tulevad andmebaasist
@@ -173,6 +182,7 @@ namespace Automaatne_andmebaasi_loomine
                 if (toode == null || toode.Kogus <= 0) continue;   // toodet pole enam või on otsas
                 Ridad.Add(new OstukorviRida { Toode = toode, Kogus = Math.Min(r.Kogus, toode.Kogus) });
             }
+            Teata();
         }
     }
 }

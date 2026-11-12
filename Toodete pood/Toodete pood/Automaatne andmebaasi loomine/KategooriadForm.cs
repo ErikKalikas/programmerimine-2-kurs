@@ -4,7 +4,7 @@ using System.Windows.Forms;
 
 namespace Automaatne_andmebaasi_loomine
 {
-    public partial class KategooriadForm : Form
+    public partial class KategooriadForm : BaasVorm
     {
         private readonly ToodedContext _db;
 
@@ -12,6 +12,7 @@ namespace Automaatne_andmebaasi_loomine
         {
             InitializeComponent();
             _db = new ToodedContext();
+            Disposed += (_, _) => _db.Dispose();
             LaeKategooriad();
         }
 
@@ -42,7 +43,7 @@ namespace Automaatne_andmebaasi_loomine
         {
             if (string.IsNullOrWhiteSpace(txtNimetus.Text))
             {
-                MessageBox.Show("Sisesta kategooria nimetus!");
+                MessageBox.Show(Keel.T("Sisesta kategooria nimetus!"));
                 return;
             }
 
@@ -60,12 +61,12 @@ namespace Automaatne_andmebaasi_loomine
         {
             if (dataGridViewKategooriad.SelectedRows.Count == 0)
             {
-                MessageBox.Show("Vali tabelist kategooria!");
+                MessageBox.Show(Keel.T("Vali tabelist kategooria!"));
                 return;
             }
             if (string.IsNullOrWhiteSpace(txtNimetus.Text))
             {
-                MessageBox.Show("Sisesta kategooria nimetus!");
+                MessageBox.Show(Keel.T("Sisesta kategooria nimetus!"));
                 return;
             }
 
@@ -89,7 +90,7 @@ namespace Automaatne_andmebaasi_loomine
         {
             if (dataGridViewKategooriad.SelectedRows.Count == 0)
             {
-                MessageBox.Show("Vali tabelist kategooria!");
+                MessageBox.Show(Keel.T("Vali tabelist kategooria!"));
                 return;
             }
 
@@ -98,7 +99,7 @@ namespace Automaatne_andmebaasi_loomine
             // Andmebaasis on kaskaadkustutamine, seega ei lase kustutada kategooriat, kus on tooteid
             if (_db.Toodetabel.Any(t => t.KategooriaId == id))
             {
-                MessageBox.Show("Selles kategoorias on tooteid. Kustuta või liiguta need enne teise kategooriasse.");
+                MessageBox.Show(Keel.T("Selles kategoorias on tooteid. Kustuta või liiguta need enne teise kategooriasse."));
                 return;
             }
 
