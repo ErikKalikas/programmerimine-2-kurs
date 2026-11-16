@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Automaatne_andmebaasi_loomine
 {
     // Admin: kasutajate nimekiri, uus administraator, rolli muutmine ja blokeerimine
-    public partial class KasutajadForm : Form
+    public partial class KasutajadForm : BaasVorm
     {
         private List<Kasutaja> kasutajad = new();
 
@@ -26,8 +26,8 @@ namespace Automaatne_andmebaasi_loomine
             {
                 k.Nimi,
                 k.Email,
-                Roll = k.Roll == "admin" ? "administraator" : "ostja",
-                Olek = k.Blokeeritud ? "Blokeeritud" : "Aktiivne",
+                Roll = k.Roll == "admin" ? Keel.T("administraator") : Keel.T("ostja"),
+                Olek = k.Blokeeritud ? Keel.T("Blokeeritud") : Keel.T("Aktiivne"),
                 Tellimusi = tellimusi.TryGetValue(k.Id, out int n) ? n : 0
             }).ToList();
         }
@@ -37,7 +37,7 @@ namespace Automaatne_andmebaasi_loomine
         {
             for (int i = 0; i < dgvKasutajad.Rows.Count && i < kasutajad.Count; i++)
                 if (kasutajad[i].Blokeeritud)
-                    dgvKasutajad.Rows[i].DefaultCellStyle.ForeColor = Color.Gray;
+                    dgvKasutajad.Rows[i].DefaultCellStyle.ForeColor = Teema.HallTume;
         }
 
         private Kasutaja? Valitud =>
@@ -49,14 +49,14 @@ namespace Automaatne_andmebaasi_loomine
         private bool OnMina(Kasutaja k)
         {
             if (k.Id != AktiivneKasutaja.Id) return false;
-            MessageBox.Show("Oma kontot siin muuta ei saa.");
+            MessageBox.Show(Keel.T("Oma kontot siin muuta ei saa."));
             return true;
         }
 
         private void btnLisaAdmin_Click(object? sender, EventArgs e)
         {
             using var f = new RegistreerimineForm("admin");
-            if (f.ShowDialog(this) == DialogResult.OK) Lae();
+            if (f.ShowDialog(TopLevelControl ?? this) == DialogResult.OK) Lae();
         }
 
         private void btnRoll_Click(object? sender, EventArgs e)
@@ -65,8 +65,10 @@ namespace Automaatne_andmebaasi_loomine
             if (valitud == null || OnMina(valitud)) return;
 
             string uus = valitud.Roll == "admin" ? "kasutaja" : "admin";
-            string tekst = uus == "admin" ? "teha administraatoriks" : "muuta tavaliseks ostjaks";
-            if (MessageBox.Show($"Kas {valitud.Nimi} {tekst}?", "Muuda rolli", MessageBoxButtons.YesNo) != DialogResult.Yes)
+            string kysimus = uus == "admin"
+                ? Keel.T("Kas teha {0} administraatoriks?", valitud.Nimi)
+                : Keel.T("Kas muuta {0} tavaliseks ostjaks?", valitud.Nimi);
+            if (MessageBox.Show(kysimus, Keel.T("Muuda rolli"), MessageBoxButtons.YesNo) != DialogResult.Yes)
                 return;
 
             using var db = new ToodedContext();
@@ -90,7 +92,7 @@ namespace Automaatne_andmebaasi_loomine
             db.SaveChanges();
             Tegevuslogi.Kirjuta(k.Blokeeritud ? $"Blokeeris kasutaja {k.Email}" : $"Avas kasutaja {k.Email} blokeeringu");
 
-            MessageBox.Show(k.Blokeeritud ? $"{k.Nimi} on blokeeritud ega saa enam sisse logida." : $"{k.Nimi} saab jälle sisse logida.");
+            MessageBox.Show(k.Blokeeritud ? Keel.T("{0} on blokeeritud ega saa enam sisse logida.", k.Nimi) : Keel.T("{0} saab jälle sisse logida.", k.Nimi));
             Lae();
         }
     }

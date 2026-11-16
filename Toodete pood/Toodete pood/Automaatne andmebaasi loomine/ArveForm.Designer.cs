@@ -28,148 +28,276 @@ namespace Automaatne_andmebaasi_loomine
         /// </summary>
         private void InitializeComponent()
         {
-            listOstukorv = new ListBox();
-            btnMiinus = new Button();
-            btnPluss = new Button();
-            btnEemalda = new Button();
-            txtSooduskood = new TextBox();
-            btnRakenda = new Button();
+            tlp = new TableLayoutPanel();
+            pnlKorv = new UmarPaneel();
+            flpRead = new FlowLayoutPanel();
+            pnlKorvPais = new Panel();
+            lblKorvPealkiri = new Label();
+            lblKorvArv = new Label();
+            pnlKokkuvote = new UmarPaneel();
+            lblKokkuvote = new Label();
+            lblVahesummaT = new Label();
+            lblVahesumma = new Label();
+            lblSoodustusT = new Label();
+            lblSoodustus = new Label();
+            pnlJoon = new Panel();
+            lblKokkuT = new Label();
             lblKokku = new Label();
+            txtSooduskood = new TextBox();
+            btnRakenda = new UmarNupp();
+            btnSaadaEmail = new UmarNupp();
+            btnGenPDF = new UmarNupp();
+            lblKiirlisamine = new Label();
             comboTooted = new ComboBox();
-            btnLisaKorvi = new Button();
-            btnGenPDF = new Button();
-            btnSaadaEmail = new Button();
-            btnGmailValja = new Button();
+            btnLisaKorvi = new UmarNupp();
+            tlp.SuspendLayout();
+            pnlKorv.SuspendLayout();
+            pnlKorvPais.SuspendLayout();
+            pnlKokkuvote.SuspendLayout();
             SuspendLayout();
             // 
-            // listOstukorv
+            // tlp
             // 
-            listOstukorv.Location = new Point(20, 20);
-            listOstukorv.Name = "listOstukorv";
-            listOstukorv.Size = new Size(360, 260);
+            tlp.ColumnCount = 2;
+            tlp.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
+            tlp.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 380F));
+            tlp.Controls.Add(pnlKorv, 0, 0);
+            tlp.Controls.Add(pnlKokkuvote, 1, 0);
+            tlp.Dock = DockStyle.Fill;
+            tlp.Location = new Point(0, 0);
+            tlp.Name = "tlp";
+            tlp.RowCount = 1;
+            tlp.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+            tlp.Size = new Size(1000, 650);
             // 
-            // btnMiinus
+            // pnlKorv
             // 
-            btnMiinus.Location = new Point(20, 288);
-            btnMiinus.Name = "btnMiinus";
-            btnMiinus.Size = new Size(40, 30);
-            btnMiinus.Text = "−";
-            btnMiinus.Click += btnMiinus_Click;
+            pnlKorv.Controls.Add(flpRead);
+            pnlKorv.Controls.Add(pnlKorvPais);
+            pnlKorv.Dock = DockStyle.Fill;
+            pnlKorv.Margin = new Padding(0, 0, 20, 0);
+            pnlKorv.Name = "pnlKorv";
+            pnlKorv.Padding = new Padding(20, 14, 20, 14);
             // 
-            // btnPluss
+            // flpRead
             // 
-            btnPluss.Location = new Point(65, 288);
-            btnPluss.Name = "btnPluss";
-            btnPluss.Size = new Size(40, 30);
-            btnPluss.Text = "+";
-            btnPluss.Click += btnPluss_Click;
+            flpRead.AutoScroll = true;
+            flpRead.Dock = DockStyle.Fill;
+            flpRead.FlowDirection = FlowDirection.TopDown;
+            flpRead.Name = "flpRead";
+            flpRead.WrapContents = false;
+            flpRead.Resize += flpRead_Resize;
             // 
-            // btnEemalda
+            // pnlKorvPais
             // 
-            btnEemalda.Location = new Point(110, 288);
-            btnEemalda.Name = "btnEemalda";
-            btnEemalda.Size = new Size(120, 30);
-            btnEemalda.Text = "Eemalda rida";
-            btnEemalda.Click += btnEemalda_Click;
+            pnlKorvPais.Controls.Add(lblKorvPealkiri);
+            pnlKorvPais.Controls.Add(lblKorvArv);
+            pnlKorvPais.Dock = DockStyle.Top;
+            pnlKorvPais.Name = "pnlKorvPais";
+            pnlKorvPais.Size = new Size(560, 52);
             // 
-            // txtSooduskood
+            // lblKorvPealkiri
             // 
-            txtSooduskood.Location = new Point(20, 332);
-            txtSooduskood.Name = "txtSooduskood";
-            txtSooduskood.PlaceholderText = "Sooduskood";
-            txtSooduskood.Size = new Size(150, 23);
+            lblKorvPealkiri.AutoSize = true;
+            lblKorvPealkiri.Font = new Font("Segoe UI", 15F, FontStyle.Bold);
+            lblKorvPealkiri.Location = new Point(0, 4);
+            lblKorvPealkiri.Name = "lblKorvPealkiri";
+            lblKorvPealkiri.Text = "Sinu ostukorv";
             // 
-            // btnRakenda
+            // lblKorvArv
             // 
-            btnRakenda.Location = new Point(175, 330);
-            btnRakenda.Name = "btnRakenda";
-            btnRakenda.Size = new Size(90, 27);
-            btnRakenda.Text = "Rakenda";
-            btnRakenda.Click += btnRakenda_Click;
+            lblKorvArv.AutoSize = true;
+            lblKorvArv.ForeColor = Color.FromArgb(110, 110, 118);
+            lblKorvArv.Location = new Point(2, 32);
+            lblKorvArv.Name = "lblKorvArv";
+            // 
+            // pnlKokkuvote
+            // 
+            pnlKokkuvote.AutoScroll = true;
+            pnlKokkuvote.Controls.Add(lblKokkuvote);
+            pnlKokkuvote.Controls.Add(lblVahesummaT);
+            pnlKokkuvote.Controls.Add(lblVahesumma);
+            pnlKokkuvote.Controls.Add(lblSoodustusT);
+            pnlKokkuvote.Controls.Add(lblSoodustus);
+            pnlKokkuvote.Controls.Add(pnlJoon);
+            pnlKokkuvote.Controls.Add(lblKokkuT);
+            pnlKokkuvote.Controls.Add(lblKokku);
+            pnlKokkuvote.Controls.Add(txtSooduskood);
+            pnlKokkuvote.Controls.Add(btnRakenda);
+            pnlKokkuvote.Controls.Add(btnSaadaEmail);
+            pnlKokkuvote.Controls.Add(btnGenPDF);
+            pnlKokkuvote.Controls.Add(lblKiirlisamine);
+            pnlKokkuvote.Controls.Add(comboTooted);
+            pnlKokkuvote.Controls.Add(btnLisaKorvi);
+            pnlKokkuvote.Dock = DockStyle.Fill;
+            pnlKokkuvote.Margin = new Padding(0);
+            pnlKokkuvote.Name = "pnlKokkuvote";
+            // 
+            // lblKokkuvote
+            // 
+            lblKokkuvote.AutoSize = true;
+            lblKokkuvote.Font = new Font("Segoe UI", 15F, FontStyle.Bold);
+            lblKokkuvote.Location = new Point(20, 18);
+            lblKokkuvote.Name = "lblKokkuvote";
+            lblKokkuvote.Text = "Kokkuvõte";
+            // 
+            // lblVahesummaT
+            // 
+            lblVahesummaT.AutoSize = true;
+            lblVahesummaT.ForeColor = Color.FromArgb(110, 110, 118);
+            lblVahesummaT.Location = new Point(20, 66);
+            lblVahesummaT.Name = "lblVahesummaT";
+            lblVahesummaT.Text = "Vahesumma";
+            // 
+            // lblVahesumma
+            // 
+            lblVahesumma.Location = new Point(180, 66);
+            lblVahesumma.Name = "lblVahesumma";
+            lblVahesumma.Size = new Size(160, 22);
+            lblVahesumma.TextAlign = ContentAlignment.TopRight;
+            // 
+            // lblSoodustusT
+            // 
+            lblSoodustusT.AutoSize = true;
+            lblSoodustusT.ForeColor = Color.FromArgb(110, 110, 118);
+            lblSoodustusT.Location = new Point(20, 94);
+            lblSoodustusT.Name = "lblSoodustusT";
+            lblSoodustusT.Text = "Soodustus";
+            // 
+            // lblSoodustus
+            // 
+            lblSoodustus.ForeColor = Color.FromArgb(220, 38, 38);
+            lblSoodustus.Location = new Point(140, 94);
+            lblSoodustus.Name = "lblSoodustus";
+            lblSoodustus.Size = new Size(200, 22);
+            lblSoodustus.TextAlign = ContentAlignment.TopRight;
+            // 
+            // pnlJoon
+            // 
+            pnlJoon.BackColor = Color.FromArgb(222, 222, 228);
+            pnlJoon.Location = new Point(20, 128);
+            pnlJoon.Name = "pnlJoon";
+            pnlJoon.Size = new Size(320, 1);
+            // 
+            // lblKokkuT
+            // 
+            lblKokkuT.AutoSize = true;
+            lblKokkuT.Font = new Font("Segoe UI Semibold", 13F);
+            lblKokkuT.Location = new Point(20, 144);
+            lblKokkuT.Name = "lblKokkuT";
+            lblKokkuT.Text = "Kokku";
             // 
             // lblKokku
             // 
-            lblKokku.AutoSize = true;
-            lblKokku.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
-            lblKokku.Location = new Point(20, 368);
+            lblKokku.Font = new Font("Segoe UI", 18F, FontStyle.Bold);
+            lblKokku.ForeColor = Color.FromArgb(220, 38, 38);
+            lblKokku.Location = new Point(140, 136);
             lblKokku.Name = "lblKokku";
-            lblKokku.Text = "Kokku: 0,00 €";
+            lblKokku.Size = new Size(200, 40);
+            lblKokku.TextAlign = ContentAlignment.MiddleRight;
+            // 
+            // txtSooduskood
+            // 
+            txtSooduskood.CharacterCasing = CharacterCasing.Upper;
+            txtSooduskood.Font = new Font("Segoe UI", 11F);
+            txtSooduskood.Location = new Point(20, 196);
+            txtSooduskood.Name = "txtSooduskood";
+            txtSooduskood.PlaceholderText = "Sooduskood";
+            txtSooduskood.Size = new Size(200, 27);
+            // 
+            // btnRakenda
+            // 
+            btnRakenda.Location = new Point(228, 194);
+            btnRakenda.Name = "btnRakenda";
+            btnRakenda.Size = new Size(112, 32);
+            btnRakenda.Text = "Rakenda";
+            btnRakenda.Click += btnRakenda_Click;
+            // 
+            // btnSaadaEmail
+            // 
+            btnSaadaEmail.Ikoon = "\uE715";
+            btnSaadaEmail.Location = new Point(20, 246);
+            btnSaadaEmail.Name = "btnSaadaEmail";
+            btnSaadaEmail.Size = new Size(320, 50);
+            btnSaadaEmail.Stiil = NupuStiil.Punane;
+            btnSaadaEmail.Text = "Osta ja saada arve e-postiga";
+            btnSaadaEmail.Click += btnSaadaEmail_Click;
+            // 
+            // btnGenPDF
+            // 
+            btnGenPDF.Ikoon = "\uE8A5";
+            btnGenPDF.Location = new Point(20, 306);
+            btnGenPDF.Name = "btnGenPDF";
+            btnGenPDF.Size = new Size(320, 42);
+            btnGenPDF.Stiil = NupuStiil.Kontuur;
+            btnGenPDF.Text = "Genereeri PDF";
+            btnGenPDF.Click += btnGenPDF_Click;
+            // 
+            // lblKiirlisamine
+            // 
+            lblKiirlisamine.AutoSize = true;
+            lblKiirlisamine.Font = new Font("Segoe UI Semibold", 10F);
+            lblKiirlisamine.Location = new Point(20, 372);
+            lblKiirlisamine.Name = "lblKiirlisamine";
+            lblKiirlisamine.Text = "Lisa toode kiiresti";
             // 
             // comboTooted
             // 
             comboTooted.DropDownStyle = ComboBoxStyle.DropDownList;
-            comboTooted.Location = new Point(400, 20);
+            comboTooted.Font = new Font("Segoe UI", 11F);
+            comboTooted.Location = new Point(20, 398);
             comboTooted.Name = "comboTooted";
-            comboTooted.Size = new Size(180, 23);
+            comboTooted.Size = new Size(200, 28);
             // 
             // btnLisaKorvi
             // 
-            btnLisaKorvi.Location = new Point(400, 55);
+            btnLisaKorvi.Location = new Point(228, 396);
             btnLisaKorvi.Name = "btnLisaKorvi";
-            btnLisaKorvi.Size = new Size(180, 30);
-            btnLisaKorvi.Text = "Lisa toode korvi";
+            btnLisaKorvi.Size = new Size(112, 32);
+            btnLisaKorvi.Text = "Lisa";
             btnLisaKorvi.Click += btnLisaKorvi_Click;
-            // 
-            // btnGenPDF
-            // 
-            btnGenPDF.Location = new Point(400, 110);
-            btnGenPDF.Name = "btnGenPDF";
-            btnGenPDF.Size = new Size(180, 30);
-            btnGenPDF.Text = "Genereeri PDF";
-            btnGenPDF.Click += btnGenPDF_Click;
-            // 
-            // btnSaadaEmail
-            // 
-            btnSaadaEmail.Location = new Point(400, 150);
-            btnSaadaEmail.Name = "btnSaadaEmail";
-            btnSaadaEmail.Size = new Size(180, 30);
-            btnSaadaEmail.Text = "Saada emailiga";
-            btnSaadaEmail.Click += btnSaadaEmail_Click;
-            // 
-            // btnGmailValja
-            // 
-            btnGmailValja.Location = new Point(400, 190);
-            btnGmailValja.Name = "btnGmailValja";
-            btnGmailValja.Size = new Size(180, 30);
-            btnGmailValja.Text = "Vaheta Gmaili kontot";
-            btnGmailValja.Click += btnGmailValja_Click;
             // 
             // ArveForm
             // 
-            ClientSize = new Size(600, 420);
-            Controls.Add(listOstukorv);
-            Controls.Add(btnMiinus);
-            Controls.Add(btnPluss);
-            Controls.Add(btnEemalda);
-            Controls.Add(txtSooduskood);
-            Controls.Add(btnRakenda);
-            Controls.Add(lblKokku);
-            Controls.Add(comboTooted);
-            Controls.Add(btnLisaKorvi);
-            Controls.Add(btnGenPDF);
-            Controls.Add(btnSaadaEmail);
-            Controls.Add(btnGmailValja);
+            AutoScaleDimensions = new SizeF(96F, 96F);
+            AutoScaleMode = AutoScaleMode.Dpi;
+            ClientSize = new Size(1000, 650);
+            Controls.Add(tlp);
             Name = "ArveForm";
-            BackColor = Color.LightBlue;
             Text = "Ostukorv";
             Load += ArveForm_Load;
+            tlp.ResumeLayout(false);
+            pnlKorv.ResumeLayout(false);
+            pnlKorvPais.ResumeLayout(false);
+            pnlKorvPais.PerformLayout();
+            pnlKokkuvote.ResumeLayout(false);
+            pnlKokkuvote.PerformLayout();
             ResumeLayout(false);
-            PerformLayout();
         }
 
         #endregion
 
-        private System.Windows.Forms.ListBox listOstukorv;
-        private System.Windows.Forms.Button btnMiinus;
-        private System.Windows.Forms.Button btnPluss;
-        private System.Windows.Forms.Button btnEemalda;
-        private System.Windows.Forms.TextBox txtSooduskood;
-        private System.Windows.Forms.Button btnRakenda;
+        private System.Windows.Forms.TableLayoutPanel tlp;
+        private UmarPaneel pnlKorv;
+        private System.Windows.Forms.FlowLayoutPanel flpRead;
+        private System.Windows.Forms.Panel pnlKorvPais;
+        private System.Windows.Forms.Label lblKorvPealkiri;
+        private System.Windows.Forms.Label lblKorvArv;
+        private UmarPaneel pnlKokkuvote;
+        private System.Windows.Forms.Label lblKokkuvote;
+        private System.Windows.Forms.Label lblVahesummaT;
+        private System.Windows.Forms.Label lblVahesumma;
+        private System.Windows.Forms.Label lblSoodustusT;
+        private System.Windows.Forms.Label lblSoodustus;
+        private System.Windows.Forms.Panel pnlJoon;
+        private System.Windows.Forms.Label lblKokkuT;
         private System.Windows.Forms.Label lblKokku;
+        private System.Windows.Forms.TextBox txtSooduskood;
+        private UmarNupp btnRakenda;
+        private UmarNupp btnSaadaEmail;
+        private UmarNupp btnGenPDF;
+        private System.Windows.Forms.Label lblKiirlisamine;
         private System.Windows.Forms.ComboBox comboTooted;
-        private System.Windows.Forms.Button btnLisaKorvi;
-        private System.Windows.Forms.Button btnGenPDF;
-        private System.Windows.Forms.Button btnSaadaEmail;
-        private System.Windows.Forms.Button btnGmailValja;
+        private UmarNupp btnLisaKorvi;
     }
 }

@@ -1,7 +1,7 @@
 namespace Automaatne_andmebaasi_loomine
 {
     // Ostja andmed (lähevad ka arvele) ja parooli muutmine
-    public partial class ProfiilForm : Form
+    public partial class ProfiilForm : BaasVorm
     {
         public ProfiilForm()
         {
@@ -21,7 +21,7 @@ namespace Automaatne_andmebaasi_loomine
         {
             if (string.IsNullOrWhiteSpace(txtNimi.Text))
             {
-                MessageBox.Show("Nimi ei tohi olla tühi.");
+                MessageBox.Show(Keel.T("Nimi ei tohi olla tühi."));
                 return;
             }
 
@@ -35,7 +35,8 @@ namespace Automaatne_andmebaasi_loomine
             db.SaveChanges();
 
             AktiivneKasutaja.Nimi = k.Nimi;
-            MessageBox.Show("Andmed salvestatud.");
+            FormMain.Aktiivne?.UuendaTervitus();
+            MessageBox.Show(Keel.T("Andmed salvestatud."));
         }
 
         private void btnMuudaParool_Click(object? sender, EventArgs e)
@@ -45,11 +46,11 @@ namespace Automaatne_andmebaasi_loomine
             if (k == null) return;
 
             if (!PasswordHelper.Verify(txtVanaParool.Text, k.ParoolHash))
-            { MessageBox.Show("Praegune parool on vale."); return; }
+            { MessageBox.Show(Keel.T("Praegune parool on vale.")); return; }
             if (txtUusParool.Text.Length < 6)
-            { MessageBox.Show("Uus parool peab olema vähemalt 6 märki."); return; }
+            { MessageBox.Show(Keel.T("Uus parool peab olema vähemalt 6 märki.")); return; }
             if (txtUusParool.Text != txtUusParool2.Text)
-            { MessageBox.Show("Uued paroolid ei ühti."); return; }
+            { MessageBox.Show(Keel.T("Uued paroolid ei ühti.")); return; }
 
             k.ParoolHash = PasswordHelper.Hash(txtUusParool.Text);
             db.SaveChanges();
@@ -58,7 +59,7 @@ namespace Automaatne_andmebaasi_loomine
             txtVanaParool.Clear();
             txtUusParool.Clear();
             txtUusParool2.Clear();
-            MessageBox.Show("Parool muudetud.");
+            MessageBox.Show(Keel.T("Parool muudetud."));
         }
     }
 }

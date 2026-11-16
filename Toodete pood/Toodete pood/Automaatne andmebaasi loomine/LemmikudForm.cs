@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Automaatne_andmebaasi_loomine
 {
     // Ostja lemmiktooted
-    public partial class LemmikudForm : Form
+    public partial class LemmikudForm : BaasVorm
     {
         private List<Toode> tooted = new();
 
@@ -27,12 +27,12 @@ namespace Automaatne_andmebaasi_loomine
             {
                 Toode = t.Toodenimetus,
                 Hind = t.OnSoodus ? $"{t.HetkeHind:0.00} € (−{t.SoodusProtsent}%)" : $"{t.Hind:0.00} €",
-                Laos = t.Kogus > 0 ? $"{t.Kogus} tk" : "Otsas"
+                Laos = t.Kogus > 0 ? $"{t.Kogus} {Keel.T("tk")}" : Keel.T("Otsas")
             }).ToList();
 
             bool on = tooted.Count > 0;
             btnAva.Enabled = btnLisaKorvi.Enabled = btnEemalda.Enabled = on;
-            Text = on ? $"Lemmikud ({tooted.Count})" : "Lemmikud – lisa tooteid poes nupuga ♡";
+            Text = on ? $"{Keel.T("Lemmikud")} ({tooted.Count})" : Keel.T("Lemmikud");
         }
 
         private Toode? Valitud =>
@@ -45,7 +45,7 @@ namespace Automaatne_andmebaasi_loomine
             var t = Valitud;
             if (t == null) return;
             using var kaart = new TooteKaartForm(t);
-            kaart.ShowDialog(this);
+            kaart.ShowDialog(TopLevelControl ?? this);
             Lae();
         }
 
@@ -58,7 +58,7 @@ namespace Automaatne_andmebaasi_loomine
         {
             var t = Valitud;
             if (t == null) return;
-            MessageBox.Show(Ostukorv.Lisa(t, 1) ?? $"{t.Toodenimetus} lisati korvi.");
+            MessageBox.Show(Ostukorv.Lisa(t, 1) ?? Keel.T("{0} lisati korvi.", t.Toodenimetus));
         }
 
         private void btnEemalda_Click(object? sender, EventArgs e)

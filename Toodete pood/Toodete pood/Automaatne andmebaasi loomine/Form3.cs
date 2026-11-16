@@ -2,12 +2,14 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Automaatne_andmebaasi_loomine
 {
-    // Pood: tooted kategooriate kaupa, otsing, sorteerimine, soodushinnad ja tootekaart
-    public partial class Form3 : Form
+    // Pood: tootekaardid nagu internetipoes, kategooriad, otsing, sorteerimine, soodushinnad ja "Lisa korvi"
+    public partial class Form3 : BaasVorm
     {
         private List<Toode> tooted = new();
         private List<Kategooria> kategooriad = new();
         private HashSet<int> lemmikud = new();
+        private int? valitudKategooria;   // null = kõik tooted
+        private bool laeb = true;
 
         private static readonly string[] Sorteerimised =
         {
@@ -18,12 +20,13 @@ namespace Automaatne_andmebaasi_loomine
         {
             InitializeComponent();
 
-            cmbSorteeri.Items.AddRange(Sorteerimised);
-            cmbSorteeri.SelectedIndex = 0;   // käivitab ka NaitaTooted
+            foreach (var s in Sorteerimised)
+                cmbSorteeri.Items.Add(Keel.T(s));
+            cmbSorteeri.SelectedIndex = 0;
 
             LaeAndmed();
+            laeb = false;
             NaitaTooted();
-            NaitaKokku();
         }
 
         // Värsked andmed andmebaasist (laoseis muutub pärast ostu)
@@ -37,7 +40,7 @@ namespace Automaatne_andmebaasi_loomine
 
         private void NaitaTooted()
         {
-            string valitudTab = tabPood.SelectedTab?.Text ?? "";
+            if (laeb) return;
             string otsing = txtOtsi.Text.Trim();
 
             IEnumerable<Toode> leitud = tooted;
@@ -55,185 +58,252 @@ namespace Automaatne_andmebaasi_loomine
             };
             var nimekiri = leitud.ToList();
 
-            tabPood.SuspendLayout();
-            tabPood.TabPages.Clear();
+            NaitaKategooriad(nimekiri, otsing != "");
 
-            LisaTab("Kõik tooted", nimekiri);
+            var naita = valitudKategooria == null
+                ? nimekiri
+                : nimekiri.Where(t => t.KategooriaId == valitudKategooria).ToList();
+            lblLeitud.Text = Keel.T("Leitud {0} toodet", naita.Count);
+
+            flpTooted.SuspendLayout();
+            foreach (var vana in flpTooted.Controls.Cast<Control>().ToList())
+                vana.Dispose();
+
+            if (naita.Count == 0)
+            {
+                flpTooted.Controls.Add(new Label
+                {
+                    Text = Keel.T("Tooteid ei leitud."),
+                    AutoSize = true,
+                    Font = Teema.Alapealkiri,
+                    ForeColor = Teema.HallTume,
+                    Margin = new Padding(4, 20, 0, 0)
+                });
+            }
+
+            foreach (var t in naita)
+                flpTooted.Controls.Add(LooKaart(t));
+
+            flpTooted.ResumeLayout();
+            flpTooted.AutoScrollPosition = Point.Empty;
+        }
+
+        // Kategooriad "kiipidena" toodete kohal; valitud kategooria on punane
+        private void NaitaKategooriad(List<Toode> nimekiri, bool otsingul)
+        {
+            flpKategooriad.SuspendLayout();
+            foreach (var vana in flpKategooriad.Controls.Cast<Control>().ToList())
+                vana.Dispose();
+
+            LisaKiip(Keel.T("Kõik tooted"), nimekiri.Count, null);
             foreach (var kat in kategooriad)
             {
-                var katTooted = nimekiri.Where(t => t.KategooriaId == kat.Id).ToList();
-                if (otsing != "" && katTooted.Count == 0) continue;   // otsingul peidame tühjad kategooriad
-                LisaTab(kat.Kategooria_nimetus, katTooted);
+                int arv = nimekiri.Count(t => t.KategooriaId == kat.Id);
+                if (otsingul && arv == 0 && valitudKategooria != kat.Id) continue;   // otsingul peidame tühjad
+                LisaKiip(kat.Kategooria_nimetus, arv, kat.Id);
             }
-
-            // jääme samale vahelehele, kui see on alles
-            string valitudNimi = valitudTab.Split(" (")[0];
-            foreach (TabPage p in tabPood.TabPages)
-                if (p.Text.Split(" (")[0] == valitudNimi)
-                    tabPood.SelectedTab = p;
-
-            tabPood.ResumeLayout();
+            flpKategooriad.ResumeLayout();
         }
 
-        private void LisaTab(string nimi, List<Toode> tabiTooted)
+        private void LisaKiip(string nimi, int arv, int? katId)
         {
-            var page = new TabPage($"{nimi} ({tabiTooted.Count})");
-            page.AutoScroll = true;
-            page.BackColor = Color.LightBlue;
-
-            if (tabiTooted.Count == 0)
+            string tekst = $"{nimi}  {arv}";
+            var kiip = new UmarNupp
             {
-                page.Controls.Add(new Label { Text = "Tooteid ei leitud.", AutoSize = true, Location = new Point(15, 15) });
-            }
-
-            int x = 10, y = 10, count = 0;
-            foreach (var t in tabiTooted)
+                Text = tekst,
+                Stiil = valitudKategooria == katId ? NupuStiil.Punane : NupuStiil.Kontuur,
+                Raadius = 18,
+                Height = 36,
+                Width = TextRenderer.MeasureText(tekst, Teema.Paks).Width + 36,
+                Margin = new Padding(0, 0, 8, 8)
+            };
+            kiip.Click += (_, _) => BeginInvoke(() =>
             {
-                var kaart = LooKaart(t);
-                kaart.Location = new Point(x, y);
-                page.Controls.Add(kaart);
-
-                x += 172;
-                count++;
-                if (count % 5 == 0)   // 5 toodet reas
-                {
-                    x = 10;
-                    y += 232;
-                }
-            }
-
-            tabPood.TabPages.Add(page);
+                valitudKategooria = katId;
+                NaitaTooted();
+            });
+            flpKategooriad.Controls.Add(kiip);
         }
 
-        // Ühe toote kaart: pilt, nimi, hind (soodushind läbikriipsutatud vana hinnaga), "Otsas"
-        private Panel LooKaart(Toode t)
+        // Ühe toote kaart: pilt, nimi, hind (soodushinnaga ka vana hind), "Lisa korvi"
+        private UmarPaneel LooKaart(Toode t)
         {
             bool otsas = t.Kogus <= 0;
 
-            var p = new Panel
+            var kaart = new UmarPaneel
             {
-                Size = new Size(162, 222),
-                BorderStyle = BorderStyle.FixedSingle,
-                BackColor = Color.White,
+                Size = new Size(216, 340),
+                Margin = new Padding(0, 0, 18, 18),
                 Cursor = Cursors.Hand
             };
 
             var pb = new PictureBox
             {
-                Size = new Size(150, 140),
-                Location = new Point(5, 5),
+                Size = new Size(192, 160),
+                Location = new Point(12, 12),
                 SizeMode = PictureBoxSizeMode.Zoom,
                 Image = Pildid.Lae(t.Pilt),
-                Cursor = Cursors.Hand
+                BackColor = Teema.Valge
             };
 
             var lblNimi = new Label
             {
-                Text = (lemmikud.Contains(t.Id) ? "♥ " : "") + t.Toodenimetus,
-                Location = new Point(5, 148),
-                Size = new Size(150, 34),
-                TextAlign = ContentAlignment.MiddleCenter,
-                Font = new Font("Segoe UI", 9F, FontStyle.Bold)
+                Text = t.Toodenimetus,
+                Location = new Point(12, 182),
+                Size = new Size(192, 44),
+                Font = Teema.KaardiNimi,
+                ForeColor = Teema.Tekst,
+                AutoEllipsis = true
             };
 
             var lblHind = new Label
             {
                 Text = $"{t.HetkeHind:0.00} €",
-                Location = new Point(5, 182),
-                Size = new Size(150, 20),
-                TextAlign = ContentAlignment.MiddleCenter,
-                Font = new Font("Segoe UI", 10F, FontStyle.Bold),
-                ForeColor = t.OnSoodus ? Color.Firebrick : Color.Black
+                Location = new Point(10, 228),
+                Size = new Size(110, 30),
+                Font = Teema.KaardiHind,
+                ForeColor = t.OnSoodus ? Teema.Punane : Teema.Tekst
             };
-            p.Controls.Add(pb);
-            p.Controls.Add(lblNimi);
-            p.Controls.Add(lblHind);
+
+            var btnLisa = new UmarNupp
+            {
+                Text = otsas ? Keel.T("Otsas") : Keel.T("Lisa korvi"),
+                Ikoon = otsas ? "" : "",
+                Stiil = NupuStiil.Punane,
+                Location = new Point(12, 286),
+                Size = new Size(192, 40),
+                Enabled = !otsas
+            };
+            btnLisa.Click += (_, _) => LisaKorvi(t, btnLisa);
+
+            kaart.Controls.Add(pb);
+            kaart.Controls.Add(lblNimi);
+            kaart.Controls.Add(lblHind);
+            kaart.Controls.Add(btnLisa);
 
             if (t.OnSoodus)
             {
-                p.Controls.Add(new Label
+                kaart.Controls.Add(new Label
                 {
                     Text = $"{t.Hind:0.00} €",
-                    Location = new Point(5, 201),
-                    Size = new Size(150, 16),
-                    TextAlign = ContentAlignment.MiddleCenter,
-                    Font = new Font("Segoe UI", 8F, FontStyle.Strikeout),
-                    ForeColor = Color.DimGray
+                    Location = new Point(12, 258),
+                    Size = new Size(110, 20),
+                    Font = Teema.VanaHind,
+                    ForeColor = Teema.HallTume
                 });
 
                 var mark = new Label
                 {
                     Text = $"−{t.SoodusProtsent}%",
-                    Location = new Point(5, 5),
+                    Location = new Point(12, 12),
                     AutoSize = true,
-                    BackColor = Color.Firebrick,
-                    ForeColor = Color.White,
-                    Font = new Font("Segoe UI", 9F, FontStyle.Bold),
-                    Padding = new Padding(3, 1, 3, 1)
+                    BackColor = Teema.Punane,
+                    ForeColor = Teema.Valge,
+                    Font = Teema.Mark,
+                    Padding = new Padding(6, 3, 6, 3)
                 };
-                p.Controls.Add(mark);
+                kaart.Controls.Add(mark);
                 mark.BringToFront();
+            }
+
+            if (lemmikud.Contains(t.Id))
+            {
+                var syda = new Label
+                {
+                    Text = "",   // täidetud süda
+                    Font = Teema.Ikoonid,
+                    ForeColor = Teema.Punane,
+                    BackColor = Teema.Valge,
+                    Location = new Point(176, 14),
+                    Size = new Size(24, 24),
+                    TextAlign = ContentAlignment.MiddleCenter
+                };
+                kaart.Controls.Add(syda);
+                syda.BringToFront();
             }
 
             if (otsas)
             {
                 var lblOtsas = new Label
                 {
-                    Text = "OTSAS",
-                    Location = new Point(40, 62),
+                    Text = Keel.T("OTSAS"),
                     AutoSize = true,
-                    BackColor = Color.DimGray,
-                    ForeColor = Color.White,
-                    Font = new Font("Segoe UI", 12F, FontStyle.Bold),
-                    Padding = new Padding(6, 2, 6, 2)
+                    BackColor = Teema.Must,
+                    ForeColor = Teema.Valge,
+                    Font = Teema.Alapealkiri,
+                    Padding = new Padding(10, 4, 10, 4),
+                    Location = new Point(60, 74)
                 };
-                p.Controls.Add(lblOtsas);
+                kaart.Controls.Add(lblOtsas);
                 lblOtsas.BringToFront();
-                lblHind.ForeColor = Color.DimGray;
+                lblHind.ForeColor = Teema.HallTume;
             }
 
-            // Klõps kaardil avab tootekaardi
-            void Ava(object? s, EventArgs e) => AvaToode(t);
-            p.Click += Ava;
-            foreach (Control c in p.Controls)
-                c.Click += Ava;
+            // Klõps kaardil (v.a nupp) avab tootekaardi; hiire all olev kaart saab punase ääre
+            void Ava(object? s, EventArgs e) => BeginInvoke(() => AvaToode(t));
+            void Sisse(object? s, EventArgs e) => kaart.AareVarv = Teema.Punane;
+            void Valja(object? s, EventArgs e)
+            {
+                if (!kaart.IsDisposed && !kaart.ClientRectangle.Contains(kaart.PointToClient(Cursor.Position)))
+                    kaart.AareVarv = Teema.Aare;
+            }
 
-            return p;
+            kaart.Click += Ava;
+            kaart.MouseEnter += Sisse;
+            kaart.MouseLeave += Valja;
+            foreach (Control c in kaart.Controls)
+            {
+                c.MouseEnter += Sisse;
+                c.MouseLeave += Valja;
+                if (c != btnLisa)
+                {
+                    c.Click += Ava;
+                    c.Cursor = Cursors.Hand;
+                }
+            }
+
+            return kaart;
+        }
+
+        private void LisaKorvi(Toode t, UmarNupp nupp)
+        {
+            string? viga = Ostukorv.Lisa(t, 1);
+            if (viga != null)
+            {
+                MessageBox.Show(viga);
+                return;
+            }
+
+            // lühike kinnitus nupul
+            nupp.Text = Keel.T("Lisatud ✓");
+            nupp.Stiil = NupuStiil.Must;
+            var taimer = new System.Windows.Forms.Timer { Interval = 1200 };
+            taimer.Tick += (_, _) =>
+            {
+                taimer.Dispose();
+                if (nupp.IsDisposed) return;
+                nupp.Text = Keel.T("Lisa korvi");
+                nupp.Stiil = NupuStiil.Punane;
+            };
+            taimer.Start();
         }
 
         private void AvaToode(Toode t)
         {
             using var kaart = new TooteKaartForm(t);
-            kaart.ShowDialog(this);
+            kaart.ShowDialog(TopLevelControl ?? this);
 
-            // lemmik võis muutuda ja korv täieneda
+            // lemmik võis muutuda
             var uuedLemmikud = LemmikTooted.Koik();
             if (!uuedLemmikud.SetEquals(lemmikud))
             {
                 lemmikud = uuedLemmikud;
                 NaitaTooted();
             }
-            NaitaKokku();
-        }
-
-        private void NaitaKokku()
-        {
-            btnOstukorv.Text = $"🛒 Ostukorv ({Ostukorv.TooteidKokku} tk, {Ostukorv.Kokku:0.00} €)";
         }
 
         private void txtOtsi_TextChanged(object? sender, EventArgs e) => NaitaTooted();
 
         private void cmbSorteeri_SelectedIndexChanged(object? sender, EventArgs e) => NaitaTooted();
-
-        private void btnOstukorv_Click(object? sender, EventArgs e)
-        {
-            ArveForm arve = new ArveForm();
-            arve.ShowDialog();
-
-            // pärast ostu on laoseis muutunud
-            LaeAndmed();
-            NaitaTooted();
-            NaitaKokku();
-        }
     }
 }

@@ -28,170 +28,257 @@ namespace Automaatne_andmebaasi_loomine
         /// </summary>
         private void InitializeComponent()
         {
-            btnTana = new Button();
-            btnNadal = new Button();
-            btnKuu = new Button();
-            btnKoik = new Button();
+            pnlYlal = new Panel();
+            btnTana = new UmarNupp();
+            btnNadal = new UmarNupp();
+            btnKuu = new UmarNupp();
+            btnKoik = new UmarNupp();
             dtpAlates = new DateTimePicker();
             lblKriips = new Label();
             dtpKuni = new DateTimePicker();
+            tlp = new TableLayoutPanel();
+            pnlKokkuvote = new UmarPaneel();
             lblKokkuvote = new Label();
-            lblTop = new Label();
+            pnlTop = new UmarPaneel();
             dgvTop = new DataGridView();
-            lblKat = new Label();
+            lblTop = new Label();
+            pnlKat = new UmarPaneel();
             dgvKategooriad = new DataGridView();
+            lblKat = new Label();
+            pnlGraafikKaart = new UmarPaneel();
             pnlGraafik = new Panel();
+            pnlYlal.SuspendLayout();
+            tlp.SuspendLayout();
+            pnlKokkuvote.SuspendLayout();
+            pnlTop.SuspendLayout();
+            pnlKat.SuspendLayout();
+            pnlGraafikKaart.SuspendLayout();
+            pnlGraafik.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvTop).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dgvKategooriad).BeginInit();
             SuspendLayout();
             // 
+            // pnlYlal
+            // 
+            pnlYlal.Controls.Add(btnTana);
+            pnlYlal.Controls.Add(btnNadal);
+            pnlYlal.Controls.Add(btnKuu);
+            pnlYlal.Controls.Add(btnKoik);
+            pnlYlal.Controls.Add(dtpAlates);
+            pnlYlal.Controls.Add(lblKriips);
+            pnlYlal.Controls.Add(dtpKuni);
+            pnlYlal.Dock = DockStyle.Top;
+            pnlYlal.Name = "pnlYlal";
+            pnlYlal.Size = new Size(1000, 56);
+            // 
             // btnTana
             // 
-            btnTana.Location = new Point(12, 12);
+            btnTana.Location = new Point(0, 8);
             btnTana.Name = "btnTana";
-            btnTana.Size = new Size(80, 28);
+            btnTana.Size = new Size(100, 36);
+            btnTana.Stiil = NupuStiil.Kontuur;
             btnTana.Text = "Täna";
             btnTana.Click += btnTana_Click;
             // 
             // btnNadal
             // 
-            btnNadal.Location = new Point(97, 12);
+            btnNadal.Location = new Point(108, 8);
             btnNadal.Name = "btnNadal";
-            btnNadal.Size = new Size(80, 28);
+            btnNadal.Size = new Size(100, 36);
+            btnNadal.Stiil = NupuStiil.Kontuur;
             btnNadal.Text = "7 päeva";
             btnNadal.Click += btnNadal_Click;
             // 
             // btnKuu
             // 
-            btnKuu.Location = new Point(182, 12);
+            btnKuu.Location = new Point(216, 8);
             btnKuu.Name = "btnKuu";
-            btnKuu.Size = new Size(80, 28);
+            btnKuu.Size = new Size(100, 36);
+            btnKuu.Stiil = NupuStiil.Kontuur;
             btnKuu.Text = "30 päeva";
             btnKuu.Click += btnKuu_Click;
             // 
             // btnKoik
             // 
-            btnKoik.Location = new Point(267, 12);
+            btnKoik.Location = new Point(324, 8);
             btnKoik.Name = "btnKoik";
-            btnKoik.Size = new Size(80, 28);
+            btnKoik.Size = new Size(100, 36);
+            btnKoik.Stiil = NupuStiil.Kontuur;
             btnKoik.Text = "Kõik";
             btnKoik.Click += btnKoik_Click;
             // 
             // dtpAlates
             // 
+            dtpAlates.Font = new Font("Segoe UI", 11F);
             dtpAlates.Format = DateTimePickerFormat.Short;
-            dtpAlates.Location = new Point(370, 15);
+            dtpAlates.Location = new Point(444, 12);
             dtpAlates.Name = "dtpAlates";
-            dtpAlates.Size = new Size(110, 23);
+            dtpAlates.Size = new Size(140, 27);
             dtpAlates.ValueChanged += Periood_Changed;
+            // 
+            // dtpKuni
+            // 
+            dtpKuni.Font = new Font("Segoe UI", 11F);
+            dtpKuni.Format = DateTimePickerFormat.Short;
+            dtpKuni.Location = new Point(604, 12);
+            dtpKuni.Name = "dtpKuni";
+            dtpKuni.Size = new Size(140, 27);
+            dtpKuni.ValueChanged += Periood_Changed;
             // 
             // lblKriips
             // 
             lblKriips.AutoSize = true;
-            lblKriips.Location = new Point(485, 18);
+            lblKriips.Location = new Point(588, 15);
             lblKriips.Name = "lblKriips";
             lblKriips.Text = "–";
             // 
-            // dtpKuni
+            // tlp
             // 
-            dtpKuni.Format = DateTimePickerFormat.Short;
-            dtpKuni.Location = new Point(500, 15);
-            dtpKuni.Name = "dtpKuni";
-            dtpKuni.Size = new Size(110, 23);
-            dtpKuni.ValueChanged += Periood_Changed;
+            tlp.ColumnCount = 3;
+            tlp.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 320F));
+            tlp.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            tlp.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            tlp.Controls.Add(pnlKokkuvote, 0, 0);
+            tlp.Controls.Add(pnlTop, 1, 0);
+            tlp.Controls.Add(pnlKat, 2, 0);
+            tlp.Controls.Add(pnlGraafikKaart, 0, 1);
+            tlp.SetColumnSpan(pnlGraafikKaart, 3);
+            tlp.Dock = DockStyle.Fill;
+            tlp.Name = "tlp";
+            tlp.RowCount = 2;
+            tlp.RowStyles.Add(new RowStyle(SizeType.Percent, 55F));
+            tlp.RowStyles.Add(new RowStyle(SizeType.Percent, 45F));
+            tlp.Size = new Size(1000, 594);
+            // 
+            // pnlKokkuvote
+            // 
+            pnlKokkuvote.Controls.Add(lblKokkuvote);
+            pnlKokkuvote.Dock = DockStyle.Fill;
+            pnlKokkuvote.Margin = new Padding(0, 0, 20, 10);
+            pnlKokkuvote.Name = "pnlKokkuvote";
+            pnlKokkuvote.Padding = new Padding(20, 16, 20, 16);
             // 
             // lblKokkuvote
             // 
-            lblKokkuvote.Font = new Font("Segoe UI", 10F);
-            lblKokkuvote.Location = new Point(12, 55);
+            lblKokkuvote.Dock = DockStyle.Fill;
+            lblKokkuvote.Font = new Font("Segoe UI", 10.5F);
             lblKokkuvote.Name = "lblKokkuvote";
-            lblKokkuvote.Size = new Size(275, 380);
             // 
-            // lblTop
+            // pnlTop
             // 
-            lblTop.AutoSize = true;
-            lblTop.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
-            lblTop.Location = new Point(300, 52);
-            lblTop.Name = "lblTop";
-            lblTop.Text = "Top-10 enim müüdud tooted";
+            pnlTop.Controls.Add(dgvTop);
+            pnlTop.Controls.Add(lblTop);
+            pnlTop.Dock = DockStyle.Fill;
+            pnlTop.Margin = new Padding(0, 0, 20, 10);
+            pnlTop.Name = "pnlTop";
+            pnlTop.Padding = new Padding(14);
             // 
             // dgvTop
             // 
             dgvTop.AllowUserToAddRows = false;
             dgvTop.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dgvTop.Location = new Point(300, 75);
+            dgvTop.Dock = DockStyle.Fill;
             dgvTop.Name = "dgvTop";
             dgvTop.ReadOnly = true;
             dgvTop.RowHeadersVisible = false;
-            dgvTop.Size = new Size(585, 205);
             // 
-            // lblKat
+            // lblTop
             // 
-            lblKat.AutoSize = true;
-            lblKat.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
-            lblKat.Location = new Point(300, 288);
-            lblKat.Name = "lblKat";
-            lblKat.Text = "Müük kategooriate kaupa";
+            lblTop.Dock = DockStyle.Top;
+            lblTop.Font = new Font("Segoe UI Semibold", 13F);
+            lblTop.Name = "lblTop";
+            lblTop.Size = new Size(300, 36);
+            lblTop.Text = "Top-10 enim müüdud tooted";
+            // 
+            // pnlKat
+            // 
+            pnlKat.Controls.Add(dgvKategooriad);
+            pnlKat.Controls.Add(lblKat);
+            pnlKat.Dock = DockStyle.Fill;
+            pnlKat.Margin = new Padding(0, 0, 0, 10);
+            pnlKat.Name = "pnlKat";
+            pnlKat.Padding = new Padding(14);
             // 
             // dgvKategooriad
             // 
             dgvKategooriad.AllowUserToAddRows = false;
             dgvKategooriad.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dgvKategooriad.Location = new Point(300, 311);
+            dgvKategooriad.Dock = DockStyle.Fill;
             dgvKategooriad.Name = "dgvKategooriad";
             dgvKategooriad.ReadOnly = true;
             dgvKategooriad.RowHeadersVisible = false;
-            dgvKategooriad.Size = new Size(585, 125);
+            // 
+            // lblKat
+            // 
+            lblKat.Dock = DockStyle.Top;
+            lblKat.Font = new Font("Segoe UI Semibold", 13F);
+            lblKat.Name = "lblKat";
+            lblKat.Size = new Size(300, 36);
+            lblKat.Text = "Müük kategooriate kaupa";
+            // 
+            // pnlGraafikKaart
+            // 
+            pnlGraafikKaart.Controls.Add(pnlGraafik);
+            pnlGraafikKaart.Dock = DockStyle.Fill;
+            pnlGraafikKaart.Margin = new Padding(0, 10, 0, 0);
+            pnlGraafikKaart.Name = "pnlGraafikKaart";
+            pnlGraafikKaart.Padding = new Padding(14);
             // 
             // pnlGraafik
             // 
             pnlGraafik.BackColor = Color.White;
-            pnlGraafik.BorderStyle = BorderStyle.FixedSingle;
-            pnlGraafik.Location = new Point(12, 448);
+            pnlGraafik.Dock = DockStyle.Fill;
             pnlGraafik.Name = "pnlGraafik";
-            pnlGraafik.Size = new Size(873, 190);
             pnlGraafik.Paint += pnlGraafik_Paint;
             // 
             // AruandedForm
             // 
-            ClientSize = new Size(900, 650);
-            Controls.Add(btnTana);
-            Controls.Add(btnNadal);
-            Controls.Add(btnKuu);
-            Controls.Add(btnKoik);
-            Controls.Add(dtpAlates);
-            Controls.Add(lblKriips);
-            Controls.Add(dtpKuni);
-            Controls.Add(lblKokkuvote);
-            Controls.Add(lblTop);
-            Controls.Add(dgvTop);
-            Controls.Add(lblKat);
-            Controls.Add(dgvKategooriad);
-            Controls.Add(pnlGraafik);
+            AutoScaleDimensions = new SizeF(96F, 96F);
+            AutoScaleMode = AutoScaleMode.Dpi;
+            ClientSize = new Size(1000, 650);
+            Controls.Add(tlp);
+            Controls.Add(pnlYlal);
             Name = "AruandedForm";
-            StartPosition = FormStartPosition.CenterParent;
-            BackColor = Color.LightBlue;
             Text = "Müügiaruanne";
+            pnlYlal.ResumeLayout(false);
+            pnlYlal.PerformLayout();
+            tlp.ResumeLayout(false);
+            tlp.PerformLayout();
+            pnlKokkuvote.ResumeLayout(false);
+            pnlKokkuvote.PerformLayout();
+            pnlTop.ResumeLayout(false);
+            pnlTop.PerformLayout();
+            pnlKat.ResumeLayout(false);
+            pnlKat.PerformLayout();
+            pnlGraafikKaart.ResumeLayout(false);
+            pnlGraafikKaart.PerformLayout();
+            pnlGraafik.ResumeLayout(false);
+            pnlGraafik.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)dgvTop).EndInit();
             ((System.ComponentModel.ISupportInitialize)dgvKategooriad).EndInit();
             ResumeLayout(false);
-            PerformLayout();
         }
 
         #endregion
 
-        private System.Windows.Forms.Button btnTana;
-        private System.Windows.Forms.Button btnNadal;
-        private System.Windows.Forms.Button btnKuu;
-        private System.Windows.Forms.Button btnKoik;
+        private System.Windows.Forms.Panel pnlYlal;
+        private UmarNupp btnTana;
+        private UmarNupp btnNadal;
+        private UmarNupp btnKuu;
+        private UmarNupp btnKoik;
         private System.Windows.Forms.DateTimePicker dtpAlates;
         private System.Windows.Forms.Label lblKriips;
         private System.Windows.Forms.DateTimePicker dtpKuni;
+        private System.Windows.Forms.TableLayoutPanel tlp;
+        private UmarPaneel pnlKokkuvote;
         private System.Windows.Forms.Label lblKokkuvote;
-        private System.Windows.Forms.Label lblTop;
+        private UmarPaneel pnlTop;
         private System.Windows.Forms.DataGridView dgvTop;
-        private System.Windows.Forms.Label lblKat;
+        private System.Windows.Forms.Label lblTop;
+        private UmarPaneel pnlKat;
         private System.Windows.Forms.DataGridView dgvKategooriad;
+        private System.Windows.Forms.Label lblKat;
+        private UmarPaneel pnlGraafikKaart;
         private System.Windows.Forms.Panel pnlGraafik;
     }
 }

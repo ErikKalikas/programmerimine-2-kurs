@@ -36,8 +36,8 @@ namespace Automaatne_andmebaasi_loomine
             lblKirjeldus = new Label();
             lblKogus = new Label();
             numKogus = new NumericUpDown();
-            btnLisa = new Button();
-            btnLemmik = new Button();
+            btnLisa = new UmarNupp();
+            btnLemmik = new UmarNupp();
             ((System.ComponentModel.ISupportInitialize)pbPilt).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numKogus).BeginInit();
             SuspendLayout();
@@ -45,80 +45,88 @@ namespace Automaatne_andmebaasi_loomine
             // pbPilt
             // 
             pbPilt.BackColor = Color.White;
-            pbPilt.BorderStyle = BorderStyle.FixedSingle;
-            pbPilt.Location = new Point(20, 20);
+            pbPilt.Location = new Point(28, 28);
             pbPilt.Name = "pbPilt";
-            pbPilt.Size = new Size(260, 260);
+            pbPilt.Size = new Size(340, 340);
             pbPilt.SizeMode = PictureBoxSizeMode.Zoom;
             // 
             // lblNimi
             // 
-            lblNimi.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
-            lblNimi.Location = new Point(300, 20);
+            lblNimi.Font = new Font("Segoe UI", 18F, FontStyle.Bold);
+            lblNimi.Location = new Point(396, 28);
             lblNimi.Name = "lblNimi";
-            lblNimi.Size = new Size(270, 55);
+            lblNimi.Size = new Size(360, 70);
             // 
             // lblHind
             // 
             lblHind.AutoSize = true;
-            lblHind.Font = new Font("Segoe UI", 16F, FontStyle.Bold);
-            lblHind.Location = new Point(300, 78);
+            lblHind.Font = new Font("Segoe UI", 22F, FontStyle.Bold);
+            lblHind.Location = new Point(394, 100);
             lblHind.Name = "lblHind";
             // 
             // lblVanaHind
             // 
             lblVanaHind.AutoSize = true;
-            lblVanaHind.Font = new Font("Segoe UI", 10F, FontStyle.Strikeout);
-            lblVanaHind.ForeColor = Color.DimGray;
-            lblVanaHind.Location = new Point(300, 112);
+            lblVanaHind.Font = new Font("Segoe UI", 11F, FontStyle.Strikeout);
+            lblVanaHind.ForeColor = Color.FromArgb(110, 110, 118);
+            lblVanaHind.Location = new Point(398, 146);
             lblVanaHind.Name = "lblVanaHind";
             // 
             // lblLaos
             // 
             lblLaos.AutoSize = true;
-            lblLaos.Location = new Point(300, 138);
+            lblLaos.Font = new Font("Segoe UI Semibold", 10F);
+            lblLaos.Location = new Point(398, 174);
             lblLaos.Name = "lblLaos";
             // 
             // lblKirjeldus
             // 
-            lblKirjeldus.Location = new Point(300, 165);
+            lblKirjeldus.ForeColor = Color.FromArgb(70, 70, 76);
+            lblKirjeldus.Location = new Point(398, 204);
             lblKirjeldus.Name = "lblKirjeldus";
-            lblKirjeldus.Size = new Size(270, 75);
+            lblKirjeldus.Size = new Size(356, 80);
             // 
             // lblKogus
             // 
             lblKogus.AutoSize = true;
-            lblKogus.Location = new Point(300, 252);
+            lblKogus.Location = new Point(398, 297);
             lblKogus.Name = "lblKogus";
             lblKogus.Text = "Kogus:";
             // 
             // numKogus
             // 
-            numKogus.Location = new Point(360, 249);
+            numKogus.Font = new Font("Segoe UI", 12F);
+            numKogus.Location = new Point(470, 292);
             numKogus.Minimum = 1;
             numKogus.Name = "numKogus";
-            numKogus.Size = new Size(70, 23);
+            numKogus.Size = new Size(90, 29);
             numKogus.Value = 1;
             // 
             // btnLisa
             // 
-            btnLisa.Location = new Point(300, 285);
+            btnLisa.Ikoon = "\uE7BF";
+            btnLisa.Location = new Point(398, 336);
             btnLisa.Name = "btnLisa";
-            btnLisa.Size = new Size(270, 36);
+            btnLisa.Size = new Size(356, 48);
+            btnLisa.Stiil = NupuStiil.Punane;
             btnLisa.Text = "Lisa korvi";
             btnLisa.Click += btnLisa_Click;
             // 
             // btnLemmik
             // 
-            btnLemmik.Location = new Point(300, 328);
+            btnLemmik.Location = new Point(398, 392);
             btnLemmik.Name = "btnLemmik";
-            btnLemmik.Size = new Size(270, 30);
+            btnLemmik.Size = new Size(356, 42);
+            btnLemmik.Stiil = NupuStiil.Kontuur;
             btnLemmik.Click += btnLemmik_Click;
             // 
             // TooteKaartForm
             // 
             AcceptButton = btnLisa;
-            ClientSize = new Size(590, 375);
+            AutoScaleDimensions = new SizeF(96F, 96F);
+            AutoScaleMode = AutoScaleMode.Dpi;
+            BackColor = Color.White;
+            ClientSize = new Size(784, 462);
             Controls.Add(pbPilt);
             Controls.Add(lblNimi);
             Controls.Add(lblHind);
@@ -131,9 +139,10 @@ namespace Automaatne_andmebaasi_loomine
             Controls.Add(btnLemmik);
             FormBorderStyle = FormBorderStyle.FixedDialog;
             MaximizeBox = false;
+            MinimizeBox = false;
             Name = "TooteKaartForm";
+            ShowInTaskbar = false;
             StartPosition = FormStartPosition.CenterParent;
-            BackColor = Color.LightBlue;
             Text = "Toode";
             ((System.ComponentModel.ISupportInitialize)pbPilt).EndInit();
             ((System.ComponentModel.ISupportInitialize)numKogus).EndInit();
@@ -151,7 +160,7 @@ namespace Automaatne_andmebaasi_loomine
         private System.Windows.Forms.Label lblKirjeldus;
         private System.Windows.Forms.Label lblKogus;
         private System.Windows.Forms.NumericUpDown numKogus;
-        private System.Windows.Forms.Button btnLisa;
-        private System.Windows.Forms.Button btnLemmik;
+        private UmarNupp btnLisa;
+        private UmarNupp btnLemmik;
     }
 }

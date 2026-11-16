@@ -4,7 +4,7 @@ using System.Net.Mail;
 namespace Automaatne_andmebaasi_loomine
 {
     // Uue ostja konto loomine
-    public partial class RegistreerimineForm : Form
+    public partial class RegistreerimineForm : BaasVorm
     {
         // Loodud konto (null, kui registreerimine jäi pooleli)
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
@@ -20,6 +20,7 @@ namespace Automaatne_andmebaasi_loomine
             if (roll == "admin")
             {
                 Text = "Uus administraator";
+                lblPealkiri.Text = "Uus administraator";
                 btnRegistreeru.Text = "Lisa";
             }
         }
@@ -29,16 +30,16 @@ namespace Automaatne_andmebaasi_loomine
             string nimi = txtNimi.Text.Trim();
             string email = txtEmail.Text.Trim().ToLower();
 
-            if (nimi == "") { lblViga.Text = "Sisesta nimi."; return; }
+            if (nimi == "") { lblViga.Text = Keel.T("Sisesta nimi."); return; }
             if (!MailAddress.TryCreate(email, out _) || !email.Contains('.'))
-            { lblViga.Text = "Vale e-posti aadress."; return; }
-            if (txtParool.Text.Length < 6) { lblViga.Text = "Parool peab olema vähemalt 6 märki."; return; }
-            if (txtParool.Text != txtParool2.Text) { lblViga.Text = "Paroolid ei ühti."; return; }
+            { lblViga.Text = Keel.T("Vale e-posti aadress."); return; }
+            if (txtParool.Text.Length < 6) { lblViga.Text = Keel.T("Parool peab olema vähemalt 6 märki."); return; }
+            if (txtParool.Text != txtParool2.Text) { lblViga.Text = Keel.T("Paroolid ei ühti."); return; }
 
             using var db = new ToodedContext();
             if (db.Kasutajad.Any(k => k.Email.ToLower() == email))
             {
-                lblViga.Text = "Selle e-postiga konto on juba olemas.";
+                lblViga.Text = Keel.T("Selle e-postiga konto on juba olemas.");
                 return;
             }
 
@@ -56,7 +57,7 @@ namespace Automaatne_andmebaasi_loomine
 
             UusKasutaja = kasutaja;
             if (roll == "admin") Tegevuslogi.Kirjuta($"Lisas administraatori {email}");
-            MessageBox.Show(roll == "admin" ? $"Administraator {nimi} on lisatud." : $"Tere tulemast, {nimi}! Konto on loodud.");
+            MessageBox.Show(roll == "admin" ? Keel.T("Administraator {0} on lisatud.", nimi) : Keel.T("Tere tulemast, {0}! Konto on loodud.", nimi));
             DialogResult = DialogResult.OK;
         }
     }

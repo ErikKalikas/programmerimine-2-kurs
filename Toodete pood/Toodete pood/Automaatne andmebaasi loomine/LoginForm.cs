@@ -5,7 +5,7 @@ using System.Windows.Forms;
 
 namespace Automaatne_andmebaasi_loomine
 {
-    public partial class LoginForm : Form
+    public partial class LoginForm : BaasVorm
     {
         public LoginForm()
         {
@@ -42,6 +42,48 @@ namespace Automaatne_andmebaasi_loomine
             }
 
             LisaNaidisTooted(db);
+
+            UuendaTekstid();
+            Keel.Muutus += UuendaTekstid;
+            FormClosed += (_, _) => Keel.Muutus -= UuendaTekstid;
+            Load += (_, _) => pnlParem_Resize(null, EventArgs.Empty);
+        }
+
+        // Kõik tekstid valitud keeles (kutsutakse ka keele vahetamisel)
+        private void UuendaTekstid()
+        {
+            var pood = PoeSeaded.Lae();
+            lblBrand.Text = pood.PoeNimi;
+            lblBrandAlam.Text = Keel.T(pood.Hyydlause);
+
+            Text = Keel.T("Tere tulemast");
+            lblAlam.Text = Keel.T("Vali, kuidas soovid jätkata");
+            btnOstja.Text = Keel.T("Sisene poodi");
+            btnKlient.Text = Keel.T("Logi sisse");
+            btnRegistreeru.Text = Keel.T("Registreeru");
+            btnAdmin.Text = Keel.T("Logi sisse administraatorina");
+            txtEmail.PlaceholderText = Keel.T("E-post");
+            txtParool.PlaceholderText = Keel.T("Parool");
+            btnLogin.Text = Keel.T("Logi sisse");
+            btnTagasi.Text = Keel.T("Tagasi");
+            NaitaPealkiri();
+            lblVeateade.Text = "";
+        }
+
+        private void NaitaPealkiri()
+        {
+            lblPealkiri.Text = reziim == "admin" ? Keel.T("Administraator")
+                             : reziim == "klient" ? Keel.T("Sisselogimine")
+                             : Keel.T("Tere tulemast!");
+            lblAlam.Text = reziim == "" ? Keel.T("Vali, kuidas soovid jätkata") : Keel.T("Sisesta oma e-post ja parool");
+        }
+
+        // Kaart on alati akna paremal poolel keskel
+        private void pnlParem_Resize(object? sender, EventArgs e)
+        {
+            pnlKaart.Left = Math.Max(20, (pnlParem.ClientSize.Width - pnlKaart.Width) / 2);
+            pnlKaart.Top = Math.Max(70, (pnlParem.ClientSize.Height - pnlKaart.Height) / 2);
+            keeleValik.Location = new Point(pnlParem.ClientSize.Width - keeleValik.Width - 24, 20);
         }
 
         // Lisab näidistooted koos piltidega (pildid on kaustas Images), kui neid veel pole
@@ -187,26 +229,26 @@ namespace Automaatne_andmebaasi_loomine
 
             if (kasutaja == null || !PasswordHelper.Verify(parool, kasutaja.ParoolHash))
             {
-                lblVeateade.Text = "Vale e-post või parool!";
+                lblVeateade.Text = Keel.T("Vale e-post või parool!");
                 txtParool.Clear();
                 return;
             }
 
             if (kasutaja.Blokeeritud)
             {
-                lblVeateade.Text = "See konto on blokeeritud.";
+                lblVeateade.Text = Keel.T("See konto on blokeeritud.");
                 return;
             }
 
             if (reziim == "admin" && kasutaja.Roll != "admin")
             {
-                lblVeateade.Text = "See konto ei ole administraator!";
+                lblVeateade.Text = Keel.T("See konto ei ole administraator!");
                 return;
             }
 
             if (reziim == "klient" && kasutaja.Roll == "admin")
             {
-                lblVeateade.Text = "Administraator logib sisse eraldi nupuga.";
+                lblVeateade.Text = Keel.T("Administraator logib sisse eraldi nupuga.");
                 return;
             }
 
@@ -250,8 +292,7 @@ namespace Automaatne_andmebaasi_loomine
             btnRegistreeru.Visible = !vorm;
             btnAdmin.Visible = !vorm;
 
-            lblPealkiri.Visible = vorm;
-            lblPealkiri.Text = uus == "admin" ? "Administraatori sisselogimine" : "Kliendi sisselogimine";
+            NaitaPealkiri();
             txtEmail.Visible = vorm;
             txtParool.Visible = vorm;
             btnLogin.Visible = vorm;
@@ -268,7 +309,8 @@ namespace Automaatne_andmebaasi_loomine
             lblVeateade.Text = "";
             txtParool.Clear();
 
-            Ostukorv.Lae();   // eelmisel korral pooleli jäänud ostukorv
+            if (AktiivneKasutaja.Roll != "admin")
+                Ostukorv.Lae();   // eelmisel korral pooleli jäänud ostukorv (adminil korvi pole)
 
             FormMain main = new FormMain();
             main.FormClosed += (_, _) =>

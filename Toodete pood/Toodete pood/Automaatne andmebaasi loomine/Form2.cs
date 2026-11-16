@@ -7,7 +7,7 @@ using System.Windows.Forms;
 
 namespace Automaatne_andmebaasi_loomine
 {
-    public partial class Form2 : Form
+    public partial class Form2 : BaasVorm
     {
         private readonly ToodedContext _db;
         private string? valitudPilt;
@@ -19,6 +19,7 @@ namespace Automaatne_andmebaasi_loomine
         {
             InitializeComponent();
             _db = new ToodedContext();
+            Disposed += (_, _) => _db.Dispose();
 
             // Loob andmebaasi migratsiooni järgi, kui seda veel pole
             _db.Database.Migrate();
@@ -36,7 +37,7 @@ namespace Automaatne_andmebaasi_loomine
         {
             cmbFilter.SelectedIndexChanged -= Filter_Changed;
             cmbFilter.Items.Clear();
-            cmbFilter.Items.Add("Kõik kategooriad");
+            cmbFilter.Items.Add(Keel.T("Kõik kategooriad"));
             foreach (var k in _db.Kategooriatabel.OrderBy(k => k.Kategooria_nimetus).ToList())
                 cmbFilter.Items.Add(k.Kategooria_nimetus);
             cmbFilter.SelectedIndex = 0;
@@ -65,6 +66,8 @@ namespace Automaatne_andmebaasi_loomine
 
         private void LaeTooted()
         {
+            if (cmbFilter.Items.Count == 0) return;   // filter pole veel valmis
+
             var tooted = _db.Toodetabel
                 .Include(t => t.Kategooria)
                 .Select(t => new
@@ -85,7 +88,7 @@ namespace Automaatne_andmebaasi_loomine
             // Otsakorral tooted kogu laos (filtrist sõltumata)
             int otsakorral = tooted.Count(t => t.Kogus < OtsakorralPiir);
             lblHoiatus.Text = otsakorral > 0
-                ? $"⚠ {otsakorral} toodet on otsakorral (alla {OtsakorralPiir} tk)"
+                ? "⚠ " + Keel.T("{0} toodet on otsakorral (alla {1} tk)", otsakorral, OtsakorralPiir)
                 : "";
 
             // Otsing, kategooria ja "ainult otsakorral"
@@ -109,7 +112,7 @@ namespace Automaatne_andmebaasi_loomine
             var kuniVeerg = dataGridViewTooted.Columns["SoodusKuni"];
             if (kuniVeerg != null) kuniVeerg.DefaultCellStyle.Format = "dd.MM.yyyy";
 
-            foreach (var peidetud in new[] { "KategooriaId", "Kirjeldus" })
+            foreach (var peidetud in new[] { "KategooriaId", "Kirjeldus", "Pilt" })
             {
                 var veerg = dataGridViewTooted.Columns[peidetud];
                 if (veerg != null) veerg.Visible = false;
@@ -123,9 +126,9 @@ namespace Automaatne_andmebaasi_loomine
             {
                 int kogus = Convert.ToInt32(rida.Cells["Kogus"].Value);
                 if (kogus <= 0)
-                    rida.DefaultCellStyle.BackColor = Color.LightCoral;
+                    rida.DefaultCellStyle.BackColor = Color.FromArgb(252, 190, 190);
                 else if (kogus < OtsakorralPiir)
-                    rida.DefaultCellStyle.BackColor = Color.MistyRose;
+                    rida.DefaultCellStyle.BackColor = Teema.PunaneHele;
             }
         }
 
@@ -137,7 +140,7 @@ namespace Automaatne_andmebaasi_loomine
                 !float.TryParse(txtHind.Text, out _) ||
                 comboKategooria.SelectedValue == null)
             {
-                MessageBox.Show("Täida nimetus, kogus (täisarv), hind (number) ja vali kategooria!");
+                MessageBox.Show(Keel.T("Täida nimetus, kogus (täisarv), hind (number) ja vali kategooria!"));
                 return false;
             }
             return true;
@@ -151,12 +154,12 @@ namespace Automaatne_andmebaasi_loomine
 
             if (!float.TryParse(txtSoodusHind.Text, out float s) || s <= 0)
             {
-                MessageBox.Show("Soodushind peab olema positiivne number (või jäta tühjaks).");
+                MessageBox.Show(Keel.T("Soodushind peab olema positiivne number (või jäta tühjaks)."));
                 return false;
             }
             if (s >= float.Parse(txtHind.Text))
             {
-                MessageBox.Show("Soodushind peab olema väiksem kui tavahind.");
+                MessageBox.Show(Keel.T("Soodushind peab olema väiksem kui tavahind."));
                 return false;
             }
 
@@ -178,7 +181,7 @@ namespace Automaatne_andmebaasi_loomine
         private void btnValiPilt_Click(object? sender, EventArgs e)
         {
             using var ofd = new OpenFileDialog();
-            ofd.Filter = "Pildid|*.jpg;*.png;*.jpeg";
+            ofd.Filter = Keel.T("Pildid") + "|*.jpg;*.png;*.jpeg";
 
             if (ofd.ShowDialog() == DialogResult.OK)
             {
@@ -250,7 +253,7 @@ namespace Automaatne_andmebaasi_loomine
         {
             if (dataGridViewTooted.SelectedRows.Count == 0)
             {
-                MessageBox.Show("Vali tabelist toode!");
+                MessageBox.Show(Keel.T("Vali tabelist toode!"));
                 return;
             }
             if (!VormOnKorras()) return;
@@ -299,7 +302,7 @@ namespace Automaatne_andmebaasi_loomine
         {
             if (dataGridViewTooted.SelectedRows.Count == 0)
             {
-                MessageBox.Show("Vali tabelist toode!");
+                MessageBox.Show(Keel.T("Vali tabelist toode!"));
                 return;
             }
 
@@ -320,7 +323,7 @@ namespace Automaatne_andmebaasi_loomine
         {
             if (dataGridViewTooted.SelectedRows.Count == 0)
             {
-                MessageBox.Show("Vali tabelist toode!");
+                MessageBox.Show(Keel.T("Vali tabelist toode!"));
                 return;
             }
 
@@ -329,12 +332,13 @@ namespace Automaatne_andmebaasi_loomine
             if (toode == null) return;
 
             string vastus = Microsoft.VisualBasic.Interaction.InputBox(
-                $"{toode.Toodenimetus}\nPraegu laos: {toode.Kogus} tk\n\nMitu tükki lisada?", "Lisa lattu", "10");
+                $"{toode.Toodenimetus}\n" + Keel.T("Praegu laos: {0} tk", toode.Kogus) + "\n\n" + Keel.T("Mitu tükki lisada?"),
+                Keel.T("Lisa lattu"), "10");
             if (string.IsNullOrEmpty(vastus)) return;   // Cancel
 
             if (!int.TryParse(vastus, out int lisa) || lisa <= 0)
             {
-                MessageBox.Show("Sisesta positiivne täisarv.");
+                MessageBox.Show(Keel.T("Sisesta positiivne täisarv."));
                 return;
             }
 
@@ -342,20 +346,9 @@ namespace Automaatne_andmebaasi_loomine
             _db.SaveChanges();
             Tegevuslogi.Kirjuta($"Lisas lattu \"{toode.Toodenimetus}\" +{lisa} tk (nüüd {toode.Kogus} tk)");
             LaeTooted();
-            MessageBox.Show($"{toode.Toodenimetus}: laos nüüd {toode.Kogus} tk.");
+            MessageBox.Show(Keel.T("{0}: laos nüüd {1} tk.", toode.Toodenimetus, toode.Kogus));
         }
 
-        private void btnArve_Click(object? sender, EventArgs e)
-        {
-            if (dataGridViewTooted.SelectedRows.Count == 0) return;
-
-            int id = (int)dataGridViewTooted.SelectedRows[0].Cells["Id"].Value;
-            var toode = _db.Toodetabel.Find(id);
-
-            ArveForm arve = new ArveForm();
-            arve.SelectedToode = toode;
-            arve.ShowDialog();
-        }
     }
 }
 //.

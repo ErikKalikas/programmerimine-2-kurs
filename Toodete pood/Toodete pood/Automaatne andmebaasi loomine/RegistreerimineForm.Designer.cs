@@ -28,97 +28,115 @@ namespace Automaatne_andmebaasi_loomine
         /// </summary>
         private void InitializeComponent()
         {
+            lblPealkiri = new Label();
             txtNimi = new TextBox();
             txtEmail = new TextBox();
             txtParool = new TextBox();
             txtParool2 = new TextBox();
             txtTelefon = new TextBox();
             txtAadress = new TextBox();
-            btnRegistreeru = new Button();
-            btnLoobu = new Button();
+            btnRegistreeru = new UmarNupp();
+            btnLoobu = new UmarNupp();
             lblViga = new Label();
             SuspendLayout();
             // 
+            // lblPealkiri
+            // 
+            lblPealkiri.Font = new Font("Segoe UI", 18F, FontStyle.Bold);
+            lblPealkiri.Location = new Point(36, 26);
+            lblPealkiri.Name = "lblPealkiri";
+            lblPealkiri.Size = new Size(368, 44);
+            lblPealkiri.Text = "Registreerumine";
+            // 
             // txtNimi
             // 
-            txtNimi.Location = new Point(30, 25);
+            txtNimi.Font = new Font("Segoe UI", 12F);
+            txtNimi.Location = new Point(36, 84);
             txtNimi.Name = "txtNimi";
             txtNimi.PlaceholderText = "Nimi *";
-            txtNimi.Size = new Size(240, 23);
-            txtNimi.TabIndex = 0;
+            txtNimi.Size = new Size(368, 29);
             // 
             // txtEmail
             // 
-            txtEmail.Location = new Point(30, 60);
+            txtEmail.Font = new Font("Segoe UI", 12F);
+            txtEmail.Location = new Point(36, 126);
             txtEmail.Name = "txtEmail";
             txtEmail.PlaceholderText = "E-post *";
-            txtEmail.Size = new Size(240, 23);
-            txtEmail.TabIndex = 1;
+            txtEmail.Size = new Size(368, 29);
             // 
             // txtParool
             // 
-            txtParool.Location = new Point(30, 95);
+            txtParool.Font = new Font("Segoe UI", 12F);
+            txtParool.Location = new Point(36, 168);
             txtParool.Name = "txtParool";
-            txtParool.PasswordChar = '*';
             txtParool.PlaceholderText = "Parool (vähemalt 6 märki) *";
-            txtParool.Size = new Size(240, 23);
-            txtParool.TabIndex = 2;
+            txtParool.Size = new Size(368, 29);
+            txtParool.PasswordChar = '*';
             // 
             // txtParool2
             // 
-            txtParool2.Location = new Point(30, 130);
+            txtParool2.Font = new Font("Segoe UI", 12F);
+            txtParool2.Location = new Point(36, 210);
             txtParool2.Name = "txtParool2";
-            txtParool2.PasswordChar = '*';
             txtParool2.PlaceholderText = "Parool uuesti *";
-            txtParool2.Size = new Size(240, 23);
-            txtParool2.TabIndex = 3;
+            txtParool2.Size = new Size(368, 29);
+            txtParool2.PasswordChar = '*';
             // 
             // txtTelefon
             // 
-            txtTelefon.Location = new Point(30, 165);
+            txtTelefon.Font = new Font("Segoe UI", 12F);
+            txtTelefon.Location = new Point(36, 252);
             txtTelefon.Name = "txtTelefon";
             txtTelefon.PlaceholderText = "Telefon";
-            txtTelefon.Size = new Size(240, 23);
-            txtTelefon.TabIndex = 4;
+            txtTelefon.Size = new Size(368, 29);
             // 
             // txtAadress
             // 
-            txtAadress.Location = new Point(30, 200);
+            txtAadress.Font = new Font("Segoe UI", 12F);
+            txtAadress.Location = new Point(36, 294);
             txtAadress.Name = "txtAadress";
             txtAadress.PlaceholderText = "Aadress";
-            txtAadress.Size = new Size(240, 23);
-            txtAadress.TabIndex = 5;
+            txtAadress.Size = new Size(368, 29);
             // 
             // btnRegistreeru
             // 
-            btnRegistreeru.Location = new Point(30, 240);
+            btnRegistreeru.Location = new Point(36, 348);
             btnRegistreeru.Name = "btnRegistreeru";
-            btnRegistreeru.Size = new Size(115, 30);
-            btnRegistreeru.TabIndex = 6;
+            btnRegistreeru.Size = new Size(178, 46);
+            btnRegistreeru.Stiil = NupuStiil.Punane;
             btnRegistreeru.Text = "Registreeru";
             btnRegistreeru.Click += btnRegistreeru_Click;
             // 
             // btnLoobu
             // 
-            btnLoobu.DialogResult = DialogResult.Cancel;
-            btnLoobu.Location = new Point(155, 240);
+            btnLoobu.Location = new Point(226, 348);
             btnLoobu.Name = "btnLoobu";
-            btnLoobu.Size = new Size(115, 30);
-            btnLoobu.TabIndex = 7;
+            btnLoobu.Size = new Size(178, 46);
+            btnLoobu.Stiil = NupuStiil.Kontuur;
             btnLoobu.Text = "Loobu";
+            btnLoobu.DialogResult = DialogResult.Cancel;
             // 
             // lblViga
             // 
-            lblViga.Location = new Point(30, 280);
+            lblViga.ForeColor = Color.FromArgb(220, 38, 38);
+            lblViga.Location = new Point(36, 406);
             lblViga.Name = "lblViga";
-            lblViga.Size = new Size(240, 40);
-            lblViga.ForeColor = Color.DarkRed;
+            lblViga.Size = new Size(368, 46);
             // 
             // RegistreerimineForm
             // 
+            AutoScaleDimensions = new SizeF(96F, 96F);
+            AutoScaleMode = AutoScaleMode.Dpi;
             AcceptButton = btnRegistreeru;
+            BackColor = Color.White;
             CancelButton = btnLoobu;
-            ClientSize = new Size(300, 330);
+            ClientSize = new Size(440, 466);
+            FormBorderStyle = FormBorderStyle.FixedDialog;
+            MaximizeBox = false;
+            MinimizeBox = false;
+            ShowInTaskbar = false;
+            StartPosition = FormStartPosition.CenterParent;
+            Controls.Add(lblPealkiri);
             Controls.Add(txtNimi);
             Controls.Add(txtEmail);
             Controls.Add(txtParool);
@@ -128,26 +146,22 @@ namespace Automaatne_andmebaasi_loomine
             Controls.Add(btnRegistreeru);
             Controls.Add(btnLoobu);
             Controls.Add(lblViga);
-            FormBorderStyle = FormBorderStyle.FixedDialog;
-            MaximizeBox = false;
             Name = "RegistreerimineForm";
-            StartPosition = FormStartPosition.CenterParent;
-            BackColor = Color.LightBlue;
             Text = "Registreerumine";
             ResumeLayout(false);
-            PerformLayout();
         }
 
         #endregion
 
+        private System.Windows.Forms.Label lblPealkiri;
         private System.Windows.Forms.TextBox txtNimi;
         private System.Windows.Forms.TextBox txtEmail;
         private System.Windows.Forms.TextBox txtParool;
         private System.Windows.Forms.TextBox txtParool2;
         private System.Windows.Forms.TextBox txtTelefon;
         private System.Windows.Forms.TextBox txtAadress;
-        private System.Windows.Forms.Button btnRegistreeru;
-        private System.Windows.Forms.Button btnLoobu;
+        private UmarNupp btnRegistreeru;
+        private UmarNupp btnLoobu;
         private System.Windows.Forms.Label lblViga;
     }
 }
