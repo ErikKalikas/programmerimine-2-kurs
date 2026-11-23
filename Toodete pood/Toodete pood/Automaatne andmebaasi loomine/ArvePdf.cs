@@ -83,11 +83,13 @@ namespace Automaatne_andmebaasi_loomine
         // Tagastab loodud faili täieliku tee
         public static string Loo(ArveAndmed a)
         {
-            Directory.CreateDirectory("Arved");
+            // arved samuti AppData kausta, sest Program Files kausta kirjutada ei saa
+            string arvedeKaust = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "ToodedApp", "Arved");
+            Directory.CreateDirectory(arvedeKaust);
 
             DateTime aeg = a.Aeg;
             string nr = a.Nr;
-            string failinimi = Path.GetFullPath($"Arved/Arve_{nr.Replace('-', '_')}.pdf");
+            string failinimi = Path.Combine(arvedeKaust, $"Arve_{nr.Replace('-', '_')}.pdf");
 
             var unicode = new XPdfFontOptions(PdfFontEncoding.Unicode);   // täpitähed õ ä ö ü ja €
             XFont Font(double suurus, XFontStyle stiil = XFontStyle.Regular) => new XFont("Verdana", suurus, stiil, unicode);
@@ -105,7 +107,7 @@ namespace Automaatne_andmebaasi_loomine
             // ---------- Päis ----------
             gfx.DrawRectangle(new XSolidBrush(Sinine), 0, 0, leht.Width.Point, 95);
             double tekstX = Serv;
-            string? logoTee = string.IsNullOrEmpty(pood.Logo) ? null : Path.Combine("Images", pood.Logo);
+            string? logoTee = Pildid.Tee(pood.Logo);
             if (logoTee != null && File.Exists(logoTee))
             {
                 // logo valgel ruudul päise vasakus servas

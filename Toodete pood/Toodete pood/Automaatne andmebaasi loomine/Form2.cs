@@ -21,9 +21,6 @@ namespace Automaatne_andmebaasi_loomine
             _db = new ToodedContext();
             Disposed += (_, _) => _db.Dispose();
 
-            // Kaust piltide jaoks peab olemas olema, muidu File.Copy annab vea
-            Directory.CreateDirectory("Images");
-
             LaeKategooriad();
             LaeFilter();
             LaeTooted();
@@ -204,10 +201,10 @@ namespace Automaatne_andmebaasi_loomine
                 SoodusKuni = soodus != null && chkSoodusKuni.Checked ? dtpSoodusKuni.Value.Date : null
             };
 
-            // kopeerime pildi projekti kausta
+            // kopeerime pildi AppData kausta (vt Pildid.cs)
             if (!string.IsNullOrEmpty(valitudPilt))
             {
-                File.Copy(valitudPilt, Path.Combine("Images", uus.Pilt), true);
+                Pildid.Salvesta(valitudPilt, uus.Pilt);
             }
 
             _db.Toodetabel.Add(uus);
@@ -240,8 +237,9 @@ namespace Automaatne_andmebaasi_loomine
 
             string? pilt = rida.Cells["Pilt"].Value?.ToString();
 
-            if (!string.IsNullOrEmpty(pilt) && File.Exists(Path.Combine("Images", pilt)))
-                picturePilt.Image = LaePilt(Path.Combine("Images", pilt));
+            string? pildiTee = Pildid.Tee(pilt);
+            if (pildiTee != null)
+                picturePilt.Image = LaePilt(pildiTee);
             else
                 picturePilt.Image = null;
         }
@@ -278,7 +276,7 @@ namespace Automaatne_andmebaasi_loomine
             if (valitudPilt != null)
             {
                 toode.Pilt = Path.GetFileName(valitudPilt);
-                File.Copy(valitudPilt, Path.Combine("Images", toode.Pilt), true);
+                Pildid.Salvesta(valitudPilt, toode.Pilt);
             }
 
             _db.SaveChanges();
