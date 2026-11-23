@@ -58,7 +58,7 @@ namespace Automaatne_andmebaasi_loomine
                 Summa = $"{t.Summa:0.00} €"
             }).ToList();
 
-            decimal summa = naidatud.Sum(t => (decimal)t.Summa);
+            decimal summa = naidatud.Sum(t => t.Summa);
             lblKokku.Text = Keel.T("{0} tellimust, kokku {1:0.00} €", naidatud.Count, summa);
 
             if (naidatud.Count == 0)
@@ -79,7 +79,7 @@ namespace Automaatne_andmebaasi_loomine
                 Toode = r.Toodenimetus,
                 Kogus = $"{r.Kogus} {Keel.T("tk")}",
                 Hind = $"{r.Hind:0.00} €",
-                Summa = $"{Math.Round((decimal)r.Hind * r.Kogus, 2):0.00} €"
+                Summa = $"{Math.Round(r.Hind * r.Kogus, 2):0.00} €"
             }).ToList();
         }
     }

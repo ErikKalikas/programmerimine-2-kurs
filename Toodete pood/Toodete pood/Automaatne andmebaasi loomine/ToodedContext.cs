@@ -27,6 +27,12 @@ namespace Automaatne_andmebaasi_loomine
         {
             modelBuilder.Entity<Kategooria>().ToTable("Kategooriatabel");
             modelBuilder.Entity<Toode>().ToTable("Toodetabel");
+
+            // Algsed kategooriad lisatakse HasData kaudu (migratsioon lisab need andmebaasi)
+            modelBuilder.Entity<Kategooria>().HasData(
+                new Kategooria { Id = 1, Kategooria_nimetus = "Joogid", Kirjeldus = "Erinevad joogid" },
+                new Kategooria { Id = 2, Kategooria_nimetus = "Toit", Kirjeldus = "Toiduained" },
+                new Kategooria { Id = 3, Kategooria_nimetus = "Muu", Kirjeldus = "Muud tooted" });
         }
     }
 }

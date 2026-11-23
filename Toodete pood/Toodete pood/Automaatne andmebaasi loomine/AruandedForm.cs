@@ -51,8 +51,8 @@ namespace Automaatne_andmebaasi_loomine
             perioodis = koik.Where(t => t.Kuupaev >= alates && t.Kuupaev < kuni).ToList();
             var read = perioodis.SelectMany(t => t.Read).ToList();
 
-            decimal tulu = perioodis.Sum(t => (decimal)t.Summa);
-            decimal soodustused = perioodis.Sum(t => (decimal)t.Soodustus);
+            decimal tulu = perioodis.Sum(t => t.Summa);
+            decimal soodustused = perioodis.Sum(t => t.Soodustus);
             decimal km = Math.Round(tulu * (decimal)kmProtsent / (100 + (decimal)kmProtsent), 2);
             decimal keskmine = perioodis.Count > 0 ? tulu / perioodis.Count : 0;
             int ostjaid = perioodis.Select(t => t.KasutajaId?.ToString() ?? t.Email).Distinct().Count();
@@ -75,7 +75,7 @@ namespace Automaatne_andmebaasi_loomine
                 {
                     Toode = g.Key,
                     Kogus = g.Sum(r => r.Kogus),
-                    Müük = Math.Round(g.Sum(r => (decimal)r.Hind * r.Kogus), 2)
+                    Müük = Math.Round(g.Sum(r => r.Hind * r.Kogus), 2)
                 })
                 .OrderByDescending(x => x.Kogus).ThenByDescending(x => x.Müük)
                 .Take(10)
@@ -83,13 +83,13 @@ namespace Automaatne_andmebaasi_loomine
                 .ToList();
 
             // Kategooriad (summad enne sooduskoodi); kustutatud tooted eraldi
-            decimal kokkuRead = read.Sum(r => (decimal)r.Hind * r.Kogus);
+            decimal kokkuRead = read.Sum(r => r.Hind * r.Kogus);
             dgvKategooriad.DataSource = read
                 .GroupBy(r => tooteKategooria.TryGetValue(r.ToodeId, out var k) ? k : Keel.T("Kustutatud tooted"))
                 .Select(g => new
                 {
                     Kategooria = g.Key,
-                    Müük = Math.Round(g.Sum(r => (decimal)r.Hind * r.Kogus), 2),
+                    Müük = Math.Round(g.Sum(r => r.Hind * r.Kogus), 2),
                     Kogus = g.Sum(r => r.Kogus)
                 })
                 .OrderByDescending(x => x.Müük)
@@ -120,12 +120,12 @@ namespace Automaatne_andmebaasi_loomine
             {
                 for (var k = new DateTime(alates.Year, alates.Month, 1); k <= kuni; k = k.AddMonths(1))
                     tulbad.Add((k.ToString("MM.yy"),
-                        perioodis.Where(t => t.Kuupaev.Year == k.Year && t.Kuupaev.Month == k.Month).Sum(t => (decimal)t.Summa)));
+                        perioodis.Where(t => t.Kuupaev.Year == k.Year && t.Kuupaev.Month == k.Month).Sum(t => t.Summa)));
             }
             else
             {
                 for (var p = alates; p <= kuni; p = p.AddDays(1))
-                    tulbad.Add((p.ToString("dd.MM"), perioodis.Where(t => t.Kuupaev.Date == p).Sum(t => (decimal)t.Summa)));
+                    tulbad.Add((p.ToString("dd.MM"), perioodis.Where(t => t.Kuupaev.Date == p).Sum(t => t.Summa)));
             }
 
             using var pealkiriFont = new Font("Segoe UI Semibold", 12F);

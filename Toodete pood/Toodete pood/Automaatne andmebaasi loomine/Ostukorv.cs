@@ -12,9 +12,9 @@ namespace Automaatne_andmebaasi_loomine
         public static string? Sooduskood { get; private set; }
         public static int SoodusProtsent { get; private set; }
 
-        public static float Vahesumma => (float)Math.Round(Ridad.Sum(r => (decimal)r.Summa), 2);
-        public static float Soodustus => (float)Math.Round((decimal)Vahesumma * SoodusProtsent / 100m, 2);
-        public static float Kokku => (float)Math.Round((decimal)Vahesumma - (decimal)Soodustus, 2);
+        public static decimal Vahesumma => Math.Round(Ridad.Sum(r => r.Summa), 2);
+        public static decimal Soodustus => Math.Round(Vahesumma * SoodusProtsent / 100m, 2);
+        public static decimal Kokku => Vahesumma - Soodustus;
         public static int TooteidKokku => Ridad.Sum(r => r.Kogus);
 
         // Käivitub iga kord, kui korv muutub (päises olev ostukorvi nupp uuendab end)

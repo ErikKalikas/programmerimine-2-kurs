@@ -30,10 +30,9 @@ namespace Automaatne_andmebaasi_loomine
             using var ofd = new OpenFileDialog { Filter = Keel.T("Pildid") + "|*.png;*.jpg;*.jpeg" };
             if (ofd.ShowDialog() != DialogResult.OK) return;
 
-            // logo kopeeritakse kausta Images (uue nimega, et vahemälu ei näitaks vana pilti)
-            Directory.CreateDirectory("Images");
+            // logo kopeeritakse piltide kausta (uue nimega, et vahemälu ei näitaks vana pilti)
             string uusNimi = $"logo_{DateTime.Now:yyyyMMddHHmmss}{Path.GetExtension(ofd.FileName)}";
-            File.Copy(ofd.FileName, Path.Combine("Images", uusNimi), true);
+            Pildid.Salvesta(ofd.FileName, uusNimi);
 
             logo = uusNimi;
             pbLogo.Image = Pildid.Lae(logo);

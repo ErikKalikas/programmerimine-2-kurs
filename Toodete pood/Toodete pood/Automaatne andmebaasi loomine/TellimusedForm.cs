@@ -53,7 +53,7 @@ namespace Automaatne_andmebaasi_loomine
                 Toode = r.Toodenimetus,
                 Kogus = $"{r.Kogus} {Keel.T("tk")}",
                 Hind = $"{r.Hind:0.00} €",
-                Summa = $"{Math.Round((decimal)r.Hind * r.Kogus, 2):0.00} €"
+                Summa = $"{Math.Round(r.Hind * r.Kogus, 2):0.00} €"
             }).ToList();
         }
 

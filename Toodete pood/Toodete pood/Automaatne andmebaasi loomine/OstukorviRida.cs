@@ -5,8 +5,8 @@ namespace Automaatne_andmebaasi_loomine
         public Toode Toode { get; set; } = null!;
         public int Kogus { get; set; }
 
-        // Arvutus decimal'iga ja ümardus sentideni, et ei tekiks nt 30,000002. Soodushind arvestatakse.
-        public float Summa => (float)Math.Round((decimal)Toode.HetkeHind * Kogus, 2);
+        // Rea summa, ümardatud sentideni. Soodushind arvestatakse.
+        public decimal Summa => Math.Round(Toode.HetkeHind * Kogus, 2);
 
         public override string ToString()
         {

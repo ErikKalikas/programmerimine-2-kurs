@@ -8,7 +8,7 @@ namespace Automaatne_andmebaasi_loomine
     {
         public string Nr { get; set; } = string.Empty;
         public DateTime Aeg { get; set; }
-        public List<(string Nimetus, int Kogus, float Hind)> Read { get; set; } = new();
+        public List<(string Nimetus, int Kogus, decimal Hind)> Read { get; set; } = new();
         public string? OstjaNimi { get; set; }
         public string? OstjaEmail { get; set; }
         public string? OstjaTelefon { get; set; }
@@ -23,7 +23,7 @@ namespace Automaatne_andmebaasi_loomine
                 Aeg = DateTime.Now,
                 OstjaEmail = email,
                 Sooduskood = Ostukorv.Sooduskood != null ? $"{Ostukorv.Sooduskood} −{Ostukorv.SoodusProtsent}%" : null,
-                Soodustus = (decimal)Ostukorv.Soodustus,
+                Soodustus = Ostukorv.Soodustus,
                 Read = Ostukorv.Ridad.Select(r => (r.Toode.Toodenimetus, r.Kogus, r.Toode.HetkeHind)).ToList()
             };
             a.Nr = a.Aeg.ToString("yyyyMMdd-HHmmss");
@@ -39,7 +39,7 @@ namespace Automaatne_andmebaasi_loomine
                 Aeg = t.Kuupaev,
                 OstjaEmail = t.Email,
                 Sooduskood = t.Sooduskood,
-                Soodustus = (decimal)t.Soodustus,
+                Soodustus = t.Soodustus,
                 Read = t.Read.Select(r => (r.Toodenimetus, r.Kogus, r.Hind)).ToList()
             };
             a.LisaOstjaAndmed(t.KasutajaId);
@@ -83,11 +83,13 @@ namespace Automaatne_andmebaasi_loomine
         // Tagastab loodud faili täieliku tee
         public static string Loo(ArveAndmed a)
         {
-            Directory.CreateDirectory("Arved");
+            // arved samuti AppData kausta, sest Program Files kausta kirjutada ei saa
+            string arvedeKaust = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "ToodedApp", "Arved");
+            Directory.CreateDirectory(arvedeKaust);
 
             DateTime aeg = a.Aeg;
             string nr = a.Nr;
-            string failinimi = Path.GetFullPath($"Arved/Arve_{nr.Replace('-', '_')}.pdf");
+            string failinimi = Path.Combine(arvedeKaust, $"Arve_{nr.Replace('-', '_')}.pdf");
 
             var unicode = new XPdfFontOptions(PdfFontEncoding.Unicode);   // täpitähed õ ä ö ü ja €
             XFont Font(double suurus, XFontStyle stiil = XFontStyle.Regular) => new XFont("Verdana", suurus, stiil, unicode);
@@ -105,7 +107,7 @@ namespace Automaatne_andmebaasi_loomine
             // ---------- Päis ----------
             gfx.DrawRectangle(new XSolidBrush(Sinine), 0, 0, leht.Width.Point, 95);
             double tekstX = Serv;
-            string? logoTee = string.IsNullOrEmpty(pood.Logo) ? null : Path.Combine("Images", pood.Logo);
+            string? logoTee = Pildid.Tee(pood.Logo);
             if (logoTee != null && File.Exists(logoTee))
             {
                 // logo valgel ruudul päise vasakus servas
@@ -184,7 +186,7 @@ namespace Automaatne_andmebaasi_loomine
                     new XRect(XToode, y, XKogus - XToode - 60, ReaKorgus), Vasak);
                 gfx.DrawString($"{rida.Kogus} tk", reaFont, XBrushes.Black, new XRect(XKogus - 60, y, 60, ReaKorgus), Parem);
                 gfx.DrawString($"{rida.Hind:0.00} €", reaFont, XBrushes.Black, new XRect(XHind - 80, y, 80, ReaKorgus), Parem);
-                gfx.DrawString($"{Math.Round((decimal)rida.Hind * rida.Kogus, 2):0.00} €", Font(9, XFontStyle.Bold), XBrushes.Black, new XRect(XSumma - 100, y, 94, ReaKorgus), Parem);
+                gfx.DrawString($"{Math.Round(rida.Hind * rida.Kogus, 2):0.00} €", Font(9, XFontStyle.Bold), XBrushes.Black, new XRect(XSumma - 100, y, 94, ReaKorgus), Parem);
 
                 y += ReaKorgus;
             }
@@ -198,7 +200,7 @@ namespace Automaatne_andmebaasi_loomine
                 y = Serv;
             }
 
-            decimal vahesumma = a.Read.Sum(r => Math.Round((decimal)r.Hind * r.Kogus, 2));
+            decimal vahesumma = a.Read.Sum(r => Math.Round(r.Hind * r.Kogus, 2));
             decimal kokku = vahesumma - a.Soodustus;
             decimal kaibemaks = Math.Round(kokku * KaibemaksProtsent / (100 + KaibemaksProtsent), 2);
             decimal ilmaKm = kokku - kaibemaks;

@@ -1,3 +1,4 @@
 <Solution>
-  <Project Path="Automaatne andmebaasi loomine/Automaatne andmebaasi loomine.csproj" />
+  <Project Path="Automaatne andmebaasi loomine/Automaatne andmebaasi loomine.csproj" Id="163f4f4c-b9a7-4d55-912b-e8fa519f790d" />
+  <Project Path="ToodedInstaller/ToodedInstaller.vdproj" Type="54435603-dbb4-11d2-8724-00a0c9a8b90c" />
 </Solution>
