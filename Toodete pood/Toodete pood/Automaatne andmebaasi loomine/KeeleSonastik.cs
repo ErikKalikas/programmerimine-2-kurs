@@ -19,6 +19,7 @@ namespace Automaatne_andmebaasi_loomine
             ["Aktiivne"] = ("Активен", "Active"),
             ["Alates:"] = ("С:", "From:"),
             ["Andmed salvestatud."] = ("Данные сохранены.", "Details saved."),
+            ["Andmebaasiga ühendamine ei õnnestunud:"] = ("Не удалось подключиться к базе данных:", "Could not connect to the database:"),
             ["Antud soodustusi"] = ("Выдано скидок", "Discounts given"),
             ["Arv"] = ("Количество", "Count"),
             ["Arve kiri (e-post)"] = ("Письмо со счётом (e-mail)", "Invoice e-mail"),

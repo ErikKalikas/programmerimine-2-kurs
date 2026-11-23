@@ -21,9 +21,6 @@ namespace Automaatne_andmebaasi_loomine
             _db = new ToodedContext();
             Disposed += (_, _) => _db.Dispose();
 
-            // Loob andmebaasi migratsiooni järgi, kui seda veel pole
-            _db.Database.Migrate();
-
             // Kaust piltide jaoks peab olemas olema, muidu File.Copy annab vea
             Directory.CreateDirectory("Images");
 
