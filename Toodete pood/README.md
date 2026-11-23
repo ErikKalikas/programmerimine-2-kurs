@@ -5,27 +5,40 @@ Pood, ostukorv, PDF-arve e-postiga, ostja konto ja administraatori osa.
 
 ## Käivitamine
 
-1. Vaja on Visual Studio (.NET 10) ja **SQL Server LocalDB** (tuleb Visual Studioga kaasa, komponent "Data storage and processing").
+1. Paigalda Visual Studio (.NET 10) ja **SQL Server LocalDB** (Visual Studio Installeris komponent "Data storage and processing").
 2. Ava `Toodete pood/Automaatne andmebaasi loomine.slnx` ja vajuta F5.
-3. Andmebaas `Tooded_DB` tehakse esimesel käivitamisel ise: `Program.cs` → `AlgAndmed.Loo()` → `Database.Migrate()`.
-   Seal lisatakse ka admin ja näidistooted (ainult siis, kui tooteid veel pole).
-   Kategooriad Joogid, Toit ja Muu tulevad `HasData` kaudu (`ToodedContext.OnModelCreating`).
+3. Andmebaas `Tooded_DB` luuakse esimesel käivitamisel automaatselt (`Program.cs` → `AlgAndmed.Loo()` → `Database.Migrate()`).
+   Samas lisatakse admin ja näidistooted, kui tooteid veel pole.
+   Kategooriad Joogid, Toit ja Muu lisatakse `HasData` kaudu (`ToodedContext.OnModelCreating`).
 
 Admin: `admin@admin.ee` / `admin123`. Sooduskoodid: `TERE10` (10%), `SOODUS20` (20%).
+
+## Uus migratsioon
+
+Package Manager Console:
+
+```
+Add-Migration MigratsiooniNimi
+Update-Database
+```
+
+`Update-Database` pole kohustuslik: programm rakendab uued migratsioonid käivitamisel ise.
 
 ## Arve saatmine Gmailiga (client_secret.json)
 
 Arve saadetakse Gmail API kaudu, sisselogimine käib Google'i kontoga (OAuth 2.0).
 
-- `client_secret.json` laaditakse alla Google Cloud Console'ist (OAuth client, tüüp Desktop app)
-  ja pannakse projekti kausta (`.csproj` kõrvale). Build kopeerib selle programmi kausta.
-- Fail on `.gitignore`-is, **GitHubis seda ei ole** (kontrollisin kogu commitide ajaloo).
-- Pärast sisselogimist hoitakse tokenit kaustas `%AppData%\ToodedApp.Gmail`, see ka GitHubi ei lähe.
-- Vana OAuth client on Google Cloud Console'is kustutatud ja tehtud uus.
+1. Google Cloud Console'is: lülita sisse **Gmail API**, seadista **OAuth consent screen** (Audience: External, oma Gmail lisa Test users alla).
+2. Loo **OAuth client ID**, tüüp **Desktop app**, ja vajuta **Download JSON**.
+3. Nimeta fail ümber `client_secret.json` ja pane see projekti kausta (`.csproj` kõrvale). Build kopeerib selle programmi kausta.
+4. Esimesel saatmisel avaneb brauser, kus tuleb Google'iga sisse logida ja anda luba kirjade saatmiseks.
+
+`client_secret.json` on `.gitignore`-is ja seda GitHubi ei panda.
+Token hoitakse kaustas `%AppData%\ToodedApp.Gmail`. Gmaili konto vahetamine: **Poe seaded → Vaheta Gmaili kontot**.
 
 ## Kuhu programm faile salvestab
 
-Pärast installimist ei saa programmi kausta (nt Program Files) kirjutada, sellepärast:
+Programmi kausta (nt Program Files) pärast installimist kirjutada ei saa, sellepärast:
 
 | Mis | Kus |
 |---|---|
@@ -34,37 +47,30 @@ Pärast installimist ei saa programmi kausta (nt Program Files) kirjutada, selle
 | PDF-arved | `%LocalAppData%\ToodedApp\Arved` |
 | Ostukorv ja valitud keel | `%AppData%\ToodedApp` |
 
-## Miks poes on kategooriad nuppudena, mitte TabControl-is
+## Poe kategooriad nuppudena (TabControl asemel)
 
-Alguses (16.10) olid kategooriad `TabControl`-i vahelehtedel. Uue kujundusega tegin need nuppudeks, sest:
+Kategooriad on poes nuppudena (`FlowLayoutPanel`), mitte `TabControl`-i vahelehtedel:
 
-- `TabControl`-i välimust (värvid, ümarad nurgad) WinFormsis peaaegu muuta ei saa, see ei sobinud musta/punase kujundusega;
-- iga vahelehe jaoks tehti kõik tootekaardid uuesti, otsingu ajal tuli vahelehed uuesti luua ja valitud vaheleht kadus;
-- nupud on `FlowLayoutPanel`-is: kui kategooriaid on palju või aken on kitsas, lähevad nupud ise uuele reale;
-- täisekraanil mahub tooteid rohkem ja see on nagu tavalises internetipoes.
+- `TabControl`-i välimust (värvid, ümarad nurgad) WinFormsis peaaegu muuta ei saa;
+- vahelehtedega tuli iga lehe tootekaardid uuesti teha ja otsingu ajal kadus valitud vaheleht;
+- nupud lähevad ise uuele reale, kui kategooriaid on palju või aken on kitsas;
+- täisekraanil mahub tooteid rohkem, nagu tavalises internetipoes.
 
-Töö on sama: vajutad kategooria nupule ja näed ainult selle kategooria tooteid, nupul on toodete arv.
+Kategooria nupule vajutades näidatakse ainult selle kategooria tooteid, nupul on toodete arv.
 
 ## Installer (ToodedInstaller)
 
-1. Visual Studiosse on vaja laiendust **Microsoft Visual Studio Installer Projects 2022**.
+1. Paigalda Visual Studiosse laiendus **Microsoft Visual Studio Installer Projects 2022**.
 2. Vali ülevalt **Release**, siis Solution Exploreris parem klõps **ToodedInstaller** → **Build**.
 3. Valmis fail: `Toodete pood/ToodedInstaller/Release/ToodedInstaller.msi`.
 4. Installitakse kausta `%LocalAppData%\ErikKalikas\Tooded App`, otsetee tuleb töölauale ja Start menüüsse.
 
-Teises arvutis peab olema **.NET 10 Desktop Runtime** ja **SQL Server Express LocalDB**.
-`client_secret.json` installerisse ei lähe, see tuleb vajadusel ise programmi kausta panna.
-
-Testimine teises arvutis:
-
-- [ ] .msi installib ilma veata
-- [ ] programm käivitub, andmebaas tehakse ise
-- [ ] adminina saab sisse logida, toote lisamine koos pildiga töötab
-- [ ] ostja saab osta, PDF-arve tehakse
+Arvutis, kuhu programm installitakse, peab olema **.NET 10 Desktop Runtime** ja **SQL Server Express LocalDB**.
+`client_secret.json` installerisse ei lähe, arve saatmiseks tuleb see panna programmi kausta.
 
 ## Commitide ajalugu
 
-Projekt oli alguses kaustas `Ülesanne Tooted`, 30.10 nimetasin selle ümber `Toodete pood`.
+Projekt oli alguses kaustas `Ülesanne Tooted`, 30.10 nimetati see ümber `Toodete pood`.
 Kogu loend: `git log -- "Ülesanne Tooted" "Toodete pood"`.
 
 | Kuupäev | Commit | Sõnum |
@@ -119,3 +125,4 @@ Kogu loend: `git log -- "Ülesanne Tooted" "Toodete pood"`.
 | 23.11.2026 | 0231240 | Kategooriad HasData kaudu |
 | 23.11.2026 | 508e38e | Tootele uus väli Tootja |
 | 23.11.2026 | 05e0357 | Installer lahendusse |
+| 23.11.2026 | a8b886d | README: käivitamine, installer, kategooriad ja commitid |
