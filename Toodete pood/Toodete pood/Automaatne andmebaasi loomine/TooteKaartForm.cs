@@ -14,6 +14,8 @@ namespace Automaatne_andmebaasi_loomine
             pbPilt.Image = Pildid.Lae(toode.Pilt);
             lblNimi.Text = toode.Toodenimetus;
             lblKirjeldus.Text = string.IsNullOrWhiteSpace(toode.Kirjeldus) ? Keel.T("Kirjeldus puudub.") : toode.Kirjeldus;
+            if (!string.IsNullOrWhiteSpace(toode.Tootja))
+                lblKirjeldus.Text += "\n" + Keel.T("Tootja:") + " " + toode.Tootja;
 
             lblHind.Text = $"{toode.HetkeHind:0.00} €";
             if (toode.OnSoodus)

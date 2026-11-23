@@ -76,6 +76,7 @@ namespace Automaatne_andmebaasi_loomine
                     t.Pilt,
                     t.SoodusHind,
                     t.SoodusKuni,
+                    t.Tootja,
                     t.Kirjeldus
                 })
                 .ToList();
@@ -209,6 +210,7 @@ namespace Automaatne_andmebaasi_loomine
                 KategooriaId = Convert.ToInt32(comboKategooria.SelectedValue),
                 Pilt = string.IsNullOrEmpty(valitudPilt) ? string.Empty : Path.GetFileName(valitudPilt),
                 Kirjeldus = string.IsNullOrWhiteSpace(txtKirjeldus.Text) ? null : txtKirjeldus.Text.Trim(),
+                Tootja = string.IsNullOrWhiteSpace(txtTootja.Text) ? null : txtTootja.Text.Trim(),
                 SoodusHind = soodus,
                 SoodusKuni = soodus != null && chkSoodusKuni.Checked ? dtpSoodusKuni.Value.Date : null
             };
@@ -238,6 +240,7 @@ namespace Automaatne_andmebaasi_loomine
             comboKategooria.SelectedValue = rida.Cells["KategooriaId"].Value;
 
             txtKirjeldus.Text = rida.Cells["Kirjeldus"].Value?.ToString() ?? "";
+            txtTootja.Text = rida.Cells["Tootja"].Value?.ToString() ?? "";
             var soodus = rida.Cells["SoodusHind"].Value;
             txtSoodusHind.Text = soodus == null ? "" : Convert.ToDecimal(soodus).ToString("0.00");
             var kuni = rida.Cells["SoodusKuni"].Value;
@@ -283,6 +286,7 @@ namespace Automaatne_andmebaasi_loomine
             toode.Hind = Math.Round(uusHind, 2);
             toode.KategooriaId = Convert.ToInt32(comboKategooria.SelectedValue);
             toode.Kirjeldus = string.IsNullOrWhiteSpace(txtKirjeldus.Text) ? null : txtKirjeldus.Text.Trim();
+            toode.Tootja = string.IsNullOrWhiteSpace(txtTootja.Text) ? null : txtTootja.Text.Trim();
             toode.SoodusHind = soodus;
             toode.SoodusKuni = soodus != null && chkSoodusKuni.Checked ? dtpSoodusKuni.Value.Date : null;
 

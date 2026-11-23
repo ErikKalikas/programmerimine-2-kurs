@@ -54,6 +54,8 @@ namespace Automaatne_andmebaasi_loomine
             dtpSoodusKuni = new DateTimePicker();
             lblKirjeldus = new Label();
             txtKirjeldus = new TextBox();
+            lblTootja = new Label();
+            txtTootja = new TextBox();
             btnLisa = new UmarNupp();
             btnUuenda = new UmarNupp();
             btnLisaLattu = new UmarNupp();
@@ -165,6 +167,8 @@ namespace Automaatne_andmebaasi_loomine
             pnlVorm.Controls.Add(dtpSoodusKuni);
             pnlVorm.Controls.Add(lblKirjeldus);
             pnlVorm.Controls.Add(txtKirjeldus);
+            pnlVorm.Controls.Add(lblTootja);
+            pnlVorm.Controls.Add(txtTootja);
             pnlVorm.Controls.Add(btnLisa);
             pnlVorm.Controls.Add(btnUuenda);
             pnlVorm.Controls.Add(btnLisaLattu);
@@ -317,10 +321,26 @@ namespace Automaatne_andmebaasi_loomine
             txtKirjeldus.Multiline = true;
             txtKirjeldus.ScrollBars = ScrollBars.Vertical;
             // 
+            // lblTootja
+            // 
+            lblTootja.AutoSize = true;
+            lblTootja.ForeColor = Color.FromArgb(110, 110, 118);
+            lblTootja.Location = new Point(20, 546);
+            lblTootja.Name = "lblTootja";
+            lblTootja.Text = "Tootja";
+            // 
+            // txtTootja
+            // 
+            txtTootja.Font = new Font("Segoe UI", 11F);
+            txtTootja.Location = new Point(20, 568);
+            txtTootja.Name = "txtTootja";
+            txtTootja.PlaceholderText = "Tootja (nt Arla)";
+            txtTootja.Size = new Size(340, 27);
+            // 
             // btnLisa
             // 
             btnLisa.Ikoon = "\uE710";
-            btnLisa.Location = new Point(20, 552);
+            btnLisa.Location = new Point(20, 614);
             btnLisa.Name = "btnLisa";
             btnLisa.Size = new Size(165, 44);
             btnLisa.Stiil = NupuStiil.Punane;
@@ -330,7 +350,7 @@ namespace Automaatne_andmebaasi_loomine
             // btnUuenda
             // 
             btnUuenda.Ikoon = "\uE74E";
-            btnUuenda.Location = new Point(195, 552);
+            btnUuenda.Location = new Point(195, 614);
             btnUuenda.Name = "btnUuenda";
             btnUuenda.Size = new Size(165, 44);
             btnUuenda.Text = "Uuenda";
@@ -338,7 +358,7 @@ namespace Automaatne_andmebaasi_loomine
             // 
             // btnLisaLattu
             // 
-            btnLisaLattu.Location = new Point(20, 604);
+            btnLisaLattu.Location = new Point(20, 666);
             btnLisaLattu.Name = "btnLisaLattu";
             btnLisaLattu.Size = new Size(340, 40);
             btnLisaLattu.Stiil = NupuStiil.Hall;
@@ -348,7 +368,7 @@ namespace Automaatne_andmebaasi_loomine
             // btnKustuta
             // 
             btnKustuta.Ikoon = "\uE74D";
-            btnKustuta.Location = new Point(20, 652);
+            btnKustuta.Location = new Point(20, 714);
             btnKustuta.Name = "btnKustuta";
             btnKustuta.Size = new Size(340, 40);
             btnKustuta.Stiil = NupuStiil.Kontuur;
@@ -407,6 +427,8 @@ namespace Automaatne_andmebaasi_loomine
         private System.Windows.Forms.DateTimePicker dtpSoodusKuni;
         private System.Windows.Forms.Label lblKirjeldus;
         private System.Windows.Forms.TextBox txtKirjeldus;
+        private System.Windows.Forms.Label lblTootja;
+        private System.Windows.Forms.TextBox txtTootja;
         private UmarNupp btnLisa;
         private UmarNupp btnUuenda;
         private UmarNupp btnLisaLattu;

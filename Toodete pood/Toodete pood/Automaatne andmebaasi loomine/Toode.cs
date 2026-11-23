@@ -18,6 +18,7 @@ namespace Automaatne_andmebaasi_loomine
         [Precision(18, 2)]
         public decimal? SoodusHind { get; set; }    // kui on väiksem kui Hind, on toode soodushinnaga
         public DateTime? SoodusKuni { get; set; }   // soodushinna viimane päev (null = tähtajatu)
+        public string? Tootja { get; set; }         // tootja nimi (uus väli, võib olla tühi)
 
         // Hind, millega toodet praegu müüakse (soodushind, kui see kehtib)
         [NotMapped]
