@@ -13,6 +13,19 @@ Pood, ostukorv, PDF-arve e-postiga, ostja konto ja administraatori osa.
 
 Admin: `admin@admin.ee` / `admin123`. Sooduskoodid: `TERE10` (10%), `SOODUS20` (20%).
 
+### Viga "Database 'Tooded_DB' already exists"
+
+Andmebaas on LocalDB-s kirjas, aga seda ei saa avada (nt `.mdf` fail on kustutatud).
+Programm küsib siis, kas teha uus andmebaas (vanad andmed kaovad). Käsitsi parandamine (cmd):
+
+```
+sqllocaldb stop MSSQLLocalDB
+sqllocaldb delete MSSQLLocalDB
+sqllocaldb create MSSQLLocalDB -s
+```
+
+Kui pärast seda tuleb viga "Cannot create file ... Tooded_DB.mdf", kustuta kaustast `C:\Users\<kasutaja>` failid `Tooded_DB.mdf` ja `Tooded_DB_log.ldf`.
+
 ## Uus migratsioon
 
 Package Manager Console:

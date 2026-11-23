@@ -19,6 +19,8 @@ namespace Automaatne_andmebaasi_loomine
             ["Aktiivne"] = ("Активен", "Active"),
             ["Alates:"] = ("С:", "From:"),
             ["Andmed salvestatud."] = ("Данные сохранены.", "Details saved."),
+            ["Andmebaas"] = ("База данных", "Database"),
+            ["Andmebaas Tooded_DB on katki ja seda ei saa avada.\nKas kustutada see ja teha uus? (vanad andmed kaovad)"] = ("База данных Tooded_DB повреждена и не открывается.\nУдалить её и создать новую? (старые данные пропадут)", "The Tooded_DB database is broken and cannot be opened.\nDelete it and create a new one? (old data will be lost)"),
             ["Andmebaasiga ühendamine ei õnnestunud:"] = ("Не удалось подключиться к базе данных:", "Could not connect to the database:"),
             ["Antud soodustusi"] = ("Выдано скидок", "Discounts given"),
             ["Arv"] = ("Количество", "Count"),

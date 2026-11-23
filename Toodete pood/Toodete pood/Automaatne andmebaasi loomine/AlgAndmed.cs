@@ -1,3 +1,4 @@
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 
 namespace Automaatne_andmebaasi_loomine
@@ -31,6 +32,16 @@ namespace Automaatne_andmebaasi_loomine
             // Näidistooted lisame ainult siis, kui tooteid veel üldse pole (esimene käivitus)
             if (!db.Toodetabel.Any())
                 LisaNaidisTooted(db);
+        }
+
+        // Kustutab katkise andmebaasi Tooded_DB LocalDB-st, et Loo() saaks teha uue
+        public static void KustutaAndmebaas()
+        {
+            using var yhendus = new SqlConnection(@"Server=(localdb)\MSSQLLocalDB;Database=master;Trusted_Connection=True;");
+            yhendus.Open();
+
+            using var kask = new SqlCommand("IF DB_ID('Tooded_DB') IS NOT NULL DROP DATABASE [Tooded_DB]", yhendus);
+            kask.ExecuteNonQuery();
         }
 
         // Lisab näidistooted koos piltidega (pildid on programmi kaustas Images)
