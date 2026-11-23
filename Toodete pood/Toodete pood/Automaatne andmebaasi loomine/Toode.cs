@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 namespace Automaatne_andmebaasi_loomine
 {
@@ -7,18 +8,20 @@ namespace Automaatne_andmebaasi_loomine
         public int Id { get; set; }
         public string Toodenimetus { get; set; } = string.Empty;
         public int Kogus { get; set; }
-        public float Hind { get; set; }
+        [Precision(18, 2)]
+        public decimal Hind { get; set; }            // raha jaoks decimal, float annaks ümardusvigu
         public string Pilt { get; set; } = string.Empty;
         public int KategooriaId { get; set; }
         public Kategooria Kategooria { get; set; } = null!;
 
         public string? Kirjeldus { get; set; }      // tootekaardil näidatav tekst
-        public float? SoodusHind { get; set; }      // kui on väiksem kui Hind, on toode soodushinnaga
+        [Precision(18, 2)]
+        public decimal? SoodusHind { get; set; }    // kui on väiksem kui Hind, on toode soodushinnaga
         public DateTime? SoodusKuni { get; set; }   // soodushinna viimane päev (null = tähtajatu)
 
         // Hind, millega toodet praegu müüakse (soodushind, kui see kehtib)
         [NotMapped]
-        public float HetkeHind => OnSoodus ? SoodusHind!.Value : Hind;
+        public decimal HetkeHind => OnSoodus ? SoodusHind!.Value : Hind;
 
         [NotMapped]
         public bool OnSoodus => SoodusHind.HasValue && SoodusHind.Value > 0 && SoodusHind.Value < Hind

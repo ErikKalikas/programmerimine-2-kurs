@@ -1,3 +1,5 @@
+using Microsoft.EntityFrameworkCore;
+
 namespace Automaatne_andmebaasi_loomine
 {
     // Tehtud ost. Read hoiavad toote nime ja hinda ostu hetkel (hilisem hinnamuutus neid ei mõjuta).
@@ -8,8 +10,10 @@ namespace Automaatne_andmebaasi_loomine
         public int? KasutajaId { get; set; }                     // null = külaline
         public DateTime Kuupaev { get; set; }
         public string Email { get; set; } = string.Empty;        // kuhu arve saadeti
-        public float Summa { get; set; }                         // tasutud summa (pärast soodustust)
-        public float Soodustus { get; set; }
+        [Precision(18, 2)]
+        public decimal Summa { get; set; }                       // tasutud summa (pärast soodustust)
+        [Precision(18, 2)]
+        public decimal Soodustus { get; set; }
         public string? Sooduskood { get; set; }
         public string? PdfFail { get; set; }
 
@@ -23,7 +27,8 @@ namespace Automaatne_andmebaasi_loomine
         public Tellimus Tellimus { get; set; } = null!;
         public int ToodeId { get; set; }
         public string Toodenimetus { get; set; } = string.Empty;
-        public float Hind { get; set; }
+        [Precision(18, 2)]
+        public decimal Hind { get; set; }
         public int Kogus { get; set; }
     }
 

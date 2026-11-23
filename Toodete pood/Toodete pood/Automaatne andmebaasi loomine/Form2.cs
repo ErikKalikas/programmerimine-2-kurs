@@ -3,6 +3,7 @@ using System;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Globalization;
 using System.Windows.Forms;
 
 namespace Automaatne_andmebaasi_loomine
@@ -96,7 +97,7 @@ namespace Automaatne_andmebaasi_loomine
 
             dataGridViewTooted.DataSource = tooted;
 
-            // Hind alati kahe komakohaga (float võib muidu näidata nt 30,000002)
+            // Hind alati kahe komakohaga
             var hindVeerg = dataGridViewTooted.Columns["Hind"];
             if (hindVeerg != null) hindVeerg.DefaultCellStyle.Format = "0.00";
 
@@ -131,7 +132,7 @@ namespace Automaatne_andmebaasi_loomine
         {
             if (string.IsNullOrWhiteSpace(txtNimetus.Text) ||
                 !int.TryParse(txtKogus.Text, out _) ||
-                !float.TryParse(txtHind.Text, out _) ||
+                !LoeHind(txtHind.Text, out _) ||
                 comboKategooria.SelectedValue == null)
             {
                 MessageBox.Show(Keel.T("Täida nimetus, kogus (täisarv), hind (number) ja vali kategooria!"));
@@ -140,24 +141,33 @@ namespace Automaatne_andmebaasi_loomine
             return true;
         }
 
+        // Loeb hinna tekstist. Koma asendame punktiga ja kasutame InvariantCulture-it,
+        // siis töötab nii "2,50" kui ka "2.50" (ei sõltu sellest, mis keel on Windowsis)
+        private static bool LoeHind(string tekst, out decimal hind)
+        {
+            tekst = tekst.Trim().Replace(',', '.');
+            return decimal.TryParse(tekst, NumberStyles.Number, CultureInfo.InvariantCulture, out hind);
+        }
+
         // Soodushind on vabatahtlik: tühi = soodustust pole. Peab olema väiksem kui tavahind.
-        private bool LoeSoodus(out float? soodus)
+        private bool LoeSoodus(out decimal? soodus)
         {
             soodus = null;
             if (string.IsNullOrWhiteSpace(txtSoodusHind.Text)) return true;
 
-            if (!float.TryParse(txtSoodusHind.Text, out float s) || s <= 0)
+            if (!LoeHind(txtSoodusHind.Text, out decimal s) || s <= 0)
             {
                 MessageBox.Show(Keel.T("Soodushind peab olema positiivne number (või jäta tühjaks)."));
                 return false;
             }
-            if (s >= float.Parse(txtHind.Text))
+            LoeHind(txtHind.Text, out decimal tavaHind);
+            if (s >= tavaHind)
             {
                 MessageBox.Show(Keel.T("Soodushind peab olema väiksem kui tavahind."));
                 return false;
             }
 
-            soodus = (float)Math.Round(s, 2);
+            soodus = Math.Round(s, 2);
             return true;
         }
 
@@ -187,13 +197,15 @@ namespace Automaatne_andmebaasi_loomine
         private void btnLisa_Click(object? sender, EventArgs e)
         {
             if (!VormOnKorras()) return;
-            if (!LoeSoodus(out float? soodus)) return;
+            if (!LoeSoodus(out decimal? soodus)) return;
+
+            LoeHind(txtHind.Text, out decimal hind);
 
             var uus = new Toode
             {
                 Toodenimetus = txtNimetus.Text,
                 Kogus = int.Parse(txtKogus.Text),
-                Hind = (float)Math.Round(float.Parse(txtHind.Text), 2),
+                Hind = Math.Round(hind, 2),
                 KategooriaId = Convert.ToInt32(comboKategooria.SelectedValue),
                 Pilt = string.IsNullOrEmpty(valitudPilt) ? string.Empty : Path.GetFileName(valitudPilt),
                 Kirjeldus = string.IsNullOrWhiteSpace(txtKirjeldus.Text) ? null : txtKirjeldus.Text.Trim(),
@@ -222,12 +234,12 @@ namespace Automaatne_andmebaasi_loomine
 
             txtNimetus.Text = rida.Cells["Toodenimetus"].Value?.ToString();
             txtKogus.Text = rida.Cells["Kogus"].Value?.ToString();
-            txtHind.Text = Convert.ToSingle(rida.Cells["Hind"].Value).ToString("0.00");
+            txtHind.Text = Convert.ToDecimal(rida.Cells["Hind"].Value).ToString("0.00");
             comboKategooria.SelectedValue = rida.Cells["KategooriaId"].Value;
 
             txtKirjeldus.Text = rida.Cells["Kirjeldus"].Value?.ToString() ?? "";
             var soodus = rida.Cells["SoodusHind"].Value;
-            txtSoodusHind.Text = soodus == null ? "" : Convert.ToSingle(soodus).ToString("0.00");
+            txtSoodusHind.Text = soodus == null ? "" : Convert.ToDecimal(soodus).ToString("0.00");
             var kuni = rida.Cells["SoodusKuni"].Value;
             chkSoodusKuni.Checked = kuni != null;
             if (kuni != null) dtpSoodusKuni.Value = (DateTime)kuni;
@@ -252,7 +264,7 @@ namespace Automaatne_andmebaasi_loomine
                 return;
             }
             if (!VormOnKorras()) return;
-            if (!LoeSoodus(out float? soodus)) return;
+            if (!LoeSoodus(out decimal? soodus)) return;
 
             int id = (int)dataGridViewTooted.SelectedRows[0].Cells["Id"].Value;
 
@@ -261,13 +273,14 @@ namespace Automaatne_andmebaasi_loomine
 
             // vanad väärtused logi jaoks
             string vanaNimi = toode.Toodenimetus;
-            float vanaHind = toode.Hind;
+            decimal vanaHind = toode.Hind;
             int vanaKogus = toode.Kogus;
-            float? vanaSoodus = toode.SoodusHind;
+            decimal? vanaSoodus = toode.SoodusHind;
 
             toode.Toodenimetus = txtNimetus.Text;
             toode.Kogus = int.Parse(txtKogus.Text);
-            toode.Hind = (float)Math.Round(float.Parse(txtHind.Text), 2);
+            LoeHind(txtHind.Text, out decimal uusHind);
+            toode.Hind = Math.Round(uusHind, 2);
             toode.KategooriaId = Convert.ToInt32(comboKategooria.SelectedValue);
             toode.Kirjeldus = string.IsNullOrWhiteSpace(txtKirjeldus.Text) ? null : txtKirjeldus.Text.Trim();
             toode.SoodusHind = soodus;
