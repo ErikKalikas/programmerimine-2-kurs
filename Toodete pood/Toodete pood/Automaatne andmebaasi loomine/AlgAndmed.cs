@@ -26,15 +26,7 @@ namespace Automaatne_andmebaasi_loomine
                 db.SaveChanges();
             }
 
-            // Kui kategooriaid pole, lisame mõned, et ComboBox poleks tühi
-            if (!db.Kategooriatabel.Any())
-            {
-                db.Kategooriatabel.AddRange(
-                    new Kategooria { Kategooria_nimetus = "Joogid", Kirjeldus = "Erinevad joogid" },
-                    new Kategooria { Kategooria_nimetus = "Toit", Kirjeldus = "Toiduained" },
-                    new Kategooria { Kategooria_nimetus = "Muu", Kirjeldus = "Muud tooted" });
-                db.SaveChanges();
-            }
+            // Kategooriad (Joogid, Toit, Muu) tulevad HasData kaudu, vt ToodedContext.OnModelCreating
 
             // Näidistooted lisame ainult siis, kui tooteid veel üldse pole (esimene käivitus)
             if (!db.Toodetabel.Any())

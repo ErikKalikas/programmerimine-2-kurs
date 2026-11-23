@@ -81,6 +81,26 @@ namespace Automaatne_andmebaasi_loomine.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Kategooriatabel", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Kategooria_nimetus = "Joogid",
+                            Kirjeldus = "Erinevad joogid"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Kategooria_nimetus = "Toit",
+                            Kirjeldus = "Toiduained"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Kategooria_nimetus = "Muu",
+                            Kirjeldus = "Muud tooted"
+                        });
                 });
 
             modelBuilder.Entity("Automaatne_andmebaasi_loomine.Lemmik", b =>
